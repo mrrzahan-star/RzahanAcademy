@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Search, Edit2, Trash2, BookOpen, Calendar } from "lucide-react";
+import { Plus, Search, Edit2, Trash2, BookOpen, Calendar, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getToken } from "@/lib/api";
 
@@ -159,17 +159,44 @@ export default function JournalPage() {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <Card className="rounded-[2rem] border-dashed border-2 border-indigo-100 bg-slate-50/50 shadow-none">
-          <CardContent className="p-16 text-center">
-            <BookOpen className="h-10 w-10 mx-auto text-indigo-200 mb-4" />
-            <h3 className="text-lg font-bold text-indigo-950 mb-1">
-              {search || categoryFilter !== "all" ? "Nəticə tapılmadı" : "Hələ qeyd yoxdur"}
-            </h3>
-            <p className="text-indigo-900/50 text-sm">
-              {search || categoryFilter !== "all" ? "Axtarış şərtlərini dəyişin" : "İlk qeydinizi əlavə edin"}
-            </p>
-          </CardContent>
-        </Card>
+        search || categoryFilter !== "all" ? (
+          <Card className="rounded-[2rem] border-dashed border-2 border-indigo-100 bg-slate-50/50 shadow-none">
+            <CardContent className="p-16 text-center">
+              <Search className="h-10 w-10 mx-auto text-indigo-200 mb-4" />
+              <h3 className="text-lg font-bold text-indigo-950 mb-1">Nəticə tapılmadı</h3>
+              <p className="text-indigo-900/50 text-sm">Axtarış şərtlərini dəyişin və ya kateqoriyanı sıfırlayın</p>
+            </CardContent>
+          </Card>
+        ) : (
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+            <Card className="rounded-[2rem] border-dashed border-2 border-indigo-100 bg-gradient-to-br from-indigo-50/60 to-white shadow-none">
+              <CardContent className="p-12 md:p-20 text-center">
+                <div className="w-20 h-20 mx-auto rounded-2xl bg-indigo-100 flex items-center justify-center mb-6">
+                  <BookOpen className="h-10 w-10 text-indigo-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-indigo-950 mb-3">Şüur Jurnalınız Boşdur</h3>
+                <p className="text-indigo-900/60 max-w-sm mx-auto mb-3 leading-relaxed">
+                  Gündəlik düşüncələrinizi, hissləriniizi və inkişafınızı qeydə almaq şüurunuzun güzgüsüdür.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-md mx-auto mb-8 text-sm text-indigo-700/70">
+                  {[
+                    { icon: "✍️", text: "Hər gün bir qeyd" },
+                    { icon: "💡", text: "Refleksiya et" },
+                    { icon: "📈", text: "İnkişafını izlə" },
+                  ].map((tip) => (
+                    <div key={tip.text} className="flex flex-col items-center gap-1.5 p-3 rounded-xl bg-white border border-indigo-100">
+                      <span className="text-xl">{tip.icon}</span>
+                      <span className="font-medium text-xs">{tip.text}</span>
+                    </div>
+                  ))}
+                </div>
+                <Button onClick={openNew} className="rounded-xl bg-primary text-white font-bold px-8 h-11 shadow-md shadow-primary/20 hover:-translate-y-0.5 transition-all">
+                  <Sparkles className="mr-2 h-4 w-4" /> İlk Qeydi Yaz
+                </Button>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )
       ) : (
         <div className="space-y-4">
           <AnimatePresence>

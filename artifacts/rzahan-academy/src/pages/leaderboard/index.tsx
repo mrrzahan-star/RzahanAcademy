@@ -26,6 +26,24 @@ const STAGE_COLORS = [
   "#22c55e", "#06b6d4", "#6366f1",
 ];
 
+/* ── Demo leaderboard ─────────────────────────────────────────────────────────
+ * Shown ONLY when the real leaderboard is empty (no registered users yet).
+ * Never stored in the database — exists purely in the frontend.
+ * Automatically hidden the moment real users appear in the leaderboard.
+ * ───────────────────────────────────────────────────────────────────────────── */
+const DEMO_LEADERBOARD: LeaderboardEntry[] = [
+  { userId: "demo-1", firstName: "Aytən", lastName: "M.", avatarUrl: null, consciousnessLevel: 7, consciousnessStage: "Yaradıcı", streak: 42, tasksCompleted: 189, testCount: 8, noteCount: 54, badgeCount: 7, progressPercent: 100, activityScore: 1247 },
+  { userId: "demo-2", firstName: "Orxan", lastName: "H.", avatarUrl: null, consciousnessLevel: 6, consciousnessStage: "Sehrbaz", streak: 31, tasksCompleted: 143, testCount: 6, noteCount: 38, badgeCount: 6, progressPercent: 86, activityScore: 984 },
+  { userId: "demo-3", firstName: "Nigar", lastName: "Ə.", avatarUrl: null, consciousnessLevel: 6, consciousnessStage: "Sehrbaz", streak: 28, tasksCompleted: 127, testCount: 5, noteCount: 29, badgeCount: 6, progressPercent: 86, activityScore: 871 },
+  { userId: "demo-4", firstName: "Tural", lastName: "Q.", avatarUrl: null, consciousnessLevel: 5, consciousnessStage: "İnteqrator", streak: 21, tasksCompleted: 98, testCount: 4, noteCount: 22, badgeCount: 5, progressPercent: 71, activityScore: 723 },
+  { userId: "demo-5", firstName: "Sevinc", lastName: "R.", avatarUrl: null, consciousnessLevel: 5, consciousnessStage: "İnteqrator", streak: 19, tasksCompleted: 84, testCount: 4, noteCount: 18, badgeCount: 5, progressPercent: 71, activityScore: 641 },
+  { userId: "demo-6", firstName: "Fərid", lastName: "B.", avatarUrl: null, consciousnessLevel: 4, consciousnessStage: "Görən", streak: 14, tasksCompleted: 63, testCount: 3, noteCount: 15, badgeCount: 4, progressPercent: 57, activityScore: 498 },
+  { userId: "demo-7", firstName: "Lalə", lastName: "K.", avatarUrl: null, consciousnessLevel: 4, consciousnessStage: "Görən", streak: 12, tasksCompleted: 57, testCount: 3, noteCount: 11, badgeCount: 4, progressPercent: 57, activityScore: 432 },
+  { userId: "demo-8", firstName: "Elnur", lastName: "S.", avatarUrl: null, consciousnessLevel: 3, consciousnessStage: "Axtaran", streak: 9, tasksCompleted: 42, testCount: 2, noteCount: 8, badgeCount: 3, progressPercent: 43, activityScore: 318 },
+  { userId: "demo-9", firstName: "Gülnar", lastName: "A.", avatarUrl: null, consciousnessLevel: 3, consciousnessStage: "Axtaran", streak: 7, tasksCompleted: 35, testCount: 2, noteCount: 6, badgeCount: 3, progressPercent: 43, activityScore: 264 },
+  { userId: "demo-10", firstName: "Kamran", lastName: "Y.", avatarUrl: null, consciousnessLevel: 2, consciousnessStage: "Oyanmaqda", streak: 4, tasksCompleted: 21, testCount: 1, noteCount: 3, badgeCount: 2, progressPercent: 29, activityScore: 147 },
+];
+
 function AvatarCell({ entry }: { entry: LeaderboardEntry }) {
   const name = [entry.firstName, entry.lastName].filter(Boolean).join(" ") || "İstifadəçi";
   return (
@@ -53,6 +71,9 @@ export default function LeaderboardPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const isDemo = !loading && data.length === 0;
+  const displayData = isDemo ? DEMO_LEADERBOARD : data;
+
   const myRank = user ? data.findIndex((e) => e.userId === user.id) + 1 : 0;
   const myEntry = user ? data.find((e) => e.userId === user.id) : null;
 
@@ -71,6 +92,7 @@ export default function LeaderboardPage() {
             </p>
           </motion.div>
 
+          {/* My rank card — only when real data exists */}
           {myEntry && (
             <Card className="mb-8 rounded-2xl border-2 border-primary/20 bg-primary/5 shadow-none">
               <CardContent className="p-4 flex items-center justify-between gap-4">
@@ -104,53 +126,59 @@ export default function LeaderboardPage() {
               ))}
             </div>
           ) : (
-            <div className="space-y-2">
-              {data.map((entry, idx) => {
-                const isMe = user?.id === entry.userId;
-                const rank = idx + 1;
-                const stageColor = STAGE_COLORS[(entry.consciousnessLevel ?? 1) - 1] || "#6366f1";
-                return (
-                  <motion.div key={entry.userId} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: Math.min(idx * 0.03, 0.5) }}>
-                    <Card className={`rounded-2xl border shadow-none transition-all ${
-                      isMe ? "border-primary/30 bg-primary/5" : "border-indigo-50 bg-white hover:border-indigo-100 hover:shadow-sm"
-                    }`}>
-                      <CardContent className="px-4 py-3 flex items-center gap-3">
-                        <div className={`w-8 text-center font-black text-sm shrink-0 ${
-                          rank === 1 ? "text-amber-500" : rank === 2 ? "text-slate-400" : rank === 3 ? "text-amber-700" : "text-indigo-300"
-                        }`}>
-                          {rank <= 3 ? ["🥇","🥈","🥉"][rank-1] : rank}
-                        </div>
-                        <div className="flex-1 min-w-0"><AvatarCell entry={entry} /></div>
-                        <div className="hidden sm:block shrink-0">
-                          <span className="px-2 py-0.5 rounded-full text-xs font-bold text-white"
-                            style={{ backgroundColor: stageColor }}>
-                            {entry.consciousnessStage || `M${entry.consciousnessLevel}`}
-                          </span>
-                        </div>
-                        <div className="hidden md:flex items-center gap-4 shrink-0 text-xs text-indigo-900/60">
-                          <div className="font-bold text-orange-500 flex items-center gap-0.5">
-                            <Flame className="h-3 w-3" />{entry.streak}
-                          </div>
-                          <div className="font-bold text-indigo-600">{entry.progressPercent}%</div>
-                        </div>
-                        <div className="shrink-0 text-right">
-                          <div className="text-lg font-black text-primary">{entry.activityScore}</div>
-                          <div className="text-xs text-indigo-600/50">bal</div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </div>
-          )}
+            <>
+              {isDemo && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-5 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 text-sm font-medium"
+                >
+                  <span className="text-base">🏆</span>
+                  Platforma açıldıqdan sonra real iştirakçılar burada görünəcək. İlk sıraya siz girib bilərsiniz!
+                </motion.div>
+              )}
 
-          {data.length === 0 && !loading && (
-            <div className="text-center py-20 text-indigo-900/40">
-              <Trophy className="h-12 w-12 mx-auto mb-4 opacity-30" />
-              <p className="text-lg font-medium">Hələ heç bir iştirakçı yoxdur</p>
-            </div>
+              <div className="space-y-2">
+                {displayData.map((entry, idx) => {
+                  const isMe = !isDemo && user?.id === entry.userId;
+                  const rank = idx + 1;
+                  const stageColor = STAGE_COLORS[(entry.consciousnessLevel ?? 1) - 1] || "#6366f1";
+                  return (
+                    <motion.div key={entry.userId} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: Math.min(idx * 0.03, 0.5) }}>
+                      <Card className={`rounded-2xl border shadow-none transition-all ${
+                        isMe ? "border-primary/30 bg-primary/5" : "border-indigo-50 bg-white hover:border-indigo-100 hover:shadow-sm"
+                      } ${isDemo ? "opacity-80" : ""}`}>
+                        <CardContent className="px-4 py-3 flex items-center gap-3">
+                          <div className={`w-8 text-center font-black text-sm shrink-0 ${
+                            rank === 1 ? "text-amber-500" : rank === 2 ? "text-slate-400" : rank === 3 ? "text-amber-700" : "text-indigo-300"
+                          }`}>
+                            {rank <= 3 ? ["🥇","🥈","🥉"][rank-1] : rank}
+                          </div>
+                          <div className="flex-1 min-w-0"><AvatarCell entry={entry} /></div>
+                          <div className="hidden sm:block shrink-0">
+                            <span className="px-2 py-0.5 rounded-full text-xs font-bold text-white"
+                              style={{ backgroundColor: stageColor }}>
+                              {entry.consciousnessStage || `M${entry.consciousnessLevel}`}
+                            </span>
+                          </div>
+                          <div className="hidden md:flex items-center gap-4 shrink-0 text-xs text-indigo-900/60">
+                            <div className="font-bold text-orange-500 flex items-center gap-0.5">
+                              <Flame className="h-3 w-3" />{entry.streak}
+                            </div>
+                            <div className="font-bold text-indigo-600">{entry.progressPercent}%</div>
+                          </div>
+                          <div className="shrink-0 text-right">
+                            <div className="text-lg font-black text-primary">{entry.activityScore}</div>
+                            <div className="text-xs text-indigo-600/50">bal</div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </>
           )}
 
           <div className="mt-10 p-6 rounded-2xl bg-indigo-50 border border-indigo-100">

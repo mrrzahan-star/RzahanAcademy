@@ -1,12 +1,13 @@
 import { useRef, useState } from "react";
 import { useListCertificates, getListCertificatesQueryKey, useGetDashboardStats, getGetDashboardStatsQueryKey } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Award, Download, Share2, Copy, X } from "lucide-react";
+import { Award, Download, Share2, Copy, X, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { QRCodeSVG } from "qrcode.react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
 
 interface CertData {
   id: number; stage: number; stageName: string;
@@ -453,17 +454,40 @@ export default function CertificatesPage() {
       </div>
 
       {!certificates || certificates.length === 0 ? (
-        <Card className="rounded-[2rem] border-dashed border-2 border-indigo-100 bg-slate-50/50 shadow-none">
-          <CardContent className="p-16 text-center">
-            <div className="w-20 h-20 mx-auto rounded-full bg-indigo-100 flex items-center justify-center text-indigo-300 mb-6">
-              <Award className="h-10 w-10" />
-            </div>
-            <h3 className="text-xl font-bold text-indigo-950 mb-2">Sertifikatınız yoxdur</h3>
-            <p className="text-indigo-900/60 max-w-sm mx-auto">
-              Testləri tamamlayaraq yeni şüur mərhələlərinə çatdıqda sertifikatlar əldə edəcəksiniz.
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+          <Card className="rounded-[2rem] border-dashed border-2 border-indigo-100 bg-gradient-to-br from-indigo-50/60 to-white shadow-none">
+            <CardContent className="p-12 md:p-20 text-center">
+              <div className="relative w-24 h-24 mx-auto mb-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-200 to-purple-200 rounded-2xl blur-xl opacity-60" />
+                <div className="relative w-24 h-24 rounded-2xl bg-indigo-100 flex items-center justify-center">
+                  <Award className="h-12 w-12 text-indigo-400" />
+                </div>
+              </div>
+              <h3 className="text-2xl font-bold text-indigo-950 mb-3">Hələ Sertifikat Yoxdur</h3>
+              <p className="text-indigo-900/60 max-w-sm mx-auto mb-3 leading-relaxed">
+                Şüur testini tamamlayın, mərhələnizi kəşf edin və rəsmi sertifikatınızı əldə edin.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-md mx-auto mb-8 text-sm">
+                {[
+                  { icon: "🧠", label: "40 Sual", desc: "10–15 dəq." },
+                  { icon: "📊", label: "Nəticə", desc: "Anlıq analiz" },
+                  { icon: "🏆", label: "Sertifikat", desc: "Rəsmi sənəd" },
+                ].map((step) => (
+                  <div key={step.label} className="flex flex-col items-center gap-1 p-3 rounded-xl bg-white border border-indigo-100">
+                    <span className="text-2xl mb-0.5">{step.icon}</span>
+                    <span className="font-bold text-indigo-950 text-xs">{step.label}</span>
+                    <span className="text-indigo-500 text-xs">{step.desc}</span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/test">
+                <Button className="rounded-xl bg-primary text-white font-bold px-8 h-11 shadow-md shadow-primary/20 hover:-translate-y-0.5 transition-all">
+                  Testi Keç <ChevronRight className="ml-1.5 h-4 w-4" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </motion.div>
       ) : (
         <div className="space-y-10">
           {certificates.map((cert, i) => (

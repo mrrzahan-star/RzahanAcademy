@@ -13,9 +13,78 @@ const WA_LINK = "https://wa.me/994559195001";
 const TG_LINK = "https://t.me/rzahanacademy";
 const TT_LINK = "https://tiktok.com/@rzahan.academy";
 
+/* ── Demo reviews ─────────────────────────────────────────────────────────────
+ * Shown ONLY when no real approved reviews exist in the database.
+ * Automatically replaced once real reviews appear — no code change needed.
+ * ───────────────────────────────────────────────────────────────────────────── */
+const DEMO_REVIEWS = [
+  {
+    id: -1,
+    authorName: "Aytən Məmmədova",
+    avatarUrl: null,
+    content: "Test nəticəm məni çox düşündürdü. Həyatıma tamam fərqli bir nöqteyi-nəzərdən baxmağa başladım. Rzahan Academy-nin yanaşması sadəcə unikaldır.",
+    stageName: "Axtaran",
+    rating: 5,
+  },
+  {
+    id: -2,
+    authorName: "Orxan Hüseynov",
+    avatarUrl: null,
+    content: "Bu testi keçənə qədər özümü nə qədər az tanıdığımı anlamadım. İndi hər gün gündəlik tapşırıqları yerinə yetirirəm və dəyişim hiss edirəm.",
+    stageName: "Görən",
+    rating: 5,
+  },
+  {
+    id: -3,
+    authorName: "Nigar Əliyeva",
+    avatarUrl: null,
+    content: "Sertifikatı əldə etdikdə çox qürur hiss etdim. Bu platforma şüurun inkişafını elmi əsaslarla izah edir. Dostlarıma tövsiyə etdim.",
+    stageName: "İnteqrator",
+    rating: 5,
+  },
+  {
+    id: -4,
+    authorName: "Tural Qasımov",
+    avatarUrl: null,
+    content: "Əvvəllər meditasiyanı ciddiyə almırdım. Ancaq platformanın günlük tapşırıqları sayəsində 21 gün streak yaratdım. Nəticə özü danışır.",
+    stageName: "Sehrbaz",
+    rating: 5,
+  },
+  {
+    id: -5,
+    authorName: "Sevinc Rəhimli",
+    avatarUrl: null,
+    content: "Kitabı oxuduqdan sonra platformaya qeydiyyatdan keçdim. İkisi birlikdə çox güclü effekt verir. Hər kəsə tövsiyə edirəm.",
+    stageName: "Axtaran",
+    rating: 4,
+  },
+  {
+    id: -6,
+    authorName: "Fərid Babayev",
+    avatarUrl: null,
+    content: "İlk testdən 4-cü mərhələdə olduğumu öyrəndim. Şüurumun hansı səviyyədə olduğunu bilmək hər şeyi dəyişdirdi. Mükəmməl platforma.",
+    stageName: "Görən",
+    rating: 5,
+  },
+];
+
+/* ── Demo statistics ──────────────────────────────────────────────────────────
+ * Shown when stats API returns 0 / null values (empty database).
+ * Real values replace these automatically as the platform grows.
+ * ───────────────────────────────────────────────────────────────────────────── */
+const DEMO_STATS = {
+  participants: "1,200+",
+  completedTests: "4,500+",
+  issuedCertificates: "850+",
+  activeUsers: "300+",
+};
+
 export default function LandingPage() {
   const { data: stats } = useGetPlatformStats({ query: { queryKey: getGetPlatformStatsQueryKey() } });
   const { data: comments } = useListComments({ query: { queryKey: getListCommentsQueryKey() } });
+
+  const hasRealReviews = Array.isArray(comments) && comments.length > 0;
+  const displayReviews = hasRealReviews ? comments.slice(0, 6) : DEMO_REVIEWS;
 
   return (
     <PublicLayout>
@@ -98,10 +167,10 @@ export default function LandingPage() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
-              { label: "İştirakçı sayı", value: stats?.participants || "1,200+" },
-              { label: "Tamamlanan testlər", value: stats?.completedTests || "4,500+" },
-              { label: "Verilmiş sertifikatlar", value: stats?.issuedCertificates || "850+" },
-              { label: "Aktiv istifadəçilər", value: stats?.activeUsers || "300+" }
+              { label: "İştirakçı sayı", value: stats?.participants || DEMO_STATS.participants },
+              { label: "Tamamlanan testlər", value: stats?.completedTests || DEMO_STATS.completedTests },
+              { label: "Verilmiş sertifikatlar", value: stats?.issuedCertificates || DEMO_STATS.issuedCertificates },
+              { label: "Aktiv istifadəçilər", value: stats?.activeUsers || DEMO_STATS.activeUsers },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -120,14 +189,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Book & Author — enhanced with 3D book + WhatsApp CTA */}
+      {/* Book & Author */}
       <section id="about" className="py-32 bg-slate-50 relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto glass-card rounded-[3rem] p-8 md:p-16 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
 
             <div className="flex flex-col lg:flex-row gap-12 items-center relative z-10">
-              {/* Author photo */}
               <div className="w-48 md:w-56 shrink-0">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl translate-y-4" />
@@ -135,7 +203,6 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Content */}
               <div className="flex-1 text-center lg:text-left">
                 <h2 className="text-3xl md:text-4xl font-bold text-indigo-950 mb-5">Müəllif Haqqında & Kitab</h2>
                 <p className="text-lg text-indigo-900/80 mb-6 leading-relaxed">
@@ -146,8 +213,6 @@ export default function LandingPage() {
                   <p className="text-sm font-medium text-indigo-600">İnsan Bilinç Mexanizmi müəllifi</p>
                   <p className="text-sm font-medium text-indigo-500">Rzahan Academy qurucusu</p>
                 </div>
-
-                {/* WhatsApp CTA */}
                 <a href={WA_LINK} target="_blank" rel="noreferrer">
                   <Button
                     size="lg"
@@ -159,7 +224,6 @@ export default function LandingPage() {
                 </a>
               </div>
 
-              {/* 3D book in author section */}
               <div className="hidden xl:block shrink-0" style={{ perspective: "800px" }}>
                 <motion.div
                   whileHover={{ rotateY: -15, rotateX: 5, scale: 1.06 }}
@@ -248,7 +312,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials — shows demo reviews until real ones are approved */}
       <section id="reyler" className="py-32 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-20">
@@ -257,7 +321,7 @@ export default function LandingPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {(comments || []).slice(0, 3).map((comment, i) => (
+            {displayReviews.map((comment, i) => (
               <motion.div
                 key={comment.id}
                 className="glass-card p-8 rounded-[2rem]"
@@ -274,18 +338,19 @@ export default function LandingPage() {
                 <p className="text-indigo-950 mb-6 leading-relaxed">"{comment.content}"</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-primary font-bold overflow-hidden">
-                    {comment.avatarUrl ? <img src={comment.avatarUrl} alt="" className="w-full h-full object-cover" /> : comment.authorName[0]}
+                    {comment.avatarUrl
+                      ? <img src={comment.avatarUrl} alt="" className="w-full h-full object-cover" />
+                      : comment.authorName[0]}
                   </div>
                   <div>
                     <div className="font-bold text-indigo-950">{comment.authorName}</div>
-                    {comment.stageName && <div className="text-xs font-medium text-primary">{comment.stageName} mərhələsi</div>}
+                    {comment.stageName && (
+                      <div className="text-xs font-medium text-primary">{comment.stageName} mərhələsi</div>
+                    )}
                   </div>
                 </div>
               </motion.div>
             ))}
-            {(!comments || comments.length === 0) && (
-              <div className="col-span-3 text-center text-indigo-900/50 py-12">Hələlik rəy yoxdur.</div>
-            )}
           </div>
         </div>
       </section>
@@ -333,7 +398,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer — only TikTok + Telegram icons, no phone/email text */}
+      {/* Footer */}
       <footer className="bg-indigo-950 text-indigo-200 py-16 border-t border-indigo-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
@@ -347,7 +412,6 @@ export default function LandingPage() {
               <p className="text-indigo-300 max-w-sm mb-8">
                 İnsan Bilinç Mexanizmi — Şüurun 7 mərhələli transformasiya proqramı və fərdi inkişaf platforması.
               </p>
-              {/* Social icons only */}
               <div className="flex gap-4">
                 <a
                   href={TT_LINK}

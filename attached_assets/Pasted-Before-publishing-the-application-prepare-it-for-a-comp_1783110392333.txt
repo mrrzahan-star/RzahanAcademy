@@ -1,0 +1,101 @@
+Before publishing the application, prepare it for a completely fresh production launch.
+
+The database will be empty.
+
+The platform will start with zero users.
+
+Do NOT change the existing design or architecture.
+
+Instead, improve the initial user experience.
+
+Requirements:
+
+1. Landing Page
+
+Populate the Testimonials section with realistic DEMO reviews.
+
+These reviews must be clearly marked internally as demo content and must disappear automatically once real user reviews are approved by the administrator.
+
+When real reviews exist, never show demo reviews again.
+
+2. Leaderboard
+
+When there are no registered users:
+
+Display a DEMO leaderboard using fictional users and fictional scores.
+
+These demo records must NEVER be stored in the database.
+
+They should exist only in the frontend as placeholder data.
+
+As soon as the first real leaderboard records exist in the database:
+
+Automatically hide the demo leaderboard.
+
+Display only real users.
+
+3. Statistics
+
+If there is no real platform data yet:
+
+Display demo statistics.
+
+Examples:
+
+• Registered Users
+
+• Completed Tests
+
+• Certificates Issued
+
+• Average Score
+
+As soon as real statistics become available:
+
+Automatically replace demo values with live database values.
+
+4. Reviews
+
+Visitors can read demo reviews before launch.
+
+After users begin submitting reviews:
+
+Show only approved real reviews.
+
+5. Empty States
+
+No page should ever appear empty.
+
+Create professional empty-state placeholders for:
+
+• Journal
+
+• Daily Tasks
+
+• Certificates
+
+• Leaderboard
+
+• Reviews
+
+• Notifications
+
+6. Production
+
+Everything must automatically switch from demo mode to real data without requiring code changes.
+
+No manual intervention should ever be required.
+
+7. Performance
+
+Do not increase unnecessary database queries.
+
+Use demo data only when the corresponding database tables are empty.
+
+8. Final Verification
+
+Confirm that:
+
+• A completely new deployment with an empty database looks complete and professional.
+
+• As real users register and interact with the platform, every demo element disappears automatically and real data replaces it.
