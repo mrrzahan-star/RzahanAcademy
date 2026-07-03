@@ -1,0 +1,333 @@
+You are a Senior Full Stack Engineer, DevOps Engineer and Production QA Engineer.
+
+I will provide you with the current production ZIP of an existing project.
+
+Your job is NOT to redesign the project or change its concept.
+
+Your job is to carefully audit the entire project, preserve all existing design, UI/UX, animations, pages and functionality, fix every production issue, and deliver a completely production-ready version.
+
+IMPORTANT
+
+- Preserve the current design.
+- Preserve the current user experience.
+- Preserve all existing functionality unless it is broken.
+- Do not simplify the project.
+- Do not remove features.
+- Only improve stability, security and production readiness.
+
+The final architecture MUST be:
+
+Browser
+↓
+Netlify
+↓
+Netlify Functions
+↓
+Supabase
+↓
+PostgreSQL
+
+The application must run ONLY on:
+
+• Netlify
+• Supabase
+
+Do not require Railway.
+Do not require Replit hosting.
+Do not require Render.
+Do not require Fly.io.
+Do not introduce any additional backend services.
+
+The previous production package was originally prepared for:
+
+https://rzahanac.netlify.app
+
+The final production deployment will use:
+
+https://rzahanacademy.netlify.app
+
+Update every required configuration for the new production domain.
+
+IMPORTANT
+
+The previous Supabase project/database is NO LONGER used.
+
+A completely NEW Supabase project has already been created.
+
+Assume:
+
+- new Project URL
+- new Database
+- new API Keys
+- new Service Role Key
+- new Google OAuth configuration
+
+The application must NOT depend on the old Supabase project in any way.
+
+Audit the entire codebase and remove every hardcoded reference to the old project if one exists.
+
+────────────────────────────
+
+During the previous deployment we encountered many production problems.
+
+Your task is to identify their root causes and permanently fix them.
+
+Known issues included:
+
+DEPLOYMENT
+
+• Netlify deployment failures.
+
+• netlify.toml configuration problems.
+
+• Incorrect environment variable usage.
+
+• Secrets scanner detecting exposed values inside frontend build output.
+
+• Production build failures.
+
+BACKEND
+
+Several Netlify Functions returned HTTP 500 and HTTP 502.
+
+Examples:
+
+POST /api/tests
+
+GET /api/tests/latest
+
+POST /api/auth/sync-profile
+
+GET /api/stats/dashboard
+
+Investigate every API endpoint.
+
+Verify every Netlify Function.
+
+Find the root cause.
+
+Fix every backend issue.
+
+AUTHENTICATION
+
+Google Login sometimes worked but profile synchronization failed.
+
+Verify:
+
+• Google OAuth
+
+• Supabase Auth
+
+• session management
+
+• user creation
+
+• returning user login
+
+• profile synchronization
+
+TEST SYSTEM
+
+The biggest production problem:
+
+When clicking
+
+"Testi Bitir"
+
+the application displayed
+
+"Xəta baş verdi. Yenidən cəhd edin."
+
+instead of finishing successfully.
+
+Investigate the entire flow:
+
+Save answers
+
+↓
+
+Calculate result
+
+↓
+
+Save result
+
+↓
+
+Generate certificate
+
+↓
+
+Redirect to Certificate page
+
+↓
+
+Update profile
+
+↓
+
+Update statistics
+
+Every step must succeed.
+
+No HTTP 500.
+
+No HTTP 502.
+
+No failed requests.
+
+CERTIFICATES
+
+Verify:
+
+Certificate generation
+
+Certificate storage
+
+Certificate page
+
+Certificate download
+
+Certificate sharing
+
+QR verification
+
+Everything must work.
+
+ADMIN PANEL
+
+Currently every authenticated user could see the Admin menu.
+
+This is incorrect.
+
+Only
+
+mr.rzahan@gmail.com
+
+must have administrator privileges.
+
+Requirements:
+
+Show Admin menu ONLY for this email.
+
+Hide Admin menu from every other user.
+
+Protect every admin page.
+
+Protect every admin API.
+
+Return 403 for unauthorized access.
+
+FRONTEND
+
+Some pages occasionally became blank.
+
+Investigate every runtime error.
+
+Verify every page:
+
+Landing
+
+Dashboard
+
+Profile
+
+Journal
+
+Tasks
+
+Tests
+
+Certificates
+
+Leaderboard
+
+Admin
+
+Navigation
+
+No blank pages.
+
+No runtime exceptions.
+
+No broken routing.
+
+WHATSAPP
+
+The
+
+"Kitabı əldə et"
+
+button must open the WhatsApp Business short link instead of exposing the phone number.
+
+PRODUCTION QUALITY
+
+Review the entire project.
+
+Remove unused code.
+
+Remove duplicate logic.
+
+Remove unstable implementations.
+
+Improve reliability.
+
+Verify all API routes.
+
+Verify all database queries.
+
+Verify all authentication flows.
+
+Verify role-based permissions.
+
+Verify production configuration.
+
+Verify environment variable usage.
+
+Verify build configuration.
+
+Verify redirects.
+
+Verify headers.
+
+Verify security.
+
+Verify performance.
+
+The final application must deploy successfully on a completely clean Netlify project connected to a completely new Supabase project.
+
+Deliverables
+
+After all fixes:
+
+1. Generate a NEW production ZIP.
+
+2. Include updated source code.
+
+3. Include a correct netlify.toml.
+
+4. Include .env.example.
+
+5. Include DEPLOYMENT.md.
+
+6. Include migration.sql if database changes are required.
+
+7. List every required Netlify Environment Variable.
+
+8. List every required Supabase configuration.
+
+9. List every Google OAuth configuration required.
+
+10. Produce a production report describing:
+
+• every issue found
+
+• root cause
+
+• files modified
+
+• fixes applied
+
+• confirmation that every major workflow has been tested
+
+The project should be considered complete only when it can be deployed to Netlify, connected to the new Supabase project, and every feature works correctly without HTTP 500/502 errors, blank pages, authentication failures or broken navigation.

@@ -3,20 +3,35 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Rzahan Academy API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: profiles
+    description: User profile operations
+  - name: tests
+    description: Consciousness test operations
+  - name: certificates
+    description: Certificate operations
+  - name: comments
+    description: User comments/reviews
+  - name: stats
+    description: Platform statistics
+  - name: journal
+    description: Journal entry operations
+  - name: tasks
+    description: Daily task operations
+  - name: leaderboard
+    description: Leaderboard operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +39,312 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /profiles/me:
+    get:
+      operationId: getMyProfile
+      tags: [profiles]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Profile found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+        "404":
+          description: Not found
+    put:
+      operationId: upsertProfile
+      tags: [profiles]
+      summary: Create or update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Profile"
+
+  /tests:
+    get:
+      operationId: listTestResults
+      tags: [tests]
+      summary: List test results for current user
+      responses:
+        "200":
+          description: List of test results
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestResult"
+    post:
+      operationId: submitTest
+      tags: [tests]
+      summary: Submit a consciousness test result
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestResultInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestResult"
+
+  /tests/latest:
+    get:
+      operationId: getLatestTestResult
+      tags: [tests]
+      summary: Get the latest test result for current user
+      responses:
+        "200":
+          description: Latest result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestResult"
+        "404":
+          description: No test taken yet
+
+  /tests/{id}:
+    get:
+      operationId: getTestResult
+      tags: [tests]
+      summary: Get a specific test result
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Test result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestResult"
+
+  /certificates:
+    get:
+      operationId: listCertificates
+      tags: [certificates]
+      summary: List certificates for current user
+      responses:
+        "200":
+          description: List of certificates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Certificate"
+    post:
+      operationId: createCertificate
+      tags: [certificates]
+      summary: Issue a certificate for user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CertificateInput"
+      responses:
+        "201":
+          description: Certificate issued
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Certificate"
+
+  /comments:
+    get:
+      operationId: listComments
+      tags: [comments]
+      summary: List all approved comments/reviews
+      responses:
+        "200":
+          description: List of comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+    post:
+      operationId: createComment
+      tags: [comments]
+      summary: Submit a comment or review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+
+  /stats/platform:
+    get:
+      operationId: getPlatformStats
+      tags: [stats]
+      summary: Get animated platform statistics
+      responses:
+        "200":
+          description: Platform stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlatformStats"
+
+  /stats/dashboard:
+    get:
+      operationId: getDashboardStats
+      tags: [stats]
+      summary: Get current user dashboard stats
+      responses:
+        "200":
+          description: Dashboard stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardStats"
+
+  /journal:
+    get:
+      operationId: listJournalEntries
+      tags: [journal]
+      summary: List journal entries for current user
+      responses:
+        "200":
+          description: List of entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JournalEntry"
+    post:
+      operationId: createJournalEntry
+      tags: [journal]
+      summary: Create a journal entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JournalEntryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
+
+  /journal/{id}:
+    put:
+      operationId: updateJournalEntry
+      tags: [journal]
+      summary: Update a journal entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JournalEntryInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JournalEntry"
+    delete:
+      operationId: deleteJournalEntry
+      tags: [journal]
+      summary: Delete a journal entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /tasks/today:
+    get:
+      operationId: getTodayTasks
+      tags: [tasks]
+      summary: Get today's task completion status
+      responses:
+        "200":
+          description: Today's tasks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TodayTasks"
+
+  /tasks/{slot}/toggle:
+    post:
+      operationId: toggleTask
+      tags: [tasks]
+      summary: Toggle a task slot completion
+      parameters:
+        - name: slot
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Toggle result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskToggleResult"
+
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      tags: [leaderboard]
+      summary: Get the top 100 leaderboard
+      responses:
+        "200":
+          description: Leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderboardEntry"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +355,247 @@ components:
       required:
         - status
 
+    Profile:
+      type: object
+      required: [id, userId, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        firstName:
+          type: ["string", "null"]
+        lastName:
+          type: ["string", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        consciousnessLevel:
+          type: ["integer", "null"]
+        consciousnessStage:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    ProfileInput:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        avatarUrl:
+          type: string
+        bio:
+          type: string
+
+    TestResult:
+      type: object
+      required: [id, userId, totalScore, stage, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        totalScore:
+          type: integer
+        stage:
+          type: integer
+        stageName:
+          type: ["string", "null"]
+        scores:
+          description: Per-section scores (JSON)
+        recommendations:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    TestResultInput:
+      type: object
+      required: [answers]
+      properties:
+        answers:
+          type: array
+          items:
+            type: integer
+          description: Array of 40 answers (1-5 scale)
+
+    Certificate:
+      type: object
+      required: [id, userId, stage, issuedAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        stage:
+          type: integer
+        stageName:
+          type: ["string", "null"]
+        certificateCode:
+          type: ["string", "null"]
+        issuedAt:
+          type: string
+          format: date-time
+
+    CertificateInput:
+      type: object
+      required: [stage]
+      properties:
+        stage:
+          type: integer
+
+    Comment:
+      type: object
+      required: [id, authorName, content, createdAt]
+      properties:
+        id:
+          type: integer
+        authorName:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        content:
+          type: string
+        stage:
+          type: ["integer", "null"]
+        stageName:
+          type: ["string", "null"]
+        rating:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    CommentInput:
+      type: object
+      required: [content]
+      properties:
+        content:
+          type: string
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+
+    PlatformStats:
+      type: object
+      required: [participants, completedTests, issuedCertificates, activeUsers]
+      properties:
+        participants:
+          type: integer
+        completedTests:
+          type: integer
+        issuedCertificates:
+          type: integer
+        activeUsers:
+          type: integer
+
+    DashboardStats:
+      type: object
+      required: [totalTests, progressPercent, hasCertificate, streakDays]
+      properties:
+        totalTests:
+          type: integer
+        latestStage:
+          type: ["integer", "null"]
+        latestStageName:
+          type: ["string", "null"]
+        progressPercent:
+          type: integer
+        hasCertificate:
+          type: boolean
+        streakDays:
+          type: integer
+
+    JournalEntry:
+      type: object
+      required: [id, userId, title, content, category, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        mood:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    JournalEntryInput:
+      type: object
+      required: [title, content]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        content:
+          type: string
+          minLength: 1
+        category:
+          type: string
+        mood:
+          type: string
+
+    TodayTasks:
+      type: object
+      required: [date, doneSlots]
+      properties:
+        date:
+          type: string
+        doneSlots:
+          type: array
+          items:
+            type: string
+
+    TaskToggleResult:
+      type: object
+      required: [done]
+      properties:
+        done:
+          type: boolean
+
+    LeaderboardEntry:
+      type: object
+      required: [userId, activityScore]
+      properties:
+        userId:
+          type: string
+        firstName:
+          type: ["string", "null"]
+        lastName:
+          type: ["string", "null"]
+        avatarUrl:
+          type: ["string", "null"]
+        consciousnessLevel:
+          type: ["integer", "null"]
+        consciousnessStage:
+          type: ["string", "null"]
+        streak:
+          type: integer
+        tasksCompleted:
+          type: integer
+        testCount:
+          type: integer
+        noteCount:
+          type: integer
+        badgeCount:
+          type: integer
+        progressPercent:
+          type: integer
+        activityScore:
+          type: integer
