@@ -1,0 +1,267 @@
+Excellent work.
+
+The audit report looks good.
+
+Before generating the FINAL Production ZIP, perform ONE LAST complete verification of the entire project.
+
+Do NOT redesign anything.
+
+Do NOT change the existing UI.
+
+Do NOT change the UX.
+
+Do NOT remove existing features.
+
+Do NOT simplify the project.
+
+The goal is to deliver a completely stable production build.
+
+====================================================
+FINAL VERIFICATION
+====================================================
+
+1.
+
+Create a completely NEW normal user.
+
+Verify:
+
+• Registration
+
+• Login
+
+• Logout
+
+• Login again
+
+• Password recovery
+
+Everything must work correctly.
+
+----------------------------------------------------
+
+2.
+
+Complete the entire 40-question test as a normal user.
+
+Verify:
+
+• every answer is saved
+
+• final score is calculated
+
+• certificate is generated
+
+• automatic redirect to the Certificate page works
+
+• no runtime errors occur
+
+• no HTTP 500
+
+• no HTTP 502
+
+----------------------------------------------------
+
+3.
+
+Verify the Certificate page.
+
+Confirm:
+
+• PNG download works
+
+• QR verification works
+
+• Share buttons work
+
+• Certificate renders correctly
+
+----------------------------------------------------
+
+4.
+
+Login as the administrator.
+
+Administrator account:
+
+Username:
+Rzahan
+
+Password:
+Orxan919@
+
+Verify:
+
+• only the administrator can see the Admin menu
+
+• normal users cannot see it
+
+• every Admin page opens
+
+• every Admin API works correctly
+
+• no runtime errors
+
+----------------------------------------------------
+
+5.
+
+Verify every Netlify Function.
+
+No endpoint may return:
+
+404
+
+500
+
+502
+
+----------------------------------------------------
+
+6.
+
+Run a clean production build.
+
+Confirm:
+
+• no blank pages
+
+• no React crashes
+
+• no console errors
+
+• no broken routing
+
+----------------------------------------------------
+
+7.
+
+Verify the project works with a COMPLETELY NEW Supabase project.
+
+There must be no dependency on the previous database.
+
+No hardcoded URLs.
+
+No hardcoded keys.
+
+----------------------------------------------------
+
+8.
+
+Verify Environment Variables.
+
+Return the FINAL list required for Netlify.
+
+----------------------------------------------------
+
+9.
+
+Verify Supabase configuration.
+
+Return every manual step required inside Supabase.
+
+----------------------------------------------------
+
+10.
+
+Verify password reset.
+
+Ensure password reset links use:
+
+SITE_URL=https://rzahanacademy.netlify.app
+
+and confirm the generated links point to the correct production domain.
+
+----------------------------------------------------
+
+11.
+
+Perform one complete production QA.
+
+Verify:
+
+Landing
+
+Login
+
+Registration
+
+Profile
+
+Dashboard
+
+Journal
+
+Daily Tasks
+
+Tests
+
+Certificates
+
+Leaderboard
+
+Admin
+
+Settings
+
+Audit Log
+
+Reviews
+
+Certificate Verification
+
+404 Page
+
+Global Error Page
+
+Everything must work correctly.
+
+====================================================
+FINAL DELIVERY
+====================================================
+
+If every verification succeeds:
+
+Generate the FINAL Production ZIP.
+
+Include:
+
+• Complete source code
+
+• migration.sql
+
+• .env.example
+
+• netlify.toml
+
+• DEPLOYMENT.md
+
+Finally provide:
+
+1.
+
+Complete Netlify Environment Variables.
+
+2.
+
+Complete Supabase setup steps.
+
+3.
+
+Complete Google configuration required (if any remains; otherwise confirm Google OAuth has been completely removed).
+
+4.
+
+List every manual step required before deployment.
+
+5.
+
+Confirm the project has been fully tested.
+
+6.
+
+Confirm the project is production-ready.
+
+7.
+
+Confirm the project can be deployed directly to Netlify using a brand-new Supabase project without additional code changes.

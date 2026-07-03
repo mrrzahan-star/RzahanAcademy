@@ -1,0 +1,25 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# IMPORTANT: Rzahan Academy uses an Express API server which cannot run
+# as Netlify Functions without code changes.
+#
+# This file configures Netlify to host ONLY the frontend static files.
+# The API server must be deployed separately (Railway, Render, Fly.io, or Replit).
+# Set VITE_API_BASE_URL in your Netlify environment to point to that server.
+#
+# For a single-host deployment (recommended), deploy the entire project to Replit.
+# See DEPLOYMENT.md for full Replit deployment instructions.
+# ──────────────────────────────────────────────────────────────────────────────
+
+[build]
+  base    = "artifacts/rzahan-academy"
+  command = "pnpm install && pnpm run build"
+  publish = "dist/public"
+
+[build.environment]
+  NODE_VERSION = "24"
+  BASE_PATH    = "/"
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
