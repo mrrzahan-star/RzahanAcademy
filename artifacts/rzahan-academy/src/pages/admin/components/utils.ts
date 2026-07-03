@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getToken } from "@/lib/api";
 
 export interface PaginatedResponse<T> {
   data: T[];
@@ -72,8 +72,7 @@ export interface UserProfileDetail {
 }
 
 export async function adminFetch(url: string, options?: RequestInit) {
-  const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token;
+  const token = getToken();
   const res = await fetch(url, {
     ...options,
     headers: {

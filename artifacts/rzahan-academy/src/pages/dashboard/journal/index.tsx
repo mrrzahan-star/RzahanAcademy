@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Search, Edit2, Trash2, BookOpen, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
+import { getToken } from "@/lib/api";
 
 interface JournalEntry {
   id: number;
@@ -24,8 +24,7 @@ const CATEGORIES = ["ümumi", "refleksiya", "meditasiya", "hədəf", "minnətdar
 const MOODS = ["", "Xoşbəxt", "Sakit", "Düşüncəli", "Həvəsli", "Yorğun", "Narahat"];
 
 async function apiFetch(url: string, options?: RequestInit) {
-  const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token;
+  const token = getToken();
   const res = await fetch(url, {
     ...options,
     headers: {

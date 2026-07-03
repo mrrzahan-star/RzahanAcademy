@@ -1,124 +1,115 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
-import type { User, Session, AuthError } from "@supabase/supabase-js";
-import { supabase } from "@/lib/supabase";
 import { setAuthTokenGetter } from "@workspace/api-client-react";
+import { getToken, setToken, clearToken, apiFetch } from "@/lib/api";
+
+export interface AppUser {
+  id: string;
+  username: string;
+  fullName: string;
+  email: string | null;
+  role: "user" | "admin";
+}
 
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: AppUser | null;
   loading: boolean;
   suspended: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: AuthError | null }>;
-  signUp: (email: string, password: string, firstName: string, lastName: string) => Promise<{ error: AuthError | null }>;
-  signInWithGoogle: () => Promise<{ error: AuthError | null }>;
-  signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<{ error: AuthError | null }>;
+  signIn: (username: string, password: string) => Promise<{ error: string | null }>;
+  signUp: (fullName: string, username: string, password: string, confirmPassword: string, email?: string) => Promise<{ error: string | null }>;
+  signOut: () => void;
+  resetPassword: (usernameOrEmail: string) => Promise<{ error: string | null; devToken?: string }>;
+  confirmResetPassword: (token: string, password: string, confirmPassword: string) => Promise<{ error: string | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [suspended, setSuspended] = useState(false);
 
   useEffect(() => {
-    setAuthTokenGetter(async () => {
-      const { data } = await supabase.auth.getSession();
-      return data.session?.access_token ?? null;
-    });
+    setAuthTokenGetter(async () => getToken());
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    const token = getToken();
+    if (!token) { setLoading(false); return; }
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-
-      if (event === "SIGNED_IN") {
-        setSuspended(false);
-      }
-
-      if (event === "SIGNED_IN" && session?.user) {
-        const u = session.user;
-        const nameParts = ((u.user_metadata?.full_name as string | undefined) || "").split(" ");
-        const firstName = (u.user_metadata?.first_name as string | undefined) || nameParts[0] || "";
-        const lastName = (u.user_metadata?.last_name as string | undefined) || nameParts.slice(1).join(" ") || "";
-        const avatarUrl = (u.user_metadata?.avatar_url as string | undefined) || "";
-        fetch("/api/auth/sync-profile", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({ firstName, lastName, avatarUrl }),
-        }).catch(() => {});
-      }
-    });
+    apiFetch<AppUser>("/api/auth/me")
+      .then((u) => setUser(u))
+      .catch(() => clearToken())
+      .finally(() => setLoading(false));
 
     const handleSuspended = () => {
       setSuspended(true);
-      supabase.auth.signOut().catch(() => {});
+      clearToken();
+      setUser(null);
     };
-
     window.addEventListener("account-suspended", handleSuspended);
-
-    return () => {
-      subscription.unsubscribe();
-      window.removeEventListener("account-suspended", handleSuspended);
-    };
+    return () => window.removeEventListener("account-suspended", handleSuspended);
   }, []);
 
-  const signIn = useCallback(async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
+  const signIn = useCallback(async (username: string, password: string) => {
+    try {
+      const data = await apiFetch<{ token: string; user: AppUser }>("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+      });
+      setToken(data.token);
+      setUser(data.user);
+      setSuspended(false);
+      return { error: null };
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Xəta baş verdi" };
+    }
   }, []);
 
   const signUp = useCallback(async (
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
+    fullName: string, username: string, password: string, confirmPassword: string, email?: string,
   ) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { first_name: firstName, last_name: lastName },
-        emailRedirectTo: `${window.location.origin}${(import.meta.env.BASE_URL || "").replace(/\/$/, "")}/`,
-      },
-    });
-    return { error };
+    try {
+      const data = await apiFetch<{ token: string; user: AppUser }>("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify({ fullName, username, password, confirmPassword, email }),
+      });
+      setToken(data.token);
+      setUser(data.user);
+      return { error: null };
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Xəta baş verdi" };
+    }
   }, []);
 
-  const signInWithGoogle = useCallback(async () => {
-    const basePath = (import.meta.env.BASE_URL || "").replace(/\/$/, "");
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}${basePath}/` },
-    });
-    return { error };
+  const signOut = useCallback(() => {
+    clearToken();
+    setUser(null);
   }, []);
 
-  const signOut = useCallback(async () => {
-    await supabase.auth.signOut();
+  const resetPassword = useCallback(async (usernameOrEmail: string) => {
+    try {
+      const data = await apiFetch<{ message: string; _devToken?: string }>("/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({ usernameOrEmail }),
+      });
+      return { error: null, devToken: data._devToken };
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Xəta baş verdi" };
+    }
   }, []);
 
-  const resetPassword = useCallback(async (email: string) => {
-    const basePath = (import.meta.env.BASE_URL || "").replace(/\/$/, "");
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}${basePath}/auth/reset-password`,
-    });
-    return { error };
+  const confirmResetPassword = useCallback(async (token: string, password: string, confirmPassword: string) => {
+    try {
+      await apiFetch("/api/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({ token, password, confirmPassword }),
+      });
+      return { error: null };
+    } catch (e) {
+      return { error: e instanceof Error ? e.message : "Xəta baş verdi" };
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, suspended, signIn, signUp, signInWithGoogle, signOut, resetPassword }}>
+    <AuthContext.Provider value={{ user, loading, suspended, signIn, signUp, signOut, resetPassword, confirmResetPassword }}>
       {children}
     </AuthContext.Provider>
   );

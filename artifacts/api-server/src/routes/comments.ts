@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/supabaseAuth";
+import { requireAuth } from "../middlewares/auth";
 import { db, commentsTable, profilesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { CreateCommentBody } from "@workspace/api-zod";

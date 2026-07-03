@@ -8,9 +8,10 @@ import { Zap, ArrowLeft, CheckCircle } from "lucide-react";
 
 export default function ForgotPasswordPage() {
   const { resetPassword } = useAuth();
-  const [email, setEmail] = useState("");
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
+  const [devToken, setDevToken] = useState<string | undefined>();
   const [error, setError] = useState("");
   const basePath = (import.meta.env.BASE_URL || "").replace(/\/$/, "");
 
@@ -18,9 +19,10 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const { error } = await resetPassword(email);
+    const { error, devToken: token } = await resetPassword(value.trim());
     setLoading(false);
-    if (error) { setError(error.message); return; }
+    if (error) { setError(error); return; }
+    setDevToken(token);
     setSent(true);
   }
 
@@ -43,10 +45,19 @@ export default function ForgotPasswordPage() {
               <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-4">
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
-              <h2 className="text-xl font-bold text-indigo-950 mb-2">Göndərildi</h2>
-              <p className="text-indigo-600/80 text-sm mb-6">
-                <strong>{email}</strong> ünvanına şifrə sıfırlama linki göndərildi. Zəhmət olmasa e-poçtunuzu yoxlayın.
+              <h2 className="text-xl font-bold text-indigo-950 mb-2">Sorğu Göndərildi</h2>
+              <p className="text-indigo-600/80 text-sm mb-4">
+                Əgər bu hesabda e-poçt varsa, bərpa məlumatı göndərildi.
               </p>
+              {devToken && (
+                <div className="bg-amber-50 border border-amber-200 rounded-2xl p-3 text-xs text-amber-800 mb-4 text-left">
+                  <strong>DEV:</strong> Token: <code className="break-all">{devToken}</code>
+                  <br />
+                  <Link href={`${basePath}/auth/reset-password?token=${devToken}`} className="text-primary underline">
+                    Şifrəni sıfırla
+                  </Link>
+                </div>
+              )}
               <Link href={`${basePath}/sign-in`}>
                 <Button className="rounded-2xl w-full font-bold bg-primary hover:bg-primary/90">
                   Giriş səhifəsinə qayıt
@@ -55,17 +66,20 @@ export default function ForgotPasswordPage() {
             </div>
           ) : (
             <>
-              <h2 className="text-2xl font-bold text-indigo-950 mb-1">Şifrəni Sıfırla</h2>
-              <p className="text-sm text-indigo-600/80 mb-6">E-poçt ünvanınızı daxil edin, sıfırlama linki göndərəcəyik.</p>
+              <h2 className="text-2xl font-bold text-indigo-950 mb-1">Şifrəni Bərpa Et</h2>
+              <p className="text-sm text-indigo-600/80 mb-6">
+                İstifadəçi adınızı və ya e-poçtunuzu daxil edin.
+              </p>
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 <div>
-                  <Label className="text-sm font-semibold text-indigo-950 mb-1.5 block">E-poçt</Label>
+                  <Label className="text-sm font-semibold text-indigo-950 mb-1.5 block">
+                    İstifadəçi adı və ya E-poçt
+                  </Label>
                   <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="email@example.com"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    placeholder="istifadeciadı və ya email@example.com"
                     required
                     className="rounded-2xl border-2 border-indigo-100/80 h-12 text-base focus-visible:ring-primary/20 focus-visible:border-primary"
                   />
@@ -80,7 +94,7 @@ export default function ForgotPasswordPage() {
                   disabled={loading}
                   className="w-full h-12 rounded-2xl bg-primary hover:bg-primary/90 shadow-[0_4px_20px_0_rgba(91,95,239,0.3)] font-bold text-base"
                 >
-                  {loading ? "Göndərilir..." : "Sıfırlama Linki Göndər"}
+                  {loading ? "Göndərilir..." : "Bərpa Et"}
                 </Button>
               </form>
 

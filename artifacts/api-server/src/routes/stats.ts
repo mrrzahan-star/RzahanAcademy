@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/supabaseAuth";
+import { requireAuth } from "../middlewares/auth";
 import { db, testResultsTable, certificatesTable, profilesTable } from "@workspace/db";
 import { eq, count, desc } from "drizzle-orm";
 

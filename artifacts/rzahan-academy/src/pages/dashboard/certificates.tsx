@@ -308,9 +308,7 @@ export default function CertificatesPage() {
 
   const userName = (() => {
     if (!user) return "İstifadəçi";
-    const full = (user.user_metadata?.full_name as string | undefined)
-      ?? `${user.user_metadata?.first_name ?? ""} ${user.user_metadata?.last_name ?? ""}`.trim();
-    return full || user.email?.split("@")[0] || "İstifadəçi";
+    return user.fullName || user.username || "İstifadəçi";
   })();
   const progressPercent = stats?.progressPercent ?? 0;
 

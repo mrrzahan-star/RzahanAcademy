@@ -5,8 +5,6 @@ import { LayoutDashboard, CheckSquare, Award, User, LogOut, ShieldAlert, Zap, Bo
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const ADMIN_EMAIL = "mr.rzahan@gmail.com";
-
 const baseNavItems = [
   { href: "/dashboard", label: "Panel", icon: LayoutDashboard },
   { href: "/test", label: "Test", icon: CheckSquare },
@@ -22,16 +20,12 @@ const adminNavItem = { href: "/admin", label: "Admin", icon: ShieldAlert };
 function SidebarContent({ onClose }: { onClose?: () => void }) {
   const [location] = useLocation();
   const { user, signOut } = useAuth();
-  const isAdmin = user?.email === ADMIN_EMAIL;
+  const isAdmin = user?.role === "admin";
   const navItems = isAdmin ? [...baseNavItems, adminNavItem] : baseNavItems;
   const basePath = (import.meta.env.BASE_URL || "").replace(/\/$/, "");
 
-  const _fullName = (user?.user_metadata?.full_name as string | undefined)
-    ?? `${user?.user_metadata?.first_name ?? ""} ${user?.user_metadata?.last_name ?? ""}`.trim();
-  const displayName = _fullName || user?.email?.split("@")[0] || "İstifadəçi";
-
-  const avatarUrl = user?.user_metadata?.avatar_url as string | undefined;
-  const initial = displayName?.[0]?.toUpperCase() || "U";
+  const displayName = user?.fullName || user?.username || "İstifadəçi";
+  const initial = displayName[0]?.toUpperCase() || "U";
 
   return (
     <div className="flex flex-col h-full">
@@ -64,20 +58,18 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       <div className="p-4 border-t border-indigo-100/50 shrink-0">
         <div className="flex items-center gap-3 px-3 py-2 mb-2">
           <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold overflow-hidden shrink-0">
-            {avatarUrl
-              ? <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
-              : initial}
+            {initial}
           </div>
           <div className="flex flex-col overflow-hidden">
             <span className="text-sm font-semibold text-indigo-950 truncate">{displayName}</span>
-            <span className="text-xs text-indigo-950/50 truncate">{user?.email}</span>
+            <span className="text-xs text-indigo-950/50 truncate">@{user?.username}</span>
           </div>
         </div>
         <Button
           variant="ghost"
           className="w-full justify-start text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl"
-          onClick={async () => {
-            await signOut();
+          onClick={() => {
+            signOut();
             window.location.href = basePath || "/";
           }}
         >

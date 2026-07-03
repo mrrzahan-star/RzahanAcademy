@@ -234,9 +234,7 @@ export default function ResultsPage() {
     ? Math.round(((totalScore - Math.floor((result.stage - 1) * maxScore / 7)) / (maxScore / 7)) * 100)
     : 100;
 
-  const _fullName = (user?.user_metadata?.full_name as string | undefined)
-    ?? `${user?.user_metadata?.first_name ?? ""} ${user?.user_metadata?.last_name ?? ""}`.trim();
-  const displayName = _fullName || user?.email?.split("@")[0] || "";
+  const displayName = user?.fullName || user?.username || "";
 
   return (
     <div className="max-w-4xl mx-auto py-8 space-y-6 animate-in fade-in duration-500">

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { getToken } from "@/lib/api";
 
 export function csvDownload(filename: string, rows: Record<string, unknown>[], headers: string[]) {
   const escape = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
@@ -13,8 +13,7 @@ export function csvDownload(filename: string, rows: Record<string, unknown>[], h
 }
 
 export async function downloadAdminCsv(url: string, filename: string): Promise<void> {
-  const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token;
+  const token = getToken();
   const res = await fetch(url, {
     headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}) },
   });

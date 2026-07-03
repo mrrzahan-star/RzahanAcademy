@@ -1,0 +1,1 @@
+- [Custom Auth Migration](auth-migration.md) — Supabase Auth replaced with custom JWT (bcryptjs + jsonwebtoken, SESSION_SECRET). Admin seeded on startup.

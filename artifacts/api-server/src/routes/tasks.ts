@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/supabaseAuth";
+import { requireAuth } from "../middlewares/auth";
 import { db, dailyTasksTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
 

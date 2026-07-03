@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Circle, RefreshCw, ListTodo } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { getToken } from "@/lib/api";
 
 interface Task {
   id: string;
@@ -33,8 +33,7 @@ function buildTasks(stage: typeof STAGES[0]): Task[] {
 }
 
 async function apiFetch(url: string, options?: RequestInit) {
-  const { data: { session } } = await supabase.auth.getSession();
-  const token = session?.access_token;
+  const token = getToken();
   const res = await fetch(url, {
     ...options,
     headers: {

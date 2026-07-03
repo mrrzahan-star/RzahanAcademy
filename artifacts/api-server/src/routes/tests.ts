@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/supabaseAuth";
+import { requireAuth } from "../middlewares/auth";
 import { db, testResultsTable, profilesTable, certificatesTable } from "@workspace/db";
 import { eq, desc, and } from "drizzle-orm";
 import { SubmitTestBody } from "@workspace/api-zod";

@@ -6,3 +6,5 @@ export * from "./journal_entries";
 export * from "./audit_logs";
 export * from "./daily_tasks";
 export * from "./site_settings";
+export * from "./users";
+export * from "./password_reset_tokens";

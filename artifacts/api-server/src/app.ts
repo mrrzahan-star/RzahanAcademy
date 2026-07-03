@@ -2,6 +2,7 @@ import express, { type Express } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
+import { seedAdmin } from "./lib/seed";
 import { logger } from "./lib/logger";
 
 const app: Express = express();
@@ -25,5 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
+
+seedAdmin().catch(() => {});
 
 export default app;

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAuth } from "../middlewares/supabaseAuth";
+import { requireAuth } from "../middlewares/auth";
 import { db, certificatesTable, profilesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { CreateCertificateBody } from "@workspace/api-zod";

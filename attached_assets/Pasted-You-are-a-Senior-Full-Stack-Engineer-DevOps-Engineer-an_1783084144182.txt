@@ -1,0 +1,223 @@
+You are a Senior Full Stack Engineer, DevOps Engineer and QA Engineer.
+
+I will provide the current project ZIP.
+
+IMPORTANT
+
+At this stage DO NOT generate a production ZIP.
+
+First analyze the entire project inside Replit, fix every issue, and make sure everything works correctly.
+
+Only after all fixes are complete we will ask you to generate the final production ZIP.
+
+====================================================
+
+The project must continue using ONLY:
+
+• Netlify
+• Netlify Functions
+• Supabase PostgreSQL
+
+No Railway.
+
+No Render.
+
+No Google Cloud Console.
+
+No Google OAuth.
+
+====================================================
+
+DO NOT redesign the website.
+
+DO NOT change the UI.
+
+DO NOT change the user experience.
+
+DO NOT remove existing functionality.
+
+DO NOT simplify the project.
+
+Preserve every page, animation and design.
+
+====================================================
+
+AUTHENTICATION
+
+Remove Google Login completely.
+
+Replace it with Username + Password authentication.
+
+LOGIN
+
+Required:
+
+• Username
+
+• Password
+
+Optional:
+
+• Email
+
+Email is used ONLY for password recovery.
+
+REGISTRATION
+
+Fields:
+
+• Full Name
+
+• Username (unique)
+
+• Password
+
+• Confirm Password
+
+• Email (optional)
+
+====================================================
+
+DATABASE
+
+Update the database accordingly.
+
+Store passwords securely using password hashing.
+
+Remove every unnecessary Google authentication dependency.
+
+====================================================
+
+ADMIN
+
+There must be ONLY ONE administrator.
+
+Administrator:
+
+Full Name:
+Orxan Rzayev
+
+Username:
+Rzahan
+
+Password:
+Orxan919@
+
+Role:
+admin
+
+Hash the password before storing it.
+
+Never store plain text passwords.
+
+Never create duplicate administrator accounts.
+
+Only this administrator can:
+
+• See the Admin menu
+
+• Access the Admin Panel
+
+• Access every admin API
+
+All other users must automatically receive:
+
+role = user
+
+Normal users must never see the Admin menu.
+
+Unauthorized users must receive HTTP 403.
+
+====================================================
+
+VERIFY THE ENTIRE PROJECT
+
+Carefully inspect the whole project.
+
+Find and fix every existing issue.
+
+Verify:
+
+• Login
+
+• Registration
+
+• Password Recovery
+
+• Dashboard
+
+• Profile
+
+• Tests
+
+• Test completion
+
+• Certificate generation
+
+• Automatic redirect to Certificate page
+
+• Certificate download
+
+• Certificate sharing
+
+• Journal
+
+• Daily Tasks
+
+• Leaderboard
+
+• Admin Panel
+
+• Navigation
+
+• Mobile responsiveness
+
+• API endpoints
+
+• Netlify Functions
+
+• Database queries
+
+• Environment variables
+
+• Runtime errors
+
+• HTTP 500 errors
+
+• HTTP 502 errors
+
+• Blank pages
+
+Everything must work correctly.
+
+====================================================
+
+IMPORTANT
+
+The previous Supabase project has been deleted.
+
+A completely new Supabase project has been created.
+
+Assume all URLs, API keys and database credentials belong to the new project.
+
+Do not keep any hardcoded references to the old Supabase project.
+
+====================================================
+
+At the end:
+
+Do NOT generate a ZIP yet.
+
+Return:
+
+1. Every issue found.
+
+2. Root cause of each issue.
+
+3. Files modified.
+
+4. Remaining manual configuration required (if any).
+
+5. Confirmation that the project is fully working inside Replit.
+
+When everything is confirmed to be working correctly, wait for my next instruction to generate the final production ZIP.
