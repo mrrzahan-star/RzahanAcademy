@@ -73,7 +73,7 @@ export default function AdminPage() {
       <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold text-indigo-950">Admin Panel</h1>
-          <p className="text-indigo-900/60 mt-1 text-sm">{user?.email}</p>
+          <p className="text-indigo-900/60 mt-1 text-sm">@{user?.username}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" className="rounded-xl gap-1.5 border-indigo-100 text-indigo-600"

@@ -12,7 +12,6 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.50.0",
     "html-to-image": "^1.11.13",
-    "jspdf": "^4.2.1",
     "qrcode.react": "^4.2.0"
   },
   "devDependencies": {

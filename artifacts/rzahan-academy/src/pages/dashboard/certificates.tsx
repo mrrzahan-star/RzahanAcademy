@@ -6,39 +6,41 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { QRCodeSVG } from "qrcode.react";
 import { motion, AnimatePresence } from "framer-motion";
-import bookCoverPath from "@assets/IMG-20260604-WA0005_1782924608772.jpg";
 import { useToast } from "@/hooks/use-toast";
-
-const STAGE_COLORS: Record<number, string> = {
-  1: "#64748b", 2: "#ef4444", 3: "#f97316",
-  4: "#eab308", 5: "#22c55e", 6: "#06b6d4", 7: "#6366f1",
-};
 
 interface CertData {
   id: number; stage: number; stageName: string;
   certificateCode: string; issuedAt: string;
 }
 
+const STAGE_GLOWS: Record<number, { primary: string; secondary: string }> = {
+  1: { primary: "#64748b", secondary: "#94a3b8" },
+  2: { primary: "#ef4444", secondary: "#f97316" },
+  3: { primary: "#f97316", secondary: "#eab308" },
+  4: { primary: "#eab308", secondary: "#22c55e" },
+  5: { primary: "#22c55e", secondary: "#06b6d4" },
+  6: { primary: "#06b6d4", secondary: "#6366f1" },
+  7: { primary: "#a855f7", secondary: "#06b6d4" },
+};
+
 async function exportCertificatePng(el: HTMLDivElement): Promise<string> {
   const { toPng } = await import("html-to-image");
   return toPng(el, {
     pixelRatio: 3,
     cacheBust: true,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#050508",
     style: { borderRadius: "1.5rem" },
   });
 }
 
-function CertificateCard({ cert, userName, progressPercent }: {
-  cert: CertData; userName: string; progressPercent: number;
-}) {
+function CertificateCard({ cert, userName }: { cert: CertData; userName: string }) {
   const certRef = useRef<HTMLDivElement>(null);
   const [downloading, setDownloading] = useState(false);
   const [shareModal, setShareModal] = useState<"instagram" | "tiktok" | null>(null);
   const { toast } = useToast();
   const basePath = (import.meta.env.BASE_URL || "").replace(/\/$/, "");
   const certUrl = `${window.location.origin}${basePath}/verify/${cert.certificateCode}`;
-  const stageColor = STAGE_COLORS[cert.stage] || "#6366f1";
+  const glow = STAGE_GLOWS[cert.stage] || STAGE_GLOWS[7];
   const issuedDate = new Date(cert.issuedAt).toLocaleDateString("az-AZ", { day: "numeric", month: "long", year: "numeric" });
   const shareText = `Mən Rzahan Academy-də "${cert.stageName}" bilinç mərhələsinə çatdım! #RzahanAcademy #BilinçSəyahəti`;
 
@@ -51,26 +53,8 @@ function CertificateCard({ cert, userName, progressPercent }: {
       link.download = `rzahan-sertifikat-${cert.certificateCode}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
+    } catch {
       toast({ title: "Xəta", description: "PNG yüklənmədi. Yenidən cəhd edin.", variant: "destructive" });
-      console.error(err);
-    } finally { setDownloading(false); }
-  }
-
-  async function downloadPDF() {
-    if (!certRef.current) return;
-    setDownloading(true);
-    try {
-      const dataUrl = await exportCertificatePng(certRef.current);
-      const { jsPDF } = await import("jspdf");
-      const pdf = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
-      const w = pdf.internal.pageSize.getWidth();
-      const h = pdf.internal.pageSize.getHeight();
-      pdf.addImage(dataUrl, "PNG", 0, 0, w, h);
-      pdf.save(`rzahan-sertifikat-${cert.certificateCode}.pdf`);
-    } catch (err) {
-      toast({ title: "Xəta", description: "PDF yüklənmədi. Yenidən cəhd edin.", variant: "destructive" });
-      console.error(err);
     } finally { setDownloading(false); }
   }
 
@@ -88,9 +72,7 @@ function CertificateCard({ cert, userName, progressPercent }: {
       link.download = `rzahan-sertifikat-${cert.certificateCode}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
-      console.error(err);
-    } finally {
+    } catch { } finally {
       setDownloading(false);
       setShareModal("instagram");
     }
@@ -105,13 +87,9 @@ function CertificateCard({ cert, userName, progressPercent }: {
       link.download = `rzahan-sertifikat-${cert.certificateCode}.png`;
       link.href = dataUrl;
       link.click();
-    } catch (err) {
-      console.error(err);
-    } finally {
+    } catch { } finally {
       setDownloading(false);
-      try {
-        window.open("tiktok://", "_blank");
-      } catch {}
+      try { window.open("tiktok://", "_blank"); } catch { }
       setShareModal("tiktok");
     }
   }
@@ -123,100 +101,244 @@ function CertificateCard({ cert, userName, progressPercent }: {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Certificate design */}
+      {/* ── Metaverse Certificate ── */}
       <div
         ref={certRef}
-        className="relative bg-white rounded-3xl overflow-hidden select-none"
-        style={{ padding: "3px", background: "linear-gradient(135deg,#d4af37,#f5d769,#b8860b,#d4af37)" }}
+        className="relative overflow-hidden select-none"
+        style={{
+          background: "linear-gradient(135deg, #050508 0%, #0a0a18 40%, #0d0a1a 100%)",
+          borderRadius: "1.5rem",
+          padding: "2px",
+          boxShadow: `0 0 60px ${glow.primary}30, 0 0 120px ${glow.secondary}15, inset 0 0 60px rgba(0,0,0,0.5)`,
+        }}
       >
-        <div className="relative bg-white rounded-[22px] overflow-hidden">
-          {/* Book cover watermark */}
-          <div className="absolute inset-0 opacity-[0.04] bg-no-repeat bg-center bg-contain pointer-events-none"
-            style={{ backgroundImage: `url(${bookCoverPath})` }} />
-          {/* Gold corner accents */}
-          <div className="absolute top-3 left-3 w-8 h-8 opacity-25" style={{ color: "#d4af37" }}>
-            <svg viewBox="0 0 40 40" fill="currentColor"><path d="M0 0 L40 0 L0 40 Z" /></svg>
-          </div>
-          <div className="absolute top-3 right-3 w-8 h-8 opacity-25" style={{ color: "#d4af37" }}>
-            <svg viewBox="0 0 40 40" fill="currentColor"><path d="M40 0 L0 0 L40 40 Z" /></svg>
-          </div>
-          <div className="absolute bottom-3 left-3 w-8 h-8 opacity-25" style={{ color: "#d4af37" }}>
-            <svg viewBox="0 0 40 40" fill="currentColor"><path d="M0 40 L40 40 L0 0 Z" /></svg>
-          </div>
-          <div className="absolute bottom-3 right-3 w-8 h-8 opacity-25" style={{ color: "#d4af37" }}>
-            <svg viewBox="0 0 40 40" fill="currentColor"><path d="M40 40 L0 40 L40 0 Z" /></svg>
+        {/* Outer glow border */}
+        <div
+          style={{
+            position: "absolute", inset: 0, borderRadius: "1.5rem",
+            background: `linear-gradient(135deg, ${glow.primary}60, transparent 40%, ${glow.secondary}40 100%)`,
+          }}
+        />
+
+        <div
+          className="relative overflow-hidden"
+          style={{
+            background: "linear-gradient(135deg, #050508 0%, #080811 50%, #0a081a 100%)",
+            borderRadius: "calc(1.5rem - 2px)",
+            padding: "2.5rem 2rem",
+          }}
+        >
+          {/* Background grid */}
+          <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.04 }}>
+            <svg width="100%" height="100%">
+              <defs>
+                <pattern id={`grid-${cert.id}`} width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill={`url(#grid-${cert.id})`} />
+            </svg>
           </div>
 
-          <div className="relative z-10 flex flex-col items-center py-8 px-6 md:px-12 gap-4">
+          {/* Radial glow at top center */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              top: "-60px", left: "50%", transform: "translateX(-50%)",
+              width: "400px", height: "300px",
+              background: `radial-gradient(ellipse, ${glow.primary}20 0%, transparent 70%)`,
+            }}
+          />
+
+          {/* Corner accent — top left */}
+          <div className="absolute top-0 left-0 w-24 h-24 pointer-events-none" style={{ opacity: 0.6 }}>
+            <svg viewBox="0 0 96 96" fill="none">
+              <path d="M0 0 L48 0 L0 48 Z" fill={`${glow.primary}20`} />
+              <path d="M0 0 L24 0 L0 24 Z" fill={glow.primary} opacity="0.4" />
+              <line x1="0" y1="48" x2="48" y2="0" stroke={glow.primary} strokeWidth="0.5" opacity="0.5" />
+              <line x1="0" y1="72" x2="72" y2="0" stroke={glow.secondary} strokeWidth="0.3" opacity="0.3" />
+            </svg>
+          </div>
+
+          {/* Corner accent — top right */}
+          <div className="absolute top-0 right-0 w-24 h-24 pointer-events-none" style={{ opacity: 0.6 }}>
+            <svg viewBox="0 0 96 96" fill="none">
+              <path d="M96 0 L48 0 L96 48 Z" fill={`${glow.secondary}20`} />
+              <path d="M96 0 L72 0 L96 24 Z" fill={glow.secondary} opacity="0.4" />
+              <line x1="96" y1="48" x2="48" y2="0" stroke={glow.secondary} strokeWidth="0.5" opacity="0.5" />
+              <line x1="96" y1="72" x2="24" y2="0" stroke={glow.primary} strokeWidth="0.3" opacity="0.3" />
+            </svg>
+          </div>
+
+          {/* Corner accent — bottom left */}
+          <div className="absolute bottom-0 left-0 w-20 h-20 pointer-events-none" style={{ opacity: 0.4 }}>
+            <svg viewBox="0 0 80 80" fill="none">
+              <path d="M0 80 L0 40 L40 80 Z" fill={`${glow.secondary}20`} />
+              <line x1="0" y1="40" x2="40" y2="80" stroke={glow.secondary} strokeWidth="0.5" opacity="0.5" />
+            </svg>
+          </div>
+
+          {/* Corner accent — bottom right */}
+          <div className="absolute bottom-0 right-0 w-20 h-20 pointer-events-none" style={{ opacity: 0.4 }}>
+            <svg viewBox="0 0 80 80" fill="none">
+              <path d="M80 80 L80 40 L40 80 Z" fill={`${glow.primary}20`} />
+              <line x1="80" y1="40" x2="40" y2="80" stroke={glow.primary} strokeWidth="0.5" opacity="0.5" />
+            </svg>
+          </div>
+
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center gap-6">
+            {/* Header */}
             <div className="text-center">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                <span className="text-sm font-bold text-indigo-950 tracking-[0.15em] uppercase">Rzahan Academy</span>
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: `linear-gradient(135deg, ${glow.primary}, ${glow.secondary})`, boxShadow: `0 0 12px ${glow.primary}60` }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                  </svg>
+                </div>
+                <span className="text-white font-bold tracking-[0.2em] uppercase text-sm">Rzahan Academy</span>
               </div>
-              <div className="text-[11px] font-semibold tracking-[0.25em] uppercase mt-0.5" style={{ color: "#b8860b" }}>
+              <p
+                className="text-xs font-semibold tracking-[0.3em] uppercase"
+                style={{ color: glow.primary }}
+              >
                 Rəsmi Bilinç Sertifikatı
-              </div>
+              </p>
             </div>
 
+            {/* Glowing divider */}
             <div className="w-full flex items-center gap-3">
-              <div className="h-px flex-1" style={{ background: "linear-gradient(90deg,transparent,#d4af37)" }} />
-              <span style={{ color: "#d4af37" }}>✦</span>
-              <div className="h-px flex-1" style={{ background: "linear-gradient(90deg,#d4af37,transparent)" }} />
+              <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, transparent, ${glow.primary})` }} />
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: glow.primary, boxShadow: `0 0 8px ${glow.primary}, 0 0 16px ${glow.primary}80` }}
+              />
+              <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, ${glow.secondary}, transparent)` }} />
             </div>
 
-            <div className="text-center space-y-2 py-2">
-              <div className="text-[11px] text-indigo-400 font-medium uppercase tracking-[0.2em]">Təqdim olunur</div>
-              <div className="text-3xl md:text-4xl font-black text-indigo-950 leading-tight">{userName}</div>
-              <div className="text-sm text-indigo-500/70 font-medium">uğurla nail olmuşdur</div>
-              <div className="inline-block mt-1">
-                <span className="text-xl md:text-2xl font-black px-6 py-2 rounded-full text-white shadow-lg"
-                  style={{ backgroundColor: stageColor }}>
-                  {cert.stageName} Mərhələsi
-                </span>
+            {/* Main content */}
+            <div className="text-center space-y-3 py-2">
+              <p className="text-xs font-medium uppercase tracking-[0.25em]" style={{ color: `${glow.primary}99` }}>
+                Təqdim olunur
+              </p>
+              <h2
+                className="text-3xl md:text-4xl font-black text-white leading-tight"
+                style={{ textShadow: `0 0 30px ${glow.primary}40` }}
+              >
+                {userName}
+              </h2>
+              <p className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.5)" }}>
+                uğurla nail olmuşdur
+              </p>
+
+              {/* Stage badge */}
+              <div className="inline-block mt-2">
+                <div
+                  className="px-6 py-2.5 rounded-full text-white font-black text-lg relative overflow-hidden"
+                  style={{
+                    background: `linear-gradient(135deg, ${glow.primary}30, ${glow.secondary}30)`,
+                    border: `1px solid ${glow.primary}60`,
+                    boxShadow: `0 0 20px ${glow.primary}30, inset 0 0 20px ${glow.primary}10`,
+                  }}
+                >
+                  <span style={{ textShadow: `0 0 20px ${glow.primary}` }}>{cert.stageName} Mərhələsi</span>
+                </div>
               </div>
-              <div className="text-sm text-indigo-500/60 pt-1">İnsan Bilinç Mexanizmi — Mərhələ {cert.stage} / 7</div>
-              <div className="w-52 mx-auto pt-1">
-                <div className="text-xs text-center text-indigo-400 mb-1.5">{progressPercent}% Ümumi İnkişaf</div>
-                <div className="h-1.5 bg-indigo-100 rounded-full overflow-hidden">
-                  <div className="h-full rounded-full"
-                    style={{ width: `${progressPercent}%`, background: "linear-gradient(90deg,#6366f1,#06b6d4)" }} />
+
+              <p
+                className="text-xs font-medium mt-1"
+                style={{ color: "rgba(255,255,255,0.35)" }}
+              >
+                İnsan Bilinç Mexanizmi — Mərhələ {cert.stage} / 7
+              </p>
+
+              {/* Progress bar */}
+              <div className="w-48 mx-auto pt-1">
+                <div className="text-xs text-center mb-1.5 font-medium" style={{ color: `${glow.primary}80` }}>
+                  {Math.round((cert.stage / 7) * 100)}% Ümumi İnkişaf
+                </div>
+                <div className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.08)" }}>
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${Math.round((cert.stage / 7) * 100)}%`,
+                      background: `linear-gradient(90deg, ${glow.primary}, ${glow.secondary})`,
+                      boxShadow: `0 0 8px ${glow.primary}`,
+                    }}
+                  />
                 </div>
               </div>
             </div>
 
-            <div className="w-full flex items-end justify-between pt-2">
+            {/* Divider */}
+            <div className="w-full flex items-center gap-3">
+              <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.1))` }} />
+              <div className="w-1 h-1 rounded-full bg-white opacity-20" />
+              <div className="h-px flex-1" style={{ background: `linear-gradient(90deg, rgba(255,255,255,0.1), transparent)` }} />
+            </div>
+
+            {/* Footer */}
+            <div className="w-full flex items-end justify-between">
               <div>
-                <div className="text-2xl font-black italic" style={{ fontFamily: "Georgia, serif", color: "#b8860b", letterSpacing: "-0.01em" }}>
+                <div
+                  className="text-xl font-black italic mb-0.5"
+                  style={{
+                    fontFamily: "Georgia, serif",
+                    background: `linear-gradient(135deg, ${glow.primary}, ${glow.secondary})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
                   Rzahan
                 </div>
-                <div className="text-xs text-indigo-400 mt-0.5">Rzahan Academy qurucusu</div>
-                <div className="text-[10px] text-indigo-300 mt-2 font-mono">Sənəd №: {cert.certificateCode}</div>
-                <div className="text-[10px] text-indigo-300">{issuedDate}</div>
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                <div className="p-1.5 bg-white rounded-lg border border-indigo-100">
-                  <QRCodeSVG value={certUrl} size={56} bgColor="white" fgColor="#312e81" level="M" />
+                <div className="text-xs font-medium" style={{ color: "rgba(255,255,255,0.4)" }}>Rzahan Academy qurucusu</div>
+                <div className="mt-3 font-mono" style={{ color: "rgba(255,255,255,0.25)", fontSize: "9px" }}>
+                  Sənəd №: {cert.certificateCode}
                 </div>
-                <span className="text-[9px] text-indigo-300 tracking-wider uppercase">Yoxla</span>
+                <div className="font-mono" style={{ color: "rgba(255,255,255,0.25)", fontSize: "9px" }}>
+                  {issuedDate}
+                </div>
+              </div>
+
+              {/* QR Code */}
+              <div className="flex flex-col items-center gap-1.5">
+                <div
+                  className="p-2 rounded-lg"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: `1px solid ${glow.primary}30`,
+                    boxShadow: `0 0 12px ${glow.primary}20`,
+                  }}
+                >
+                  <QRCodeSVG value={certUrl} size={52} bgColor="transparent" fgColor={glow.primary} level="M" />
+                </div>
+                <span className="text-[8px] font-semibold tracking-widest uppercase" style={{ color: `${glow.primary}60` }}>
+                  Yoxla
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Download buttons */}
-      <div className="flex flex-wrap gap-3">
-        <Button onClick={downloadPNG} disabled={downloading}
-          className="flex-1 min-w-[130px] rounded-xl bg-primary hover:bg-primary/90 text-white font-bold">
-          <Download className="mr-2 h-4 w-4" />{downloading ? "Yüklənir..." : "PNG Yüklə"}
-        </Button>
-        <Button onClick={downloadPDF} disabled={downloading} variant="outline"
-          className="flex-1 min-w-[130px] rounded-xl border-2 border-indigo-200 font-bold text-indigo-950">
-          <Download className="mr-2 h-4 w-4" />{downloading ? "Yüklənir..." : "PDF Yüklə"}
-        </Button>
-      </div>
+      {/* Download — PNG only */}
+      <Button
+        onClick={downloadPNG}
+        disabled={downloading}
+        className="w-full rounded-xl font-bold h-11"
+        style={{
+          background: "linear-gradient(135deg, #06b6d4, #7c3aed)",
+          boxShadow: "0 4px 20px rgba(6,182,212,0.3)",
+        }}
+      >
+        <Download className="mr-2 h-4 w-4" />
+        {downloading ? "Yüklənir..." : "PNG Yüklə"}
+      </Button>
 
-      {/* Share buttons */}
+      {/* Share */}
       <div>
         <div className="text-sm font-semibold text-indigo-950 mb-3 flex items-center gap-2">
           <Share2 className="h-4 w-4 text-primary" /> Paylaş
@@ -310,10 +432,17 @@ export default function CertificatesPage() {
     if (!user) return "İstifadəçi";
     return user.fullName || user.username || "İstifadəçi";
   })();
-  const progressPercent = stats?.progressPercent ?? 0;
 
   if (isLoading) {
-    return <div className="p-8 flex justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>;
+    return (
+      <div className="py-8 space-y-6">
+        <div>
+          <div className="h-8 w-48 bg-indigo-100 animate-pulse rounded-xl mb-2" />
+          <div className="h-4 w-72 bg-indigo-50 animate-pulse rounded-xl" />
+        </div>
+        <div className="h-96 bg-indigo-50 animate-pulse rounded-3xl" />
+      </div>
+    );
   }
 
   return (
@@ -342,10 +471,11 @@ export default function CertificatesPage() {
               transition={{ delay: i * 0.1 }}
               className="bg-white rounded-[2rem] border border-indigo-100 shadow-[0_8px_30px_rgba(91,95,239,0.08)] p-6 md:p-8">
               <CertificateCard
-                cert={{ id: cert.id, stage: cert.stage, stageName: cert.stageName ?? "Naməlum",
-                  certificateCode: cert.certificateCode ?? `RZH-${cert.id}`, issuedAt: cert.issuedAt }}
+                cert={{
+                  id: cert.id, stage: cert.stage, stageName: cert.stageName ?? "Naməlum",
+                  certificateCode: cert.certificateCode ?? `RZH-${cert.id}`, issuedAt: cert.issuedAt
+                }}
                 userName={userName}
-                progressPercent={progressPercent}
               />
             </motion.div>
           ))}

@@ -1,0 +1,381 @@
+You are a Senior Full Stack Engineer, DevOps Engineer, QA Engineer and Production Architect.
+
+I will provide the current project ZIP.
+
+IMPORTANT
+
+At this stage DO NOT generate the final production ZIP.
+
+First perform a complete audit of the entire project inside Replit.
+
+Analyze every page, every component, every API, every Netlify Function, every database query and every authentication flow.
+
+Preserve the entire design.
+
+Preserve all animations.
+
+Preserve all pages.
+
+Preserve every existing feature unless explicitly requested below.
+
+Do NOT redesign the project.
+
+Do NOT simplify the project.
+
+======================================================
+PROJECT ARCHITECTURE
+======================================================
+
+The project must work ONLY with:
+
+• Netlify
+• Netlify Functions
+• Supabase PostgreSQL
+
+Do NOT use:
+
+Railway
+
+Render
+
+Fly.io
+
+Replit Hosting
+
+Google Cloud Console
+
+Google OAuth
+
+======================================================
+AUTHENTICATION
+======================================================
+
+Completely remove Google Login.
+
+Remove every Google OAuth dependency.
+
+Remove every Google callback.
+
+Remove every Google environment variable.
+
+Replace the authentication system with:
+
+LOGIN
+
+Required:
+
+• Username
+
+• Password
+
+Optional:
+
+• Email
+
+Email is ONLY used for password recovery.
+
+REGISTRATION
+
+Fields:
+
+• Full Name
+
+• Username (unique)
+
+• Password
+
+• Confirm Password
+
+• Email (optional)
+
+Passwords must always be stored using secure password hashing.
+
+======================================================
+ADMIN
+======================================================
+
+There must be ONLY ONE administrator.
+
+No separate Admin Login page.
+
+Administrator uses the same Login page as every user.
+
+Administrator account:
+
+Full Name:
+Orxan Rzayev
+
+Username:
+Rzahan
+
+Password:
+Orxan919@
+
+Role:
+admin
+
+Hash the password before storing it.
+
+Never store plain text passwords.
+
+Never create duplicate administrators.
+
+Only this administrator can:
+
+• See the Admin menu.
+
+• Open the Admin Panel.
+
+• Access every admin API.
+
+Every other registered user must automatically receive:
+
+role = user
+
+Normal users must NEVER see the Admin menu.
+
+Unauthorized access must always return HTTP 403.
+
+======================================================
+DATABASE
+======================================================
+
+Assume the previous Supabase project has been deleted.
+
+A completely NEW Supabase project is being used.
+
+Remove every hardcoded reference to the previous project.
+
+Update the database schema accordingly.
+
+Update migrations if necessary.
+
+======================================================
+FINAL FIXES
+======================================================
+
+1.
+
+Fix the Admin Panel completely.
+
+The last admin sections (including Audit Log and related pages) currently produce errors.
+
+Find the root cause and fix every issue.
+
+No Admin page should ever display a runtime error.
+
+No Admin page should become blank.
+
+2.
+
+Fix every HTTP 500 and HTTP 502 backend error.
+
+3.
+
+Fix the Test completion flow.
+
+After clicking
+
+"Testi Bitir"
+
+the application must:
+
+• Save every answer
+
+• Calculate the score
+
+• Save the result
+
+• Generate the certificate
+
+• Automatically redirect to the Certificate page
+
+The user must NEVER see:
+
+"Xəta baş verdi. Yenidən cəhd edin."
+
+4.
+
+Fix every Netlify Function.
+
+5.
+
+Fix every runtime error.
+
+6.
+
+Fix every blank page.
+
+7.
+
+Fix every broken navigation.
+
+======================================================
+CERTIFICATE
+======================================================
+
+Redesign the certificate.
+
+Use a premium Metaverse style.
+
+Requirements:
+
+• Black background
+
+• Dark graphite details
+
+• Blue / Cyan glow
+
+• Purple accents
+
+• Minimalist premium style
+
+• High quality
+
+• Suitable for printing
+
+• Suitable for sharing
+
+Keep:
+
+QR verification
+
+Certificate number
+
+Issue date
+
+Participant name
+
+Certificate title
+
+Remove PDF download completely.
+
+Certificates should be downloadable ONLY as high-quality PNG.
+
+Remove every unused PDF dependency.
+
+======================================================
+WHATSAPP
+======================================================
+
+The
+
+"Kitabı əldə et"
+
+button must open the WhatsApp Business short link.
+
+Do NOT expose the phone number.
+
+======================================================
+GENERAL QA
+======================================================
+
+Audit every page.
+
+Verify:
+
+Landing
+
+Dashboard
+
+Profile
+
+Journal
+
+Daily Tasks
+
+Tests
+
+Certificates
+
+Leaderboard
+
+Admin
+
+Settings
+
+Audit Log
+
+Reviews
+
+Every page must work.
+
+No runtime errors.
+
+No API failures.
+
+No blank pages.
+
+======================================================
+UI IMPROVEMENTS
+======================================================
+
+Add a premium custom 404 page.
+
+Add a global error page.
+
+Replace blank pages with friendly error screens.
+
+Replace white loading screens with elegant loading skeletons.
+
+Automatically generate a user avatar using initials when no profile image exists.
+
+Improve Audit Log so that it stores only meaningful actions.
+
+Optimize unnecessary API calls.
+
+Remove duplicate code.
+
+Remove dead code.
+
+Improve production performance.
+
+======================================================
+PRODUCTION
+======================================================
+
+Prepare the project specifically for:
+
+Netlify
+
+Netlify Functions
+
+Supabase
+
+The project must deploy successfully without production errors.
+
+======================================================
+FINAL REPORT
+======================================================
+
+After all fixes are complete:
+
+DO NOT generate the production ZIP yet.
+
+Return:
+
+1.
+
+Every issue found.
+
+2.
+
+Root cause of every issue.
+
+3.
+
+Files modified.
+
+4.
+
+Remaining manual configuration required.
+
+5.
+
+Confirmation that every page has been tested.
+
+6.
+
+Confirmation that the project is production-ready.
+
+Wait for my approval before generating the final Production ZIP.

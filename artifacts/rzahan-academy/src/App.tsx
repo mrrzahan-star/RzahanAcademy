@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const LandingPage = lazy(() => import("@/pages/landing"));
 const SignInPage = lazy(() => import("@/pages/auth/sign-in"));
@@ -149,16 +150,18 @@ function AppRoutes() {
 
 function App() {
   return (
-    <TooltipProvider>
-      <WouterRouter base={basePath}>
-        <AuthProvider>
-          <QueryClientProvider client={queryClient}>
-            <AppRoutes />
-          </QueryClientProvider>
-        </AuthProvider>
-      </WouterRouter>
-      <Toaster />
-    </TooltipProvider>
+    <ErrorBoundary>
+      <TooltipProvider>
+        <WouterRouter base={basePath}>
+          <AuthProvider>
+            <QueryClientProvider client={queryClient}>
+              <AppRoutes />
+            </QueryClientProvider>
+          </AuthProvider>
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </ErrorBoundary>
   );
 }
 

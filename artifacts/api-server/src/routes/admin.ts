@@ -61,7 +61,6 @@ router.get("/stats", requireAuth, async (req, res) => {
       db.select({ c: count() }).from(profilesTable).where(gte(profilesTable.lastActiveAt, today)),
     ]);
 
-  await logAction(adminUsername, "VIEW_STATS");
   res.json({
     totalUsers: Number(u.c), totalTests: Number(t.c), totalCertificates: Number(c.c),
     totalComments: Number(co.c), pendingComments: Number(pend.c), blockedUsers: Number(bloc.c),
@@ -537,28 +536,45 @@ router.delete("/comments/:id", requireAuth, async (req, res) => {
 
 // ── AUDIT LOG ─────────────────────────────────────────────────────────────────
 
-router.get("/audit-log", requireAuth, async (req, res) => {
+async function auditLogHandler(req: any, res: any) {
   const adminUsername = await requireAdmin(req, res);
   if (!adminUsername) return;
   const { page, limit, offset } = parsePage(req);
+  const actionFilter = typeof req.query.action === "string" ? req.query.action.trim() : "";
+
+  const where = actionFilter ? eq(auditLogsTable.action, actionFilter) : undefined;
   const [[totalRow], rows] = await Promise.all([
-    db.select({ c: count() }).from(auditLogsTable),
-    db.select().from(auditLogsTable).orderBy(desc(auditLogsTable.createdAt)).limit(limit).offset(offset),
+    db.select({ c: count() }).from(auditLogsTable).where(where),
+    db.select().from(auditLogsTable).where(where)
+      .orderBy(desc(auditLogsTable.createdAt)).limit(limit).offset(offset),
   ]);
   res.json({ data: rows, total: Number(totalRow.c), page, limit });
+}
+
+router.get("/audit-log", requireAuth, auditLogHandler);
+router.get("/audit-logs", requireAuth, auditLogHandler);
+
+router.get("/audit-logs/export.csv", requireAuth, async (req, res) => {
+  const adminUsername = await requireAdmin(req, res);
+  if (!adminUsername) return;
+  const rows = await db.select().from(auditLogsTable).orderBy(desc(auditLogsTable.createdAt));
+  await logAction(adminUsername, "EXPORT_AUDIT_CSV");
+  sendCsv(res, "audit-log.csv", rows as unknown as Record<string, unknown>[], [
+    "id", "adminEmail", "action", "target", "details", "createdAt",
+  ]);
 });
 
 // ── SITE SETTINGS ─────────────────────────────────────────────────────────────
 
-router.get("/settings", requireAuth, async (req, res) => {
+async function getSettingsHandler(req: any, res: any) {
   const adminUsername = await requireAdmin(req, res);
   if (!adminUsername) return;
   const settings = await db.select().from(siteSettingsTable);
   const obj = Object.fromEntries(settings.map(s => [s.key, s.value]));
   res.json(obj);
-});
+}
 
-router.put("/settings", requireAuth, async (req, res) => {
+async function putSettingsHandler(req: any, res: any) {
   const adminUsername = await requireAdmin(req, res);
   if (!adminUsername) return;
   const updates = req.body as Record<string, string>;
@@ -570,6 +586,11 @@ router.put("/settings", requireAuth, async (req, res) => {
   );
   await logAction(adminUsername, "UPDATE_SETTINGS", undefined, { keys: Object.keys(updates) });
   res.json({ ok: true });
-});
+}
+
+router.get("/settings", requireAuth, getSettingsHandler);
+router.put("/settings", requireAuth, putSettingsHandler);
+router.get("/site-settings", requireAuth, getSettingsHandler);
+router.put("/site-settings", requireAuth, putSettingsHandler);
 
 export default router;
