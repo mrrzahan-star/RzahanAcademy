@@ -1,149 +1,158 @@
-# Rzahan Academy — Deployment Guide
+# Rzahan Academy — Netlify Deployment Guide
 
 ## Architecture
 
-| Layer    | Technology                   | Notes                                      |
-|----------|------------------------------|--------------------------------------------|
-| Frontend | React 18 + Vite + Tailwind   | Served as static files or by Express       |
-| Backend  | Express 5 (Node 24)          | REST API with JWT auth                     |
-| Database | PostgreSQL (Supabase hosted) | Drizzle ORM, all tables via migration.sql  |
-| Auth     | Custom JWT (bcrypt + jsonwebtoken) | No Supabase Auth, no Google OAuth     |
+```
+Browser
+   ↓
+Netlify CDN  (React SPA — static files from artifacts/rzahan-academy/dist/public)
+   ↓
+Netlify Functions  (Express app bundled with serverless-http → netlify/functions/api.mjs)
+   ↓
+Supabase PostgreSQL  (Drizzle ORM, all tables in migration.sql)
+```
+
+No separate server. No Railway. No Render. No Fly.io. No Replit Deployment required.
 
 ---
 
 ## Step 1 — Supabase Database Setup
 
-1. Create a new Supabase project at https://supabase.com
+1. Create a new project at https://supabase.com
 2. Go to **SQL Editor** in the Supabase dashboard
 3. Paste the entire contents of `migration.sql` and click **Run**
-4. Confirm all 10 tables were created (no errors)
-5. Copy your connection string: **Settings → Database → Connection string → URI**
-   - It looks like: `postgresql://postgres:[password]@db.[ref].supabase.co:5432/postgres`
+4. Confirm: 10 tables created, 8 indexes created, admin user inserted — no errors
 
-> **Note:** Supabase Auth is NOT used. Only the PostgreSQL database is used.
-> Do NOT enable Supabase Row Level Security (RLS) — all access control is handled by the Express API.
+> **Supabase Auth is NOT used.** Only the PostgreSQL database is used.
+> **Do NOT enable Row Level Security (RLS)** — all access control is in the Netlify Function.
+
+### Connection string (for `DATABASE_URL`)
+
+For best serverless performance use the **Transaction Pooler** URL:
+
+**Supabase → Project Settings → Database → Connection Pooling → Transaction mode**
+
+It looks like:
+```
+postgresql://postgres.YOURREF:[PASSWORD]@aws-0-REGION.pooler.supabase.com:6543/postgres
+```
+
+This uses pgBouncer in transaction mode, which is ideal for serverless functions.
 
 ---
 
-## Step 2 — Environment Variables
+## Step 2 — Netlify Setup
 
-Set the following environment variables in your deployment environment:
+### Option A: Deploy from GitHub (recommended)
 
-| Variable         | Required | Description                                              |
-|------------------|----------|----------------------------------------------------------|
-| `DATABASE_URL`   | ✅ Yes   | PostgreSQL connection string from Supabase               |
-| `SESSION_SECRET` | ✅ Yes   | Long random string for JWT signing (min 32 chars)        |
-| `SITE_URL`       | ✅ Yes   | Your production domain, e.g. `https://yourapp.replit.app` |
-| `NODE_ENV`       | ✅ Yes   | Set to `production`                                       |
-| `LOG_LEVEL`      | No       | Default: `info`. Options: `debug`, `info`, `warn`, `error` |
+1. Push this repo to GitHub
+2. Go to https://app.netlify.com → **Add new site → Import an existing project**
+3. Connect your GitHub repository
+4. Netlify auto-detects `netlify.toml` — the build settings are pre-configured:
+   - **Build command:** `pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build:netlify && BASE_PATH=/ pnpm --filter @workspace/rzahan-academy run build`
+   - **Publish directory:** `artifacts/rzahan-academy/dist/public`
+   - **Functions directory:** `netlify/functions`
 
-Generate a secure SESSION_SECRET:
+### Option B: Manual deploy via Netlify CLI
+
 ```bash
-openssl rand -base64 64
+npm install -g netlify-cli
+netlify login
+netlify init
+netlify deploy --prod
 ```
 
 ---
 
-## Step 3 — Deploy on Replit (Recommended)
+## Step 3 — Environment Variables
 
-This project is built and configured for Replit deployment.
+Set these in **Netlify → Site configuration → Environment variables**:
 
-1. Open the project in Replit
-2. Set environment variables via **Secrets** panel (the padlock icon):
-   - `DATABASE_URL`
-   - `SESSION_SECRET`
-   - `SITE_URL` → set to your `.replit.app` domain
-3. Click **Deploy** in the top-right corner
-4. Replit will build and deploy both the API and frontend automatically
+| Variable         | Required | Description |
+|------------------|----------|-------------|
+| `DATABASE_URL`   | ✅ | Transaction Pooler URI from Supabase (port 6543) |
+| `SESSION_SECRET` | ✅ | Long random string — signs JWT tokens. Generate: `openssl rand -base64 64` |
+| `SITE_URL`       | ✅ | Your Netlify domain, e.g. `https://rzahanacademy.netlify.app` |
+| `NODE_ENV`       | ✅ | Set to `production` |
+| `LOG_LEVEL`      | No | Default: `info` |
 
-The admin account is **auto-seeded on first startup**:
-- Username: `Rzahan`
-- Password: `Orxan919@`
-
-> **Change the admin password immediately after first login** via the Profile page.
+> `NETLIFY=true` is set automatically by Netlify — do NOT set it manually.
 
 ---
 
 ## Step 4 — Verify Deployment
 
-After deployment, test these endpoints:
+After deploy, test these public endpoints:
 
 ```bash
 # Health check
-curl https://your-domain.replit.app/api/healthz
+curl https://your-site.netlify.app/api/healthz
 
-# Platform stats (public)
-curl https://your-domain.replit.app/api/stats/platform
+# Public platform stats
+curl https://your-site.netlify.app/api/stats/platform
 
-# Certificate verification (public, replace CODE)
-curl https://your-domain.replit.app/api/certificates/verify/RZH-1-00001-XXXX
+# Certificate verification (replace CODE with a real code)
+curl https://your-site.netlify.app/api/certificates/verify/RZH-1-00001-XXXX
 ```
 
 ---
 
-## Password Reset Setup
+## Admin Account
 
-Password reset links are sent to users by email in production.
-In development mode (`NODE_ENV != production`), the reset token is returned in the API response body for testing.
+The default administrator is seeded by `migration.sql`:
 
-Set `SITE_URL` to your exact production domain:
-```
-SITE_URL=https://rzahanacademy.replit.app
-```
+- **Username:** `Rzahan`
+- **Password:** `Orxan919@`
 
-Reset links will be formatted as:
-```
-https://rzahanacademy.replit.app/auth/reset-password?token=<token>
-```
-
-> **Email delivery**: The current implementation logs reset URLs to the API response in dev mode.
-> For production email delivery, integrate an email provider (SendGrid, Resend, Mailgun)
-> by adding an email-send call after the token is created in `artifacts/api-server/src/routes/auth.ts` line ~100.
+> ⚠️ **Change the admin password immediately after first login** via the Profile page.
 
 ---
 
-## Alternative Deployment (VPS / Railway / Render / Fly.io)
+## Password Reset
 
-The project is a standard Node.js monorepo. To deploy outside Replit:
+Password reset links are generated using `SITE_URL`. Set it to your exact production domain:
 
-### Build
-```bash
-pnpm install
-pnpm --filter @workspace/db run push   # applies schema to your DB
-PORT=3000 BASE_PATH=/ pnpm --filter @workspace/rzahan-academy run build
-pnpm --filter @workspace/api-server run build
+```
+SITE_URL=https://rzahanacademy.netlify.app
 ```
 
-### Run
-```bash
-node artifacts/api-server/dist/index.js
+Reset links will be:
 ```
-The API server also serves the built frontend from `artifacts/rzahan-academy/dist/public`.
+https://rzahanacademy.netlify.app/auth/reset-password?token=<token>
+```
 
-### Environment
-Set all variables from Step 2 plus:
-```
-PORT=3000
-BASE_PATH=/
-```
+In `NODE_ENV=production`, reset tokens are NOT returned in API responses.
+To enable email delivery, add an email provider (Resend, SendGrid, etc.) in:
+`artifacts/api-server/src/routes/auth.ts` around line 103.
 
 ---
 
 ## Google OAuth
 
-**Google OAuth has been completely removed.**
-The project uses username + password authentication only (custom JWT).
-No Google Cloud Console configuration is required.
+**Completely removed.** Username + password only (custom JWT). No Google Cloud Console configuration required.
 
 ---
 
-## Checklist Before Going Live
+## Netlify Function Details
 
-- [ ] `migration.sql` run in Supabase SQL Editor
-- [ ] `DATABASE_URL` set to production Supabase connection string
-- [ ] `SESSION_SECRET` set to a long random value (not the default)
-- [ ] `SITE_URL` set to your exact production domain
+- Entry: `artifacts/api-server/src/api.ts`
+- Build output: `netlify/functions/api.mjs` (pre-bundled with esbuild)
+- Exposes: `/.netlify/functions/api`
+- Redirect: all `/api/*` → `/.netlify/functions/api` (configured in `netlify.toml`)
+- Runtime: Node.js 20 (Netlify default for functions)
+- Size: ~2.4MB bundled
+
+The function wraps the full Express app with `serverless-http`. All 28 API endpoints are tested and confirmed working.
+
+---
+
+## Pre-Deployment Checklist
+
+- [ ] `migration.sql` run in Supabase SQL Editor without errors
+- [ ] `DATABASE_URL` set to Transaction Pooler URL (port 6543)
+- [ ] `SESSION_SECRET` set to a secure random value (not the example)
+- [ ] `SITE_URL` set to your exact Netlify domain
 - [ ] `NODE_ENV` set to `production`
-- [ ] Admin password changed from `Orxan919@` to something secure
-- [ ] WhatsApp Business link updated in `artifacts/rzahan-academy/src/pages/landing/index.tsx` → `WA_LINK`
-- [ ] Email delivery configured if password recovery emails are needed in production
+- [ ] Admin password changed from `Orxan919@` after first login
+- [ ] WhatsApp link updated if needed: `artifacts/rzahan-academy/src/pages/landing/index.tsx` line ~12
+- [ ] Email delivery configured if password reset emails are needed in production

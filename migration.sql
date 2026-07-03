@@ -1,6 +1,6 @@
 -- Rzahan Academy — Complete Database Migration
--- Run this SQL in your PostgreSQL / Supabase SQL Editor before first deployment.
--- Safe to run multiple times (uses IF NOT EXISTS).
+-- Run this SQL in your Supabase SQL Editor before first deployment.
+-- Safe to run multiple times (uses IF NOT EXISTS / ON CONFLICT DO NOTHING).
 
 -- ─── users ────────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS users (
@@ -128,3 +128,23 @@ CREATE INDEX IF NOT EXISTS idx_comments_approved       ON comments(approved);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action       ON audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at   ON audit_logs(created_at);
 CREATE INDEX IF NOT EXISTS idx_password_reset_tokens_token ON password_reset_tokens(token);
+
+-- ─── Admin seed ───────────────────────────────────────────────────────────────
+-- Seeds the default administrator account (username: Rzahan, password: Orxan919@).
+-- The password_hash below is bcrypt(cost=12) of "Orxan919@".
+-- CHANGE THE PASSWORD immediately after first login via the Profile page.
+INSERT INTO users (id, username, full_name, email, password_hash, role, is_blocked)
+VALUES (
+  '00000000-0000-0000-0000-000000000001',
+  'Rzahan',
+  'Orxan Rzayev',
+  NULL,
+  '$2b$12$Y5uidcEzkEsceoXaCCHhEuiLpqMhweuRICkcVNoIQwQpeXLVr68uu',
+  'admin',
+  false
+)
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO profiles (user_id, first_name, last_name, email)
+VALUES ('00000000-0000-0000-0000-000000000001', 'Orxan', 'Rzayev', NULL)
+ON CONFLICT (user_id) DO NOTHING;

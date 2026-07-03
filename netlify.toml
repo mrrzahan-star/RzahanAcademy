@@ -1,25 +1,54 @@
-# ──────────────────────────────────────────────────────────────────────────────
-# IMPORTANT: Rzahan Academy uses an Express API server which cannot run
-# as Netlify Functions without code changes.
+# ─────────────────────────────────────────────────────────────────────────────
+#  Rzahan Academy — Netlify Configuration
 #
-# This file configures Netlify to host ONLY the frontend static files.
-# The API server must be deployed separately (Railway, Render, Fly.io, or Replit).
-# Set VITE_API_BASE_URL in your Netlify environment to point to that server.
+#  Architecture:
+#    Browser → Netlify CDN  (React SPA static files)
+#    Browser → Netlify Functions  (/api/* → serverless Express handler)
+#    Netlify Functions → Supabase PostgreSQL  (Drizzle ORM)
 #
-# For a single-host deployment (recommended), deploy the entire project to Replit.
-# See DEPLOYMENT.md for full Replit deployment instructions.
-# ──────────────────────────────────────────────────────────────────────────────
+#  Deploy from GitHub: connect repo to Netlify, set env vars, deploy.
+# ─────────────────────────────────────────────────────────────────────────────
 
 [build]
-  base    = "artifacts/rzahan-academy"
-  command = "pnpm install && pnpm run build"
-  publish = "dist/public"
+  # Runs from repo root
+  command = "pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build:netlify && BASE_PATH=/ pnpm --filter @workspace/rzahan-academy run build"
+  publish  = "artifacts/rzahan-academy/dist/public"
 
 [build.environment]
   NODE_VERSION = "24"
-  BASE_PATH    = "/"
+  PNPM_VERSION = "10"
+  # BASE_PATH is injected into the frontend build above via the command itself.
+  # Do NOT set BASE_PATH here — it is only needed during the Vite build, not at runtime.
 
+# ── Netlify Functions ─────────────────────────────────────────────────────────
+[functions]
+  directory    = "netlify/functions"
+  node_bundler = "none"   # We pre-bundle with esbuild ourselves
+
+# ── Redirects ─────────────────────────────────────────────────────────────────
+
+# All /api/* requests → Netlify Function (pre-bundled Express handler)
+[[redirects]]
+  from   = "/api/*"
+  to     = "/.netlify/functions/api"
+  status = 200
+  force  = true
+
+# SPA fallback — all other routes → React app
 [[redirects]]
   from   = "/*"
   to     = "/index.html"
   status = 200
+
+# ── Headers ───────────────────────────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
