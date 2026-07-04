@@ -15,7 +15,7 @@
   publish  = "artifacts/rzahan-academy/dist/public"
 
 [build.environment]
-  NODE_VERSION = "24"
+  NODE_VERSION = "20"
   PNPM_VERSION = "10"
   # BASE_PATH is injected into the frontend build above via the command itself.
   # Do NOT set BASE_PATH here — it is only needed during the Vite build, not at runtime.
