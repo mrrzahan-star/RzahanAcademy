@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { adminFetch } from "./utils";
 import { CrudSection } from "./cms/CrudSection";
+import { ProgramsManager } from "./cms/ProgramsManager";
 import {
   Package, BookOpen, Layers, FileText, Heart,
   Quote, CheckSquare, HelpCircle, Megaphone, Image,
@@ -111,26 +112,7 @@ export function CmsTab() {
 
         {/* PROGRAMS */}
         <TabsContent value="programs">
-          <CrudSection
-            title="Proqramlar"
-            endpoint="/programs"
-            columns={[
-              { key: "title", label: "Başlıq" },
-              { key: "status", label: "Status" },
-              { key: "durationHours", label: "Müddət (saat)" },
-              { key: "sortOrder", label: "Sıra" },
-            ]}
-            fields={[
-              { key: "title", label: "Başlıq", required: true },
-              { key: "slug", label: "Slug (boş buraxın = avtomatik)" },
-              { key: "description", label: "Açıqlama", type: "textarea" },
-              { key: "coverImageUrl", label: "Kapak Şəkil URL", type: "url" },
-              { key: "durationHours", label: "Müddət (saat)", type: "number" },
-              { key: "status", label: "Status", type: "status", options: STATUS_OPTS },
-              { key: "sortOrder", label: "Sıra", type: "number" },
-            ]}
-            defaultValues={{ status: "draft", sortOrder: 0 }}
-          />
+          <ProgramsManager />
         </TabsContent>
 
         {/* PROGRAM CATEGORIES */}

@@ -1,0 +1,290 @@
+IMPORTANT
+
+Read this prompt completely before making ANY changes.
+
+The CMS Foundation has already been completed.
+
+Continue ONLY from the existing architecture.
+
+DO NOT redesign the website.
+
+DO NOT modify authentication.
+
+DO NOT modify existing database logic.
+
+DO NOT remove or replace any working feature.
+
+DO NOT break:
+
+• Registration
+• Login
+• Tests
+• Certificates
+• Journal
+• Leaderboard
+• Daily Tasks
+• Admin
+
+Everything must continue working exactly as before.
+
+=========================================================
+MISSION
+=========================================================
+
+Build the complete PROGRAM MANAGEMENT SYSTEM.
+
+The goal is to allow the administrator to create unlimited educational programs without editing the source code.
+
+The system must be scalable and production-ready.
+
+=========================================================
+PROGRAM STRUCTURE
+=========================================================
+
+Hierarchy:
+
+Program
+    ↓
+Module
+    ↓
+Lesson
+
+Each level must be managed independently.
+
+=========================================================
+PROGRAMS
+=========================================================
+
+Administrator must be able to:
+
+• Create Program
+
+• Edit Program
+
+• Delete Program
+
+• Archive Program
+
+• Publish / Unpublish
+
+• Duplicate Program
+
+• Change display order
+
+Each Program contains:
+
+• Title
+
+• Short Description
+
+• Full Description
+
+• Cover Image
+
+• Banner Image
+
+• Program Icon
+
+• Category
+
+• Difficulty
+
+(Başlanğıc / Orta / Peşəkar)
+
+• Estimated Duration
+
+• Instructor
+
+(default: Rzahan)
+
+• Language
+
+(default: Azərbaycan)
+
+• Certificate Available
+
+(Yes / No)
+
+• Access Package
+
+Başlanğıc
+
+İnkişaf
+
+Ustad
+
+• Featured
+
+• SEO Title
+
+• SEO Description
+
+• Slug
+
+• Status
+
+Draft
+
+Published
+
+Archived
+
+=========================================================
+MODULES
+=========================================================
+
+Each Program contains unlimited Modules.
+
+Administrator can:
+
+Create
+
+Edit
+
+Delete
+
+Reorder
+
+Hide
+
+Publish
+
+Each Module contains:
+
+• Module Title
+
+• Description
+
+• Cover Image
+
+• Estimated Duration
+
+• Sort Order
+
+=========================================================
+LESSONS
+=========================================================
+
+Each Module contains unlimited Lessons.
+
+Administrator can:
+
+Create
+
+Edit
+
+Delete
+
+Duplicate
+
+Publish
+
+Reorder
+
+Each Lesson supports:
+
+• Lesson Title
+
+• Subtitle
+
+• Rich Text Editor
+
+• YouTube Video URL
+
+• Audio URL
+
+• PDF URL
+
+• External Resources
+
+• Estimated Time
+
+• Lesson Thumbnail
+
+• Attachments
+
+• Downloadable Files
+
+• Homework
+
+• Reflection Questions
+
+• Notes
+
+• Package Access
+
+• Free Preview
+
+• Status
+
+=========================================================
+USER EXPERIENCE
+=========================================================
+
+Student sees:
+
+Program
+
+↓
+
+Modules
+
+↓
+
+Lessons
+
+↓
+
+Mark Lesson Complete
+
+↓
+
+Continue Learning
+
+↓
+
+Progress %
+
+Progress must automatically calculate.
+
+=========================================================
+PROGRAM PROGRESS
+=========================================================
+
+Track:
+
+Completed Lessons
+
+Completed Modules
+
+Program Completion %
+
+Last Opened Lesson
+
+Continue Button
+
+=========================================================
+CERTIFICATES
+=========================================================
+
+This system must NOT affect the existing test certificate.
+
+Prepare the architecture so future programs can optionally issue their own certificates.
+
+=========================================================
+SEARCH
+=========================================================
+
+Administrator can search:
+
+Programs
+
+Modules
+
+Lessons
+
+=========================================================
+FILTERS
+=========================================================
+
+Filter

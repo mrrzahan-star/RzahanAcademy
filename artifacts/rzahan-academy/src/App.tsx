@@ -18,6 +18,9 @@ const ResultsPage = lazy(() => import("@/pages/dashboard/results"));
 const ProfilePage = lazy(() => import("@/pages/dashboard/profile"));
 const CertificatesPage = lazy(() => import("@/pages/dashboard/certificates"));
 const AdminPage = lazy(() => import("@/pages/admin/index"));
+const ProgramsPage = lazy(() => import("@/pages/programs/index"));
+const ProgramDetailPage = lazy(() => import("@/pages/programs/detail"));
+const LessonPage = lazy(() => import("@/pages/programs/lesson"));
 const JournalPage = lazy(() => import("@/pages/dashboard/journal/index"));
 const TasksPage = lazy(() => import("@/pages/dashboard/tasks/index"));
 const LeaderboardPage = lazy(() => import("@/pages/leaderboard/index"));
@@ -139,6 +142,9 @@ function AppRoutes() {
           <Suspense fallback={<PageSpinner />}><LeaderboardPage /></Suspense>
         </Route>
         <Route path="/admin"><ProtectedRoute component={AdminPage} /></Route>
+        <Route path="/programs"><ProtectedRoute component={ProgramsPage} /></Route>
+        <Route path="/programs/:slug/lessons/:lessonId"><ProtectedRoute component={LessonPage} /></Route>
+        <Route path="/programs/:slug"><ProtectedRoute component={ProgramDetailPage} /></Route>
 
         <Route>
           <Suspense fallback={<PageSpinner />}><NotFound /></Suspense>

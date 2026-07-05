@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useAuth } from "@/contexts/AuthContext";
-import { LayoutDashboard, CheckSquare, Award, User, LogOut, ShieldAlert, Zap, BookOpen, ListTodo, Trophy, Menu } from "lucide-react";
+import { LayoutDashboard, CheckSquare, Award, User, LogOut, ShieldAlert, Zap, BookOpen, ListTodo, Trophy, Menu, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const baseNavItems = [
   { href: "/dashboard", label: "Panel", icon: LayoutDashboard },
+  { href: "/programs", label: "Proqramlar", icon: GraduationCap },
   { href: "/test", label: "Test", icon: CheckSquare },
   { href: "/journal", label: "Şüur Jurnalı", icon: BookOpen },
   { href: "/tasks", label: "Tapşırıqlar", icon: ListTodo },

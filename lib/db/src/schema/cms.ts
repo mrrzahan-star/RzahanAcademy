@@ -1,5 +1,5 @@
 import {
-  pgTable, text, serial, timestamp, integer, boolean,
+  pgTable, text, serial, timestamp, integer, boolean, uuid,
 } from "drizzle-orm/pg-core";
 
 // ── PACKAGES ──────────────────────────────────────────────────────────────────
@@ -38,12 +38,22 @@ export const cmsProgramsTable = pgTable("cms_programs", {
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   description: text("description"),
+  fullDescription: text("full_description"),
   coverImageUrl: text("cover_image_url"),
+  bannerImageUrl: text("banner_image_url"),
+  iconUrl: text("icon_url"),
   categoryId: integer("category_id"),
   packageId: integer("package_id"),
+  difficulty: text("difficulty").default("baslanqic"),
+  instructor: text("instructor").default("Rzahan"),
+  language: text("language").default("Azərbaycan"),
+  certificateAvailable: boolean("certificate_available").notNull().default(false),
+  featured: boolean("featured").notNull().default(false),
   status: text("status").notNull().default("draft"),
   sortOrder: integer("sort_order").notNull().default(0),
   durationHours: integer("duration_hours"),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });
@@ -57,6 +67,8 @@ export const cmsModulesTable = pgTable("cms_modules", {
   programId: integer("program_id").notNull(),
   title: text("title").notNull(),
   description: text("description"),
+  coverImageUrl: text("cover_image_url"),
+  estimatedDurationMinutes: integer("estimated_duration_minutes"),
   sortOrder: integer("sort_order").notNull().default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -70,14 +82,21 @@ export const cmsLessonsTable = pgTable("cms_lessons", {
   id: serial("id").primaryKey(),
   moduleId: integer("module_id").notNull(),
   title: text("title").notNull(),
+  subtitle: text("subtitle"),
   description: text("description"),
   contentHtml: text("content_html"),
   youtubeUrl: text("youtube_url"),
   audioUrl: text("audio_url"),
   pdfUrl: text("pdf_url"),
+  thumbnailUrl: text("thumbnail_url"),
+  externalResourcesUrl: text("external_resources_url"),
+  homework: text("homework"),
+  reflectionQuestions: text("reflection_questions"),
+  notes: text("notes"),
   durationMinutes: integer("duration_minutes"),
   readingTimeMinutes: integer("reading_time_minutes"),
   packageId: integer("package_id"),
+  freePreview: boolean("free_preview").notNull().default(false),
   status: text("status").notNull().default("draft"),
   sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -85,6 +104,35 @@ export const cmsLessonsTable = pgTable("cms_lessons", {
 });
 
 export type CmsLesson = typeof cmsLessonsTable.$inferSelect;
+
+// ── USER LESSON PROGRESS ──────────────────────────────────────────────────────
+
+export const userLessonProgressTable = pgTable("user_lesson_progress", {
+  id: serial("id").primaryKey(),
+  userId: uuid("user_id").notNull(),
+  lessonId: integer("lesson_id").notNull(),
+  programId: integer("program_id").notNull(),
+  completedAt: timestamp("completed_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export type UserLessonProgress = typeof userLessonProgressTable.$inferSelect;
+
+// ── USER PROGRAM PROGRESS ─────────────────────────────────────────────────────
+
+export const userProgramProgressTable = pgTable("user_program_progress", {
+  id: serial("id").primaryKey(),
+  userId: uuid("user_id").notNull(),
+  programId: integer("program_id").notNull(),
+  lastLessonId: integer("last_lesson_id"),
+  completedLessonCount: integer("completed_lesson_count").notNull().default(0),
+  totalLessonCount: integer("total_lesson_count").notNull().default(0),
+  progressPct: integer("progress_pct").notNull().default(0),
+  startedAt: timestamp("started_at", { withTimezone: true }).notNull().defaultNow(),
+  completedAt: timestamp("completed_at", { withTimezone: true }),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type UserProgramProgress = typeof userProgramProgressTable.$inferSelect;
 
 // ── ARTICLE CATEGORIES ────────────────────────────────────────────────────────
 
@@ -163,7 +211,7 @@ export const cmsQuotesTable = pgTable("cms_quotes", {
 
 export type CmsQuote = typeof cmsQuotesTable.$inferSelect;
 
-// ── TASK DEFINITIONS (Günün Tapşırığı məzmunu) ────────────────────────────────
+// ── TASK DEFINITIONS (Günün Tapşırığı) ────────────────────────────────────────
 
 export const cmsTaskDefinitionsTable = pgTable("cms_task_definitions", {
   id: serial("id").primaryKey(),
@@ -205,7 +253,7 @@ export const cmsAnnouncementsTable = pgTable("cms_announcements", {
 
 export type CmsAnnouncement = typeof cmsAnnouncementsTable.$inferSelect;
 
-// ── SLIDERS / BANNERS ─────────────────────────────────────────────────────────
+// ── SLIDERS ───────────────────────────────────────────────────────────────────
 
 export const cmsSlidersTable = pgTable("cms_sliders", {
   id: serial("id").primaryKey(),
@@ -220,7 +268,7 @@ export const cmsSlidersTable = pgTable("cms_sliders", {
 
 export type CmsSlider = typeof cmsSlidersTable.$inferSelect;
 
-// ── MEDIA LIBRARY ─────────────────────────────────────────────────────────────
+// ── MEDIA ─────────────────────────────────────────────────────────────────────
 
 export const cmsMediaTable = pgTable("cms_media", {
   id: serial("id").primaryKey(),
