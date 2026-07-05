@@ -6,3 +6,9 @@ id = "53yS00MvaXR3qu0imXFnm"
 uri = "file://rzahan-academy-production.zip"
 type = "unspecified"
 title = "Rzahan Academy — Final Production ZIP (Netlify + Supabase)"
+
+[[outputs]]
+id = "4OzCXPuL_ZSOq154p9IQL"
+uri = "file://rzahan_academy_v1_production.tar.gz"
+type = "unspecified"
+title = "Rzahan Academy v1.0 — Production SQL (tar.gz)"

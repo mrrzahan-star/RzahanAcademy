@@ -1,0 +1,129 @@
+IMPORTANT
+
+This is the FINALIZATION step.
+
+DO NOT create any new features.
+
+DO NOT redesign anything.
+
+DO NOT refactor working code.
+
+DO NOT modify UI unless required to fix a production issue.
+
+The platform is considered feature-complete for Version 1.0.
+
+=========================================================
+MISSION
+=========================================================
+
+Prepare the project for the official
+
+Rzahan Academy v1.0 Production Release.
+
+=========================================================
+STEP 1
+=========================================================
+
+Run a full project verification.
+
+Verify:
+
+- Database schema
+- API routes
+- Authentication
+- Dashboard
+- Programs
+- Modules
+- Lessons
+- Articles
+- Stories
+- Membership
+- Development System
+- Certificates
+- Leaderboard
+- Journal
+- Daily Tasks
+- Landing Page
+- Admin Panel
+
+Fix ONLY production-breaking issues if found.
+
+Do NOT add new functionality.
+
+=========================================================
+STEP 2
+=========================================================
+
+Generate ONE complete production SQL.
+
+The SQL must recreate the entire project from scratch.
+
+Include:
+
+- All tables
+- Constraints
+- Indexes
+- Foreign Keys
+- Seed Data
+- CMS Data
+- Categories
+- Packages
+- Membership System
+- Development System
+- Landing CMS
+- Default configuration
+
+The SQL must work on a brand-new Supabase PostgreSQL project.
+
+=========================================================
+STEP 3
+=========================================================
+
+Verify all environment variables required for production.
+
+List every required variable.
+
+Do not expose secret values.
+
+=========================================================
+STEP 4
+=========================================================
+
+Push the FINAL source code to GitHub.
+
+Repository:
+
+https://github.com/mrrzahan-star/RzahanAcademy
+
+Push only the final production version.
+
+=========================================================
+STEP 5
+=========================================================
+
+Prepare Version
+
+v1.0-production
+
+Do NOT create new features after this point.
+
+=========================================================
+RETURN ONLY
+
+1. QA summary
+
+2. GitHub push confirmation
+
+3. Production SQL ready confirmation
+
+4. Required environment variables
+
+5. Confirmation that the project is ready for deployment on a brand-new Supabase database.
+
+No additional coding.
+
+No new features.
+
+No redesign.
+
+Only production finalization.

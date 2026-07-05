@@ -593,4 +593,55 @@ router.put("/settings", requireAuth, putSettingsHandler);
 router.get("/site-settings", requireAuth, getSettingsHandler);
 router.put("/site-settings", requireAuth, putSettingsHandler);
 
+// ── ADMIN NOTIFICATIONS ───────────────────────────────────────────────────────
+
+router.get("/notifications", requireAuth, async (req, res) => {
+  const adminUsername = await requireAdmin(req, res);
+  if (!adminUsername) return;
+
+  const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+  const [newUsers, recentTests, recentCerts, pendingComments] = await Promise.all([
+    db.select({ id: usersTable.id, username: usersTable.username, createdAt: usersTable.createdAt })
+      .from(usersTable)
+      .where(gte(usersTable.createdAt, since))
+      .orderBy(desc(usersTable.createdAt))
+      .limit(5),
+    db.select({ id: testResultsTable.id, userId: testResultsTable.userId, stageName: testResultsTable.stageName, createdAt: testResultsTable.createdAt })
+      .from(testResultsTable)
+      .where(gte(testResultsTable.createdAt, since))
+      .orderBy(desc(testResultsTable.createdAt))
+      .limit(5),
+    db.select({ id: certificatesTable.id, stageName: certificatesTable.stageName, issuedAt: certificatesTable.issuedAt })
+      .from(certificatesTable)
+      .where(gte(certificatesTable.issuedAt, since))
+      .orderBy(desc(certificatesTable.issuedAt))
+      .limit(5),
+    db.select({ id: commentsTable.id, authorName: commentsTable.authorName, createdAt: commentsTable.createdAt })
+      .from(commentsTable)
+      .where(and(eq(commentsTable.approved, false), gte(commentsTable.createdAt, since)))
+      .orderBy(desc(commentsTable.createdAt))
+      .limit(5),
+  ]);
+
+  const notifications: { type: string; title: string; at: string | null }[] = [];
+
+  for (const u of newUsers) {
+    notifications.push({ type: "user", title: `Yeni istifadəçi: @${u.username}`, at: u.createdAt?.toISOString() ?? null });
+  }
+  for (const t of recentTests) {
+    notifications.push({ type: "test", title: `Test nəticəsi: ${t.stageName} mərhələsi`, at: t.createdAt?.toISOString() ?? null });
+  }
+  for (const c of recentCerts) {
+    notifications.push({ type: "cert", title: `Sertifikat verildi: ${c.stageName}`, at: c.issuedAt?.toISOString() ?? null });
+  }
+  for (const cm of pendingComments) {
+    notifications.push({ type: "block", title: `Təsdiqlənməmiş rəy: ${cm.authorName}`, at: cm.createdAt?.toISOString() ?? null });
+  }
+
+  notifications.sort((a, b) => (b.at ?? "").localeCompare(a.at ?? ""));
+
+  res.json(notifications);
+});
+
 export default router;
