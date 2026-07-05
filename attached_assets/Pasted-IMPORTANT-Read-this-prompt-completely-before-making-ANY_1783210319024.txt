@@ -1,0 +1,356 @@
+IMPORTANT
+
+Read this prompt completely before making ANY changes.
+
+This project is already stable and fully functional.
+
+DO NOT redesign the UI.
+
+DO NOT change the visual identity.
+
+DO NOT modify authentication.
+
+DO NOT modify the database logic that is already working.
+
+DO NOT remove or replace existing features.
+
+DO NOT change existing APIs unless absolutely required.
+
+DO NOT break registration, login, tests, certificates, leaderboard, journal, daily tasks or admin features.
+
+Everything currently working must continue working exactly as before.
+
+=========================================================
+MISSION
+=========================================================
+
+Rzahan Academy is evolving into a professional Learning Management System (LMS).
+
+The current website is only the first phase.
+
+From now on, every future content must be manageable from the Admin Panel without editing the source code.
+
+This task is ONLY to prepare the CMS/LMS foundation.
+
+No payment integration.
+
+No AI.
+
+No mobile app.
+
+No unnecessary features.
+
+=========================================================
+ADMIN PANEL
+=========================================================
+
+Rename "Admin Panel" to
+
+"İdarəetmə Mərkəzi"
+
+This becomes the central management system of the academy.
+
+=========================================================
+CONTENT MANAGEMENT PRINCIPLE
+=========================================================
+
+Nothing should be hardcoded anymore.
+
+Every future content must come from the database and be manageable through the Admin Panel.
+
+Never require code edits to add or update content.
+
+=========================================================
+CREATE CMS MODULES
+=========================================================
+
+Prepare management sections for:
+
+• Akademiya
+(Missiya, Baxış, Dəyərlər, Haqqımızda)
+
+• Proqramlar
+
+• Proqram Kateqoriyaları
+
+• Modullar
+
+• Dərslər
+
+• Məqalələr
+
+• Məqalə Kateqoriyaları
+
+• Həyat Hekayələri
+
+• Hekayə Kateqoriyaları
+
+• Günün Fikri
+
+• Günün Tapşırığı
+
+• Sitatlar
+
+• Tez-tez verilən suallar
+
+• Elanlar
+
+• Ana Səhifə
+
+• Hero Bölməsi
+
+• Statistikalar
+
+• Rəylər
+
+• Slider/Banner
+
+• Paketlər
+
+• Paket Xüsusiyyətləri
+
+• Media Kitabxanası
+
+=========================================================
+MEDIA
+=========================================================
+
+Videos and audio files must NOT be uploaded to the server.
+
+Instead store only:
+
+YouTube URL
+
+Audio URL
+
+External File URL
+
+Only images, icons and small documents should be uploaded.
+
+=========================================================
+PROGRAM MANAGEMENT
+=========================================================
+
+Administrator must be able to:
+
+Create Program
+
+Edit
+
+Delete
+
+Publish
+
+Archive
+
+Upload Cover Image
+
+Assign Category
+
+Assign Access Package
+
+Change Order
+
+=========================================================
+MODULE MANAGEMENT
+=========================================================
+
+Each Program contains Modules.
+
+Each Module contains Lessons.
+
+Administrator must manage everything visually.
+
+=========================================================
+LESSON MANAGEMENT
+=========================================================
+
+Every lesson should support:
+
+Title
+
+Short Description
+
+Rich Text Content
+
+YouTube Video
+
+Audio Link
+
+PDF Link
+
+Duration
+
+Estimated Reading Time
+
+Attachments
+
+Package Access
+
+Status
+
+Sort Order
+
+=========================================================
+ARTICLE MANAGEMENT
+=========================================================
+
+Administrator must manage:
+
+Create
+
+Edit
+
+Delete
+
+Publish
+
+Draft
+
+Featured
+
+SEO Title
+
+SEO Description
+
+Category
+
+Tags
+
+Cover Image
+
+Package Access
+
+=========================================================
+LIFE STORIES
+=========================================================
+
+Separate CMS.
+
+Not Articles.
+
+Supports:
+
+Image
+
+Content
+
+Category
+
+Package
+
+Status
+
+=========================================================
+PACKAGES
+=========================================================
+
+Prepare package architecture only.
+
+NO PAYMENT.
+
+NO PAYMENT GATEWAY.
+
+Packages:
+
+🌱 Başlanğıc
+
+🚀 İnkişaf
+
+👑 Ustad
+
+Administrator can:
+
+Create
+
+Edit
+
+Hide
+
+Publish
+
+Change description
+
+Assign permissions
+
+Assign content
+
+Future pricing support
+
+=========================================================
+ACCESS CONTROL
+=========================================================
+
+Every content item should support:
+
+Başlanğıc
+
+İnkişaf
+
+Ustad
+
+Frontend automatically decides access.
+
+No hardcoded permissions.
+
+=========================================================
+DATABASE
+=========================================================
+
+Create only the required tables for this CMS foundation.
+
+Do NOT remove existing tables.
+
+Do NOT break existing migrations.
+
+=========================================================
+PERFORMANCE
+=========================================================
+
+Keep the project lightweight.
+
+Avoid duplicate database queries.
+
+Reuse existing architecture wherever possible.
+
+=========================================================
+QUALITY ASSURANCE
+=========================================================
+
+Before finishing verify:
+
+Registration
+
+Login
+
+Profile
+
+Journal
+
+Daily Tasks
+
+Tests
+
+Certificates
+
+Leaderboard
+
+Admin
+
+Everything must still work.
+
+=========================================================
+RETURN
+=========================================================
+
+Return ONLY:
+
+1. Database tables created
+
+2. Admin sections created
+
+3. Files modified
+
+4. Confirmation that no existing functionality changed
+
+5. Confirmation that the platform is now ready for future LMS development.

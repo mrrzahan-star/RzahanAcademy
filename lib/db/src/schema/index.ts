@@ -8,3 +8,4 @@ export * from "./daily_tasks";
 export * from "./site_settings";
 export * from "./users";
 export * from "./password_reset_tokens";
+export * from "./cms";

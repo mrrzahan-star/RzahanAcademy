@@ -148,3 +148,204 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO profiles (user_id, first_name, last_name, email)
 VALUES ('00000000-0000-0000-0000-000000000001', 'Orxan', 'Rzayev', NULL)
 ON CONFLICT (user_id) DO NOTHING;
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- LMS / CMS TABLES  (Phase 2 — Content Management System)
+-- Safe to run multiple times (IF NOT EXISTS).
+-- ═══════════════════════════════════════════════════════════════════════════════
+
+-- ─── cms_packages ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_packages (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL,
+  slug        TEXT NOT NULL UNIQUE,
+  emoji       TEXT DEFAULT '📦',
+  description TEXT,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_program_categories ───────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_program_categories (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL,
+  slug        TEXT NOT NULL UNIQUE,
+  description TEXT,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  sort_order  INTEGER NOT NULL DEFAULT 0
+);
+
+-- ─── cms_programs ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_programs (
+  id               SERIAL PRIMARY KEY,
+  title            TEXT NOT NULL,
+  slug             TEXT NOT NULL UNIQUE,
+  description      TEXT,
+  cover_image_url  TEXT,
+  category_id      INTEGER,
+  package_id       INTEGER,
+  status           TEXT NOT NULL DEFAULT 'draft',
+  sort_order       INTEGER NOT NULL DEFAULT 0,
+  duration_hours   INTEGER,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at       TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_modules ──────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_modules (
+  id          SERIAL PRIMARY KEY,
+  program_id  INTEGER NOT NULL,
+  title       TEXT NOT NULL,
+  description TEXT,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_lessons ──────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_lessons (
+  id                    SERIAL PRIMARY KEY,
+  module_id             INTEGER NOT NULL,
+  title                 TEXT NOT NULL,
+  description           TEXT,
+  content_html          TEXT,
+  youtube_url           TEXT,
+  audio_url             TEXT,
+  pdf_url               TEXT,
+  duration_minutes      INTEGER,
+  reading_time_minutes  INTEGER,
+  package_id            INTEGER,
+  status                TEXT NOT NULL DEFAULT 'draft',
+  sort_order            INTEGER NOT NULL DEFAULT 0,
+  created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at            TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_article_categories ───────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_article_categories (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL,
+  slug        TEXT NOT NULL UNIQUE,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true
+);
+
+-- ─── cms_articles ─────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_articles (
+  id              SERIAL PRIMARY KEY,
+  title           TEXT NOT NULL,
+  slug            TEXT NOT NULL UNIQUE,
+  content_html    TEXT,
+  excerpt         TEXT,
+  cover_image_url TEXT,
+  category_id     INTEGER,
+  package_id      INTEGER,
+  status          TEXT NOT NULL DEFAULT 'draft',
+  is_featured     BOOLEAN NOT NULL DEFAULT false,
+  seo_title       TEXT,
+  seo_description TEXT,
+  tags            TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_story_categories ─────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_story_categories (
+  id          SERIAL PRIMARY KEY,
+  name        TEXT NOT NULL,
+  slug        TEXT NOT NULL UNIQUE,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true
+);
+
+-- ─── cms_life_stories ─────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_life_stories (
+  id           SERIAL PRIMARY KEY,
+  title        TEXT NOT NULL,
+  content_html TEXT,
+  image_url    TEXT,
+  category_id  INTEGER,
+  package_id   INTEGER,
+  status       TEXT NOT NULL DEFAULT 'draft',
+  sort_order   INTEGER NOT NULL DEFAULT 0,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_quotes (Günün Fikri) ─────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_quotes (
+  id          SERIAL PRIMARY KEY,
+  text        TEXT NOT NULL,
+  author      TEXT,
+  source      TEXT,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_task_definitions (Günün Tapşırığı) ──────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_task_definitions (
+  id          SERIAL PRIMARY KEY,
+  title       TEXT NOT NULL,
+  description TEXT,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_faqs ─────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_faqs (
+  id          SERIAL PRIMARY KEY,
+  question    TEXT NOT NULL,
+  answer      TEXT NOT NULL,
+  category    TEXT,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_announcements ────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_announcements (
+  id          SERIAL PRIMARY KEY,
+  title       TEXT NOT NULL,
+  content     TEXT,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  expires_at  TIMESTAMPTZ,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_sliders ──────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_sliders (
+  id          SERIAL PRIMARY KEY,
+  title       TEXT,
+  subtitle    TEXT,
+  image_url   TEXT,
+  link_url    TEXT,
+  sort_order  INTEGER NOT NULL DEFAULT 0,
+  is_active   BOOLEAN NOT NULL DEFAULT true,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ─── cms_media ────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS cms_media (
+  id            SERIAL PRIMARY KEY,
+  filename      TEXT NOT NULL,
+  original_name TEXT NOT NULL,
+  file_type     TEXT NOT NULL DEFAULT 'image',
+  url           TEXT NOT NULL,
+  alt_text      TEXT,
+  uploaded_by   TEXT,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Seed default packages
+INSERT INTO cms_packages (name, slug, emoji, description, is_active, sort_order)
+VALUES
+  ('Başlanğıc', 'baslanqic', '🌱', 'Əsas bilik və bacarıqlar üçün giriş paketi', true, 1),
+  ('İnkişaf',   'inkisaf',   '🚀', 'Daha dərin öyrənmə və inkişaf üçün irəliləmiş paket', true, 2),
+  ('Ustad',     'ustad',     '👑', 'Tam giriş və ekspert səviyyəsi üçün premium paket', true, 3)
+ON CONFLICT (slug) DO NOTHING;

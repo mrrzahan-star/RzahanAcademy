@@ -17,6 +17,7 @@ import { ReviewsTab } from "./components/ReviewsTab";
 import { AuditLogTab } from "./components/AuditLogTab";
 import { ContentTab } from "./components/ContentTab";
 import { SystemTab } from "./components/SystemTab";
+import { CmsTab } from "./components/CmsTab";
 import { SearchPanel } from "./components/SearchPanel";
 import { adminFetch, type AdminStats as AdminStatsType } from "./components/utils";
 
@@ -29,6 +30,7 @@ const TABS = [
   { value: "daily-tasks", label: "Tapşırıqlar" },
   { value: "leaderboard", label: "Liderlik" },
   { value: "audit", label: "Audit" },
+  { value: "lms", label: "LMS / CMS" },
   { value: "content", label: "Məzmun" },
   { value: "system", label: "Sistem" },
 ];
@@ -72,7 +74,7 @@ export default function AdminPage() {
       {/* Header */}
       <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-indigo-950">Admin Panel</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-indigo-950">İdarəetmə Mərkəzi</h1>
           <p className="text-indigo-900/60 mt-1 text-sm">@{user?.username}</p>
         </div>
         <div className="flex items-center gap-2">
@@ -120,6 +122,7 @@ export default function AdminPage() {
         <TabsContent value="daily-tasks"><DailyTasksTab /></TabsContent>
         <TabsContent value="leaderboard"><LeaderboardTab /></TabsContent>
         <TabsContent value="audit"><AuditLogTab /></TabsContent>
+        <TabsContent value="lms"><CmsTab /></TabsContent>
         <TabsContent value="content"><ContentTab /></TabsContent>
         <TabsContent value="system"><SystemTab /></TabsContent>
       </Tabs>

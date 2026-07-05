@@ -21469,27 +21469,27 @@ var require_router = __commonJS({
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var methods = METHODS.map((method) => method.toLowerCase());
-    module.exports = Router13;
+    module.exports = Router14;
     module.exports.Route = Route;
-    function Router13(options) {
-      if (!(this instanceof Router13)) {
-        return new Router13(options);
+    function Router14(options) {
+      if (!(this instanceof Router14)) {
+        return new Router14(options);
       }
       const opts = options || {};
-      function router13(req, res, next) {
-        router13.handle(req, res, next);
+      function router14(req, res, next) {
+        router14.handle(req, res, next);
       }
-      Object.setPrototypeOf(router13, this);
-      router13.caseSensitive = opts.caseSensitive;
-      router13.mergeParams = opts.mergeParams;
-      router13.params = {};
-      router13.strict = opts.strict;
-      router13.stack = [];
-      return router13;
+      Object.setPrototypeOf(router14, this);
+      router14.caseSensitive = opts.caseSensitive;
+      router14.mergeParams = opts.mergeParams;
+      router14.params = {};
+      router14.strict = opts.strict;
+      router14.stack = [];
+      return router14;
     }
-    Router13.prototype = function() {
+    Router14.prototype = function() {
     };
-    Router13.prototype.param = function param(name, fn) {
+    Router14.prototype.param = function param(name, fn) {
       if (!name) {
         throw new TypeError("argument name is required");
       }
@@ -21509,7 +21509,7 @@ var require_router = __commonJS({
       params.push(fn);
       return this;
     };
-    Router13.prototype.handle = function handle(req, res, callback) {
+    Router14.prototype.handle = function handle(req, res, callback) {
       if (!callback) {
         throw new TypeError("argument callback is required");
       }
@@ -21636,7 +21636,7 @@ var require_router = __commonJS({
         }
       }
     };
-    Router13.prototype.use = function use(handler2) {
+    Router14.prototype.use = function use(handler2) {
       let offset = 0;
       let path = "/";
       if (typeof handler2 !== "function") {
@@ -21669,7 +21669,7 @@ var require_router = __commonJS({
       }
       return this;
     };
-    Router13.prototype.route = function route(path) {
+    Router14.prototype.route = function route(path) {
       const route2 = new Route(path);
       const layer = new Layer(path, {
         sensitive: this.caseSensitive,
@@ -21684,7 +21684,7 @@ var require_router = __commonJS({
       return route2;
     };
     methods.concat("all").forEach(function(method) {
-      Router13.prototype[method] = function(path) {
+      Router14.prototype[method] = function(path) {
         const route = this.route(path);
         route[method].apply(route, slice.call(arguments, 1));
         return this;
@@ -21867,13 +21867,13 @@ var require_application = __commonJS({
     var compileTrust = require_utils3().compileTrust;
     var resolve = __require("node:path").resolve;
     var once = require_once();
-    var Router13 = require_router();
+    var Router14 = require_router();
     var slice = Array.prototype.slice;
     var flatten = Array.prototype.flat;
     var app2 = exports = module.exports = {};
     var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
     app2.init = function init() {
-      var router13 = null;
+      var router14 = null;
       this.cache = /* @__PURE__ */ Object.create(null);
       this.engines = /* @__PURE__ */ Object.create(null);
       this.settings = /* @__PURE__ */ Object.create(null);
@@ -21882,13 +21882,13 @@ var require_application = __commonJS({
         configurable: true,
         enumerable: true,
         get: function getrouter() {
-          if (router13 === null) {
-            router13 = new Router13({
+          if (router14 === null) {
+            router14 = new Router14({
               caseSensitive: this.enabled("case sensitive routing"),
               strict: this.enabled("strict routing")
             });
           }
-          return router13;
+          return router14;
         }
       });
     };
@@ -21959,15 +21959,15 @@ var require_application = __commonJS({
       if (fns.length === 0) {
         throw new TypeError("app.use() requires a middleware function");
       }
-      var router13 = this.router;
+      var router14 = this.router;
       fns.forEach(function(fn2) {
         if (!fn2 || !fn2.handle || !fn2.set) {
-          return router13.use(path, fn2);
+          return router14.use(path, fn2);
         }
         debug(".use app under %s", path);
         fn2.mountpath = path;
         fn2.parent = this;
-        router13.use(path, function mounted_app(req, res, next) {
+        router14.use(path, function mounted_app(req, res, next) {
           var orig = req.app;
           fn2.handle(req, res, function(err) {
             Object.setPrototypeOf(req, orig.request);
@@ -24540,7 +24540,7 @@ var require_express = __commonJS({
     var EventEmitter = __require("node:events").EventEmitter;
     var mixin = require_merge_descriptors();
     var proto = require_application();
-    var Router13 = require_router();
+    var Router14 = require_router();
     var req = require_request2();
     var res = require_response2();
     exports = module.exports = createApplication;
@@ -24562,8 +24562,8 @@ var require_express = __commonJS({
     exports.application = proto;
     exports.request = req;
     exports.response = res;
-    exports.Route = Router13.Route;
-    exports.Router = Router13;
+    exports.Route = Router14.Route;
+    exports.Router = Router14;
     exports.json = bodyParser.json;
     exports.raw = bodyParser.raw;
     exports.static = require_serve_static();
@@ -38388,12 +38388,12 @@ var require_lib5 = __commonJS({
 var import_serverless_http = __toESM(require_serverless_http(), 1);
 
 // src/app.ts
-var import_express13 = __toESM(require_express2(), 1);
+var import_express14 = __toESM(require_express2(), 1);
 var import_cors = __toESM(require_lib3(), 1);
 var import_pino_http = __toESM(require_logger(), 1);
 
 // src/routes/index.ts
-var import_express12 = __toESM(require_express2(), 1);
+var import_express13 = __toESM(require_express2(), 1);
 
 // src/routes/health.ts
 var import_express = __toESM(require_express2(), 1);
@@ -49497,6 +49497,21 @@ var schema_exports = {};
 __export(schema_exports, {
   auditLogsTable: () => auditLogsTable,
   certificatesTable: () => certificatesTable,
+  cmsAnnouncementsTable: () => cmsAnnouncementsTable,
+  cmsArticleCategoriesTable: () => cmsArticleCategoriesTable,
+  cmsArticlesTable: () => cmsArticlesTable,
+  cmsFaqsTable: () => cmsFaqsTable,
+  cmsLessonsTable: () => cmsLessonsTable,
+  cmsLifeStoriesTable: () => cmsLifeStoriesTable,
+  cmsMediaTable: () => cmsMediaTable,
+  cmsModulesTable: () => cmsModulesTable,
+  cmsPackagesTable: () => cmsPackagesTable,
+  cmsProgramCategoriesTable: () => cmsProgramCategoriesTable,
+  cmsProgramsTable: () => cmsProgramsTable,
+  cmsQuotesTable: () => cmsQuotesTable,
+  cmsSlidersTable: () => cmsSlidersTable,
+  cmsStoryCategoriesTable: () => cmsStoryCategoriesTable,
+  cmsTaskDefinitionsTable: () => cmsTaskDefinitionsTable,
   commentsTable: () => commentsTable,
   dailyTasksTable: () => dailyTasksTable,
   insertCertificateSchema: () => insertCertificateSchema,
@@ -61020,6 +61035,166 @@ var passwordResetTokensTable = pgTable("password_reset_tokens", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
 });
 
+// ../../lib/db/src/schema/cms.ts
+var cmsPackagesTable = pgTable("cms_packages", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  emoji: text("emoji").default("\u{1F4E6}"),
+  description: text("description"),
+  isActive: boolean("is_active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsProgramCategoriesTable = pgTable("cms_program_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  isActive: boolean("is_active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0)
+});
+var cmsProgramsTable = pgTable("cms_programs", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  description: text("description"),
+  coverImageUrl: text("cover_image_url"),
+  categoryId: integer("category_id"),
+  packageId: integer("package_id"),
+  status: text("status").notNull().default("draft"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  durationHours: integer("duration_hours"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsModulesTable = pgTable("cms_modules", {
+  id: serial("id").primaryKey(),
+  programId: integer("program_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+var cmsLessonsTable = pgTable("cms_lessons", {
+  id: serial("id").primaryKey(),
+  moduleId: integer("module_id").notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  contentHtml: text("content_html"),
+  youtubeUrl: text("youtube_url"),
+  audioUrl: text("audio_url"),
+  pdfUrl: text("pdf_url"),
+  durationMinutes: integer("duration_minutes"),
+  readingTimeMinutes: integer("reading_time_minutes"),
+  packageId: integer("package_id"),
+  status: text("status").notNull().default("draft"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsArticleCategoriesTable = pgTable("cms_article_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true)
+});
+var cmsArticlesTable = pgTable("cms_articles", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  contentHtml: text("content_html"),
+  excerpt: text("excerpt"),
+  coverImageUrl: text("cover_image_url"),
+  categoryId: integer("category_id"),
+  packageId: integer("package_id"),
+  status: text("status").notNull().default("draft"),
+  isFeatured: boolean("is_featured").notNull().default(false),
+  seoTitle: text("seo_title"),
+  seoDescription: text("seo_description"),
+  tags: text("tags"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsStoryCategoriesTable = pgTable("cms_story_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true)
+});
+var cmsLifeStoriesTable = pgTable("cms_life_stories", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  contentHtml: text("content_html"),
+  imageUrl: text("image_url"),
+  categoryId: integer("category_id"),
+  packageId: integer("package_id"),
+  status: text("status").notNull().default("draft"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsQuotesTable = pgTable("cms_quotes", {
+  id: serial("id").primaryKey(),
+  text: text("text").notNull(),
+  author: text("author"),
+  source: text("source"),
+  isActive: boolean("is_active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+var cmsTaskDefinitionsTable = pgTable("cms_task_definitions", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  isActive: boolean("is_active").notNull().default(true),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsFaqsTable = pgTable("cms_faqs", {
+  id: serial("id").primaryKey(),
+  question: text("question").notNull(),
+  answer: text("answer").notNull(),
+  category: text("category"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+var cmsAnnouncementsTable = pgTable("cms_announcements", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  content: text("content"),
+  isActive: boolean("is_active").notNull().default(true),
+  expiresAt: timestamp("expires_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => /* @__PURE__ */ new Date())
+});
+var cmsSlidersTable = pgTable("cms_sliders", {
+  id: serial("id").primaryKey(),
+  title: text("title"),
+  subtitle: text("subtitle"),
+  imageUrl: text("image_url"),
+  linkUrl: text("link_url"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+var cmsMediaTable = pgTable("cms_media", {
+  id: serial("id").primaryKey(),
+  filename: text("filename").notNull(),
+  originalName: text("original_name").notNull(),
+  fileType: text("file_type").notNull().default("image"),
+  url: text("url").notNull(),
+  altText: text("alt_text"),
+  uploadedBy: text("uploaded_by"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow()
+});
+
 // ../../lib/db/src/index.ts
 var { Pool: Pool3 } = esm_default;
 if (!process.env.DATABASE_URL) {
@@ -64108,20 +64283,237 @@ router11.get("/me", requireAuth, async (req, res) => {
 });
 var auth_default = router11;
 
-// src/routes/index.ts
+// src/routes/cms.ts
+var import_express12 = __toESM(require_express2(), 1);
 var router12 = (0, import_express12.Router)();
-router12.use(health_default);
-router12.use("/auth", auth_default);
-router12.use("/profiles", profiles_default);
-router12.use("/tests", tests_default);
-router12.use("/certificates", certificates_default);
-router12.use("/comments", comments_default);
-router12.use("/stats", stats_default);
-router12.use("/journal", journal_default);
-router12.use("/leaderboard", leaderboard_default);
-router12.use("/admin", admin_default);
-router12.use("/tasks", tasks_default);
-var routes_default = router12;
+async function requireAdmin2(req, res) {
+  if (!req.userId) {
+    res.status(401).json({ error: "Unauthorized" });
+    return null;
+  }
+  if (req.userRole !== "admin") {
+    res.status(403).json({ error: "Forbidden" });
+    return null;
+  }
+  return req.username;
+}
+async function logAction2(admin, action, target) {
+  try {
+    await db.insert(auditLogsTable).values({ adminEmail: admin, action, target });
+  } catch {
+  }
+}
+function parsePage2(req) {
+  const page = Math.max(1, parseInt(req.query.page || "1", 10));
+  const limit = Math.min(200, Math.max(1, parseInt(req.query.limit || "50", 10)));
+  return { page, limit, offset: (page - 1) * limit };
+}
+function makeSlug(s) {
+  return s.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "").slice(0, 80);
+}
+function crudRoutes(path, table, label) {
+  router12.get(path, requireAuth, async (req, res) => {
+    const admin = await requireAdmin2(req, res);
+    if (!admin) return;
+    const { limit, offset } = parsePage2(req);
+    const orderCol = table.sortOrder ?? table.createdAt;
+    const rows = await db.select().from(table).orderBy(asc(orderCol)).limit(limit).offset(offset);
+    const countRows = await db.select({ c: count() }).from(table);
+    res.json({ data: rows, total: Number(countRows[0].c) });
+  });
+  router12.post(path, requireAuth, async (req, res) => {
+    const admin = await requireAdmin2(req, res);
+    if (!admin) return;
+    const body = req.body;
+    if (!body.slug && typeof body.name === "string") body.slug = makeSlug(body.name);
+    if (!body.slug && typeof body.title === "string") body.slug = makeSlug(body.title);
+    const rows = await db.insert(table).values(body).returning();
+    const row = rows[0];
+    await logAction2(admin, `CREATE_${label}`, String(row.id));
+    res.json(row);
+  });
+  router12.put(`${path}/:id`, requireAuth, async (req, res) => {
+    const admin = await requireAdmin2(req, res);
+    if (!admin) return;
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      res.status(400).json({ error: "Invalid id" });
+      return;
+    }
+    const body = req.body;
+    delete body.id;
+    delete body.createdAt;
+    const [row] = await db.update(table).set(body).where(eq(table.id, id)).returning();
+    if (!row) {
+      res.status(404).json({ error: "Not found" });
+      return;
+    }
+    await logAction2(admin, `UPDATE_${label}`, String(id));
+    res.json(row);
+  });
+  router12.delete(`${path}/:id`, requireAuth, async (req, res) => {
+    const admin = await requireAdmin2(req, res);
+    if (!admin) return;
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+      res.status(400).json({ error: "Invalid id" });
+      return;
+    }
+    const [row] = await db.delete(table).where(eq(table.id, id)).returning();
+    if (!row) {
+      res.status(404).json({ error: "Not found" });
+      return;
+    }
+    await logAction2(admin, `DELETE_${label}`, String(id));
+    res.json({ ok: true });
+  });
+}
+crudRoutes("/packages", cmsPackagesTable, "PACKAGE");
+crudRoutes("/program-categories", cmsProgramCategoriesTable, "PROGRAM_CAT");
+crudRoutes("/programs", cmsProgramsTable, "PROGRAM");
+crudRoutes("/modules", cmsModulesTable, "MODULE");
+router12.get("/lessons", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const { limit, offset } = parsePage2(req);
+  const moduleId = req.query.moduleId ? parseInt(req.query.moduleId, 10) : void 0;
+  let rows, total;
+  if (moduleId) {
+    [rows, [{ c: total }]] = await Promise.all([
+      db.select().from(cmsLessonsTable).where(eq(cmsLessonsTable.moduleId, moduleId)).orderBy(asc(cmsLessonsTable.sortOrder)).limit(limit).offset(offset),
+      db.select({ c: count() }).from(cmsLessonsTable).where(eq(cmsLessonsTable.moduleId, moduleId))
+    ]);
+  } else {
+    [rows, [{ c: total }]] = await Promise.all([
+      db.select().from(cmsLessonsTable).orderBy(desc(cmsLessonsTable.createdAt)).limit(limit).offset(offset),
+      db.select({ c: count() }).from(cmsLessonsTable)
+    ]);
+  }
+  res.json({ data: rows, total: Number(total) });
+});
+router12.post("/lessons", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const [row] = await db.insert(cmsLessonsTable).values(req.body).returning();
+  await logAction2(admin, "CREATE_LESSON", String(row.id));
+  res.json(row);
+});
+router12.put("/lessons/:id", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid id" });
+    return;
+  }
+  const body = req.body;
+  delete body.id;
+  delete body.createdAt;
+  const [row] = await db.update(cmsLessonsTable).set(body).where(eq(cmsLessonsTable.id, id)).returning();
+  if (!row) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  await logAction2(admin, "UPDATE_LESSON", String(id));
+  res.json(row);
+});
+router12.delete("/lessons/:id", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid id" });
+    return;
+  }
+  const [row] = await db.delete(cmsLessonsTable).where(eq(cmsLessonsTable.id, id)).returning();
+  if (!row) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  await logAction2(admin, "DELETE_LESSON", String(id));
+  res.json({ ok: true });
+});
+crudRoutes("/article-categories", cmsArticleCategoriesTable, "ARTICLE_CAT");
+crudRoutes("/articles", cmsArticlesTable, "ARTICLE");
+crudRoutes("/story-categories", cmsStoryCategoriesTable, "STORY_CAT");
+crudRoutes("/life-stories", cmsLifeStoriesTable, "LIFE_STORY");
+crudRoutes("/quotes", cmsQuotesTable, "QUOTE");
+crudRoutes("/task-definitions", cmsTaskDefinitionsTable, "TASK_DEF");
+crudRoutes("/faqs", cmsFaqsTable, "FAQ");
+crudRoutes("/announcements", cmsAnnouncementsTable, "ANNOUNCEMENT");
+crudRoutes("/sliders", cmsSlidersTable, "SLIDER");
+router12.get("/media", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const { limit, offset } = parsePage2(req);
+  const [rows, [{ c: total }]] = await Promise.all([
+    db.select().from(cmsMediaTable).orderBy(desc(cmsMediaTable.createdAt)).limit(limit).offset(offset),
+    db.select({ c: count() }).from(cmsMediaTable)
+  ]);
+  res.json({ data: rows, total: Number(total) });
+});
+router12.post("/media", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const body = req.body;
+  if (!body.filename) body.filename = String(body.originalName || body.url || "file");
+  body.uploadedBy = admin;
+  const [row] = await db.insert(cmsMediaTable).values(body).returning();
+  await logAction2(admin, "ADD_MEDIA", String(row.id));
+  res.json(row);
+});
+router12.delete("/media/:id", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) {
+    res.status(400).json({ error: "Invalid id" });
+    return;
+  }
+  const [row] = await db.delete(cmsMediaTable).where(eq(cmsMediaTable.id, id)).returning();
+  if (!row) {
+    res.status(404).json({ error: "Not found" });
+    return;
+  }
+  await logAction2(admin, "DELETE_MEDIA", String(id));
+  res.json({ ok: true });
+});
+router12.get("/counts", requireAuth, async (req, res) => {
+  const admin = await requireAdmin2(req, res);
+  if (!admin) return;
+  const results = await Promise.all([
+    db.select({ c: count() }).from(cmsPackagesTable),
+    db.select({ c: count() }).from(cmsProgramsTable),
+    db.select({ c: count() }).from(cmsModulesTable),
+    db.select({ c: count() }).from(cmsLessonsTable),
+    db.select({ c: count() }).from(cmsArticlesTable),
+    db.select({ c: count() }).from(cmsLifeStoriesTable),
+    db.select({ c: count() }).from(cmsQuotesTable),
+    db.select({ c: count() }).from(cmsFaqsTable),
+    db.select({ c: count() }).from(cmsAnnouncementsTable),
+    db.select({ c: count() }).from(cmsMediaTable),
+    db.select({ c: count() }).from(cmsTaskDefinitionsTable)
+  ]);
+  const [pkgs, prgs, mods, lsns, arts, strs, qts, faqs, anns, mdia, tdef] = results.map((r) => Number(r[0].c));
+  res.json({ packages: pkgs, programs: prgs, modules: mods, lessons: lsns, articles: arts, lifeStories: strs, quotes: qts, faqs, announcements: anns, media: mdia, taskDefinitions: tdef });
+});
+var cms_default = router12;
+
+// src/routes/index.ts
+var router13 = (0, import_express13.Router)();
+router13.use(health_default);
+router13.use("/auth", auth_default);
+router13.use("/profiles", profiles_default);
+router13.use("/tests", tests_default);
+router13.use("/certificates", certificates_default);
+router13.use("/comments", comments_default);
+router13.use("/stats", stats_default);
+router13.use("/journal", journal_default);
+router13.use("/leaderboard", leaderboard_default);
+router13.use("/admin", admin_default);
+router13.use("/admin/cms", cms_default);
+router13.use("/tasks", tasks_default);
+var routes_default = router13;
 
 // src/lib/logger.ts
 var import_pino = __toESM(require_pino(), 1);
@@ -64175,7 +64567,7 @@ async function seedAdmin() {
 }
 
 // src/app.ts
-var app = (0, import_express13.default)();
+var app = (0, import_express14.default)();
 app.use(
   (0, import_pino_http.default)({
     logger,
@@ -64190,8 +64582,8 @@ app.use(
   })
 );
 app.use((0, import_cors.default)({ credentials: true, origin: true }));
-app.use(import_express13.default.json());
-app.use(import_express13.default.urlencoded({ extended: true }));
+app.use(import_express14.default.json());
+app.use(import_express14.default.urlencoded({ extended: true }));
 app.use("/api", routes_default);
 seedAdmin().catch(() => {
 });
