@@ -2,6 +2,7 @@ import { Router } from "express";
 import { requireAuth } from "../middlewares/auth";
 import { db, dailyTasksTable } from "@workspace/db";
 import { eq, and } from "drizzle-orm";
+import { awardXp, computeAndSaveDevScore } from "../lib/xp";
 
 const router = Router();
 
@@ -32,18 +33,28 @@ router.post("/:slot/toggle", requireAuth, async (req, res) => {
     .from(dailyTasksTable)
     .where(and(eq(dailyTasksTable.userId, userId), eq(dailyTasksTable.date, date), eq(dailyTasksTable.taskSlot, taskSlot)));
 
+  let done: boolean;
+
   if (existing) {
     const [updated] = await db.update(dailyTasksTable)
       .set({ done: !existing.done })
       .where(eq(dailyTasksTable.id, existing.id))
       .returning();
-    res.json({ done: updated.done });
+    done = updated.done;
   } else {
     const [created] = await db.insert(dailyTasksTable)
       .values({ userId, date, taskSlot, done: true })
       .returning();
-    res.json({ done: created.done });
+    done = created.done;
   }
+
+  if (done) {
+    const refId = `task_${date}_${taskSlot}`;
+    await awardXp(userId, "task_complete", refId);
+    computeAndSaveDevScore(userId).catch(() => {});
+  }
+
+  res.json({ done });
 });
 
 export default router;

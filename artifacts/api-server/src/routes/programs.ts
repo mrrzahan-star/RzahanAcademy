@@ -11,6 +11,7 @@ import {
   userProgramProgressTable,
 } from "@workspace/db";
 import { eq, and, asc, count, inArray, sql } from "drizzle-orm";
+import { awardXp, computeAndSaveDevScore } from "../lib/xp";
 
 const router = Router();
 
@@ -255,7 +256,8 @@ router.post("/lessons/:lessonId/complete", requireAuth, async (req, res) => {
         )
       );
 
-    if (existing.length === 0) {
+    const isNewCompletion = existing.length === 0;
+    if (isNewCompletion) {
       await db.insert(userLessonProgressTable).values({ userId, lessonId, programId });
     }
 
@@ -325,6 +327,14 @@ router.post("/lessons/:lessonId/complete", requireAuth, async (req, res) => {
             eq(userProgramProgressTable.programId, programId)
           )
         );
+    }
+
+    if (isNewCompletion) {
+      awardXp(userId, "lesson_complete", `lesson_${lessonId}`).catch(() => {});
+      if (pct === 100) {
+        awardXp(userId, "program_complete", `program_${programId}`).catch(() => {});
+      }
+      computeAndSaveDevScore(userId).catch(() => {});
     }
 
     res.json({ success: true, completed, total, progressPct: pct });

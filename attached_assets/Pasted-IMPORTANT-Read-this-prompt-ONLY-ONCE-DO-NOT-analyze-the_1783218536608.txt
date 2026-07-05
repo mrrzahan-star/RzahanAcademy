@@ -1,0 +1,597 @@
+IMPORTANT
+
+Read this prompt ONLY ONCE.
+
+DO NOT analyze the project again.
+
+Continue from the existing architecture.
+
+Reuse existing database tables, APIs, CMS modules and frontend components wherever possible.
+
+Create new tables ONLY if absolutely necessary.
+
+DO NOT redesign the website.
+
+DO NOT redesign the Admin Panel.
+
+DO NOT modify authentication.
+
+DO NOT modify routing.
+
+DO NOT modify any existing working functionality.
+
+Everything currently working must continue working exactly as before.
+
+=========================================================
+PHASE 7
+RZAHAN ACADEMY DEVELOPMENT SYSTEM
+=========================================================
+
+MISSION
+
+Rzahan Academy is NOT a game.
+
+It is a Personal Development Platform.
+
+The goal is to motivate continuous personal growth while maintaining a premium, elegant and professional experience.
+
+Everything must be configurable from the Admin Panel.
+
+No hardcoded values.
+
+=========================================================
+XP SYSTEM
+=========================================================
+
+Create a configurable XP system.
+
+XP is earned ONLY from real user activity.
+
+Administrator controls every XP rule.
+
+Examples:
+
+Complete Lesson
+
+Complete Module
+
+Complete Program
+
+Read Article
+
+Read Life Story
+
+Complete Daily Task
+
+Pass Test
+
+Receive Certificate
+
+Daily Login
+
+Complete Weekly Goal
+
+Complete Monthly Goal
+
+=========================================================
+LEVEL SYSTEM
+=========================================================
+
+Administrator manages Levels.
+
+Each Level contains:
+
+Name
+
+Description
+
+Required XP
+
+Icon
+
+Color
+
+Display Order
+
+Default Levels
+
+Başlanğıc
+
+Araşdıran
+
+İnkişaf Edən
+
+Şüurlu
+
+Yaradıcı
+
+Administrator may create unlimited Levels.
+
+=========================================================
+ACHIEVEMENTS
+=========================================================
+
+Administrator manages achievements.
+
+Examples
+
+İlk Addım
+
+İlk Dərs
+
+İlk Məqalə
+
+İlk Hekayə
+
+İlk Sertifikat
+
+7 Gün Aktiv
+
+30 Gün Aktiv
+
+1000 XP
+
+İlk Proqram
+
+Administrator can:
+
+Create
+
+Edit
+
+Delete
+
+Enable
+
+Disable
+
+Change XP reward
+
+=========================================================
+STREAK
+=========================================================
+
+Track:
+
+Current Streak
+
+Best Streak
+
+Lost Streak
+
+Administrator controls rules.
+
+=========================================================
+GOALS
+=========================================================
+
+Automatically manage:
+
+Today's Goal
+
+Weekly Goal
+
+Monthly Goal
+
+Goals are generated from real activity.
+
+=========================================================
+OVERALL DEVELOPMENT SCORE
+=========================================================
+
+Create a Development Score.
+
+This is NOT XP.
+
+Calculate automatically from:
+
+Completed Programs
+
+Completed Lessons
+
+Completed Tests
+
+Certificates
+
+Daily Tasks
+
+Articles Read
+
+Stories Read
+
+Active Days
+
+Membership Activity
+
+Display:
+
+0%
+
+↓
+
+100%
+
+Show on:
+
+Profile
+
+Dashboard
+
+Admin User Detail
+
+Administrator controls calculation weights.
+
+=========================================================
+DEVELOPMENT MAP
+=========================================================
+
+Create a visual Development Map.
+
+It represents the user's personal journey.
+
+It is NOT a game.
+
+The map progresses automatically using:
+
+XP
+
+Development Score
+
+Programs
+
+Certificates
+
+Tests
+
+Achievements
+
+Display beautifully inside Profile.
+
+=========================================================
+SMART RECOMMENDATION SYSTEM
+=========================================================
+
+Automatically recommend:
+
+Next Lesson
+
+Next Module
+
+Next Program
+
+Recommended Article
+
+Recommended Story
+
+Today's Task
+
+Display:
+
+Dashboard
+
+Profile
+
+Programs
+
+The recommendation must be based on real user progress.
+
+Do NOT use random content.
+
+=========================================================
+PROFILE
+=========================================================
+
+Expand Profile.
+
+Display:
+
+Current Package
+
+Package Expiration
+
+Current XP
+
+Current Level
+
+Development Score
+
+Current Streak
+
+Best Streak
+
+Achievements
+
+Programs
+
+Lessons
+
+Articles
+
+Stories
+
+Certificates
+
+Development Map
+
+Recommended Next Step
+
+=========================================================
+LEADERBOARD
+=========================================================
+
+Extend Leaderboard.
+
+Allow switching:
+
+XP
+
+Development Score
+
+Programs
+
+Certificates
+
+Tests
+
+Streak
+
+Administrator enables/disables each ranking.
+
+=========================================================
+DASHBOARD
+=========================================================
+
+Expand Dashboard.
+
+Widgets:
+
+Current XP
+
+Current Level
+
+Development Score
+
+Today's Goal
+
+Weekly Goal
+
+Monthly Goal
+
+Current Streak
+
+Latest Achievement
+
+Next Reward
+
+Recommended Lesson
+
+Recommended Article
+
+Recommended Story
+
+Development Map Preview
+
+=========================================================
+LANDING PAGE
+=========================================================
+
+Create a premium section:
+
+"Niyə Rzahan Academy?"
+
+Explain:
+
+Psychology
+
+Personal Development
+
+Philosophy
+
+Life
+
+Development System
+
+Certificates
+
+Community
+
+Create another section:
+
+"Sənin İnkişaf Yolun"
+
+Illustrate how users grow from:
+
+Başlanğıc
+
+↓
+
+Learning
+
+↓
+
+Practice
+
+↓
+
+Development
+
+↓
+
+Certification
+
+↓
+
+Continuous Growth
+
+Everything editable from CMS.
+
+=========================================================
+ADMIN PANEL
+=========================================================
+
+Create a new module:
+
+İnkişaf Sistemi
+
+Administrator manages:
+
+XP Rules
+
+Levels
+
+Achievements
+
+Goal Rules
+
+Development Score Formula
+
+Streak Rules
+
+Recommendation Rules
+
+Development Map
+
+Everything editable.
+
+=========================================================
+NOTIFICATIONS
+=========================================================
+
+Create lightweight platform notifications.
+
+Examples:
+
++25 XP
+
+Yeni Nailiyyət
+
+Yeni Səviyyə
+
+Yeni Sertifikat
+
+Streak qorundu
+
+Yeni Tövsiyə
+
+No emails.
+
+No push notifications.
+
+=========================================================
+VISUAL DESIGN
+=========================================================
+
+Elegant.
+
+Premium.
+
+Minimal.
+
+Professional.
+
+No childish effects.
+
+No unnecessary animations.
+
+=========================================================
+DATABASE
+=========================================================
+
+Reuse existing structures.
+
+Avoid duplicate logic.
+
+Keep architecture scalable.
+
+=========================================================
+PERFORMANCE
+=========================================================
+
+Keep Lighthouse score high.
+
+Lazy load where appropriate.
+
+Avoid unnecessary API requests.
+
+=========================================================
+IMPORTANT
+=========================================================
+
+Never generate fake users.
+
+Never generate fake XP.
+
+Never generate fake statistics.
+
+Everything must be based on real activity.
+
+=========================================================
+QA
+=========================================================
+
+Verify:
+
+Landing Page
+
+Dashboard
+
+Profile
+
+Programs
+
+Modules
+
+Lessons
+
+Articles
+
+Stories
+
+Membership
+
+Certificates
+
+Leaderboard
+
+Development System
+
+Admin Panel
+
+Registration
+
+Login
+
+Everything must continue working exactly as before.
+
+=========================================================
+RETURN ONLY
+
+1. Database changes
+
+2. Admin modules created
+
+3. APIs created
+
+4. Dashboard improvements
+
+5. Profile improvements
+
+6. Landing improvements
+
+7. Files modified
+
+8. QA results
+
+9. Confirmation that the Development System is production-ready.
+
+IMPORTANT
+
+Do NOT spend time analyzing the project again.
+
+Implement ONLY the requested functionality.
+
+Reuse the existing architecture.
+
+Minimize unnecessary changes.
+
+Preserve full backward compatibility.

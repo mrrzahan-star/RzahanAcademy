@@ -19,12 +19,14 @@ import { ContentTab } from "./components/ContentTab";
 import { SystemTab } from "./components/SystemTab";
 import { CmsTab } from "./components/CmsTab";
 import { MembershipsTab } from "./components/MembershipsTab";
+import { DevSystemTab } from "./components/DevSystemTab";
 import { SearchPanel } from "./components/SearchPanel";
 import { adminFetch, type AdminStats as AdminStatsType } from "./components/utils";
 
 const TABS = [
   { value: "users", label: "İstifadəçilər" },
   { value: "memberships", label: "👑 Üzvlük" },
+  { value: "dev-system", label: "⚡ İnkişaf" },
   { value: "reviews", label: "Rəylər" },
   { value: "tests", label: "Testlər" },
   { value: "certificates", label: "Sertifikatlar" },
@@ -118,6 +120,7 @@ export default function AdminPage() {
 
         <TabsContent value="users"><UsersTab /></TabsContent>
         <TabsContent value="memberships"><MembershipsTab /></TabsContent>
+        <TabsContent value="dev-system"><DevSystemTab /></TabsContent>
         <TabsContent value="reviews"><ReviewsTab /></TabsContent>
         <TabsContent value="tests"><TestsTab /></TabsContent>
         <TabsContent value="certificates"><CertificatesTab /></TabsContent>

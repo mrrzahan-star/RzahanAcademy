@@ -4,6 +4,7 @@ import {
   cmsArticleCategoriesTable, cmsStoryCategoriesTable,
   cmsPackagesTable, cmsProgramsTable, cmsModulesTable, cmsLessonsTable,
   cmsArticlesTable, cmsLifeStoriesTable, cmsFaqsTable, cmsTestimonialsTable,
+  xpRulesTable, levelsTable, achievementDefinitionsTable,
 } from "@workspace/db";
 import { eq, count } from "drizzle-orm";
 import { logger } from "./logger";
@@ -200,4 +201,67 @@ export async function seedDemoContent(): Promise<void> {
       logger.info("Demo testimonials seeded");
     }
   } catch (err) { logger.error({ err }, "Failed to seed demo content"); }
+}
+
+// ── XP RULES ──────────────────────────────────────────────────────────────────
+
+export async function seedXpRules(): Promise<void> {
+  try {
+    const [{ c }] = await db.select({ c: count() }).from(xpRulesTable);
+    if (Number(c) > 0) return;
+    await db.insert(xpRulesTable).values([
+      { actionType: "daily_login",      label: "Günlük Giriş",        xpAmount: 5,   isActive: true },
+      { actionType: "lesson_complete",  label: "Dərs Tamamlandı",     xpAmount: 25,  isActive: true },
+      { actionType: "module_complete",  label: "Modul Tamamlandı",    xpAmount: 50,  isActive: true },
+      { actionType: "program_complete", label: "Proqram Tamamlandı",  xpAmount: 200, isActive: true },
+      { actionType: "article_read",     label: "Məqalə Oxundu",       xpAmount: 10,  isActive: true },
+      { actionType: "story_read",       label: "Hekayə Oxundu",       xpAmount: 10,  isActive: true },
+      { actionType: "task_complete",    label: "Tapşırıq Tamamlandı", xpAmount: 15,  isActive: true },
+      { actionType: "test_pass",        label: "Test Keçildi",        xpAmount: 50,  isActive: true },
+      { actionType: "cert_issued",      label: "Sertifikat Alındı",   xpAmount: 100, isActive: true },
+      { actionType: "streak_7day",      label: "7 Gün Ardıcıllıq",    xpAmount: 50,  isActive: true },
+      { actionType: "streak_30day",     label: "30 Gün Ardıcıllıq",   xpAmount: 200, isActive: true },
+      { actionType: "achievement",      label: "Nailiyyət Alındı",    xpAmount: 0,   isActive: true },
+    ]).onConflictDoNothing();
+    logger.info("XP rules seeded");
+  } catch (err) { logger.error({ err }, "Failed to seed XP rules"); }
+}
+
+// ── LEVELS ────────────────────────────────────────────────────────────────────
+
+export async function seedLevels(): Promise<void> {
+  try {
+    const [{ c }] = await db.select({ c: count() }).from(levelsTable);
+    if (Number(c) > 0) return;
+    await db.insert(levelsTable).values([
+      { name: "Başlanğıc",    description: "İnkişaf yoluna ilk addım",             requiredXp: 0,    emoji: "🌱", color: "#10b981", sortOrder: 0, isActive: true },
+      { name: "Araşdıran",    description: "Özünü kəşf etməyə başladın",           requiredXp: 100,  emoji: "🔍", color: "#6366f1", sortOrder: 1, isActive: true },
+      { name: "İnkişaf Edən", description: "Davamlı inkişaf yolundasın",           requiredXp: 500,  emoji: "📈", color: "#8b5cf6", sortOrder: 2, isActive: true },
+      { name: "Şüurlu",       description: "Şüurlu bir həyat sürürsən",            requiredXp: 1500, emoji: "💡", color: "#f59e0b", sortOrder: 3, isActive: true },
+      { name: "Yaradıcı",     description: "Öz həyatının müəllifisinə çevrildin", requiredXp: 5000, emoji: "⭐", color: "#ef4444", sortOrder: 4, isActive: true },
+    ]).onConflictDoNothing();
+    logger.info("Levels seeded");
+  } catch (err) { logger.error({ err }, "Failed to seed levels"); }
+}
+
+// ── ACHIEVEMENT DEFINITIONS ───────────────────────────────────────────────────
+
+export async function seedAchievements(): Promise<void> {
+  try {
+    const [{ c }] = await db.select({ c: count() }).from(achievementDefinitionsTable);
+    if (Number(c) > 0) return;
+    await db.insert(achievementDefinitionsTable).values([
+      { name: "İlk Addım",       description: "Platformaya ilk dəfə giriş etdiniz",         emoji: "👣", color: "#10b981", xpReward: 10,  triggerType: "first_login",  triggerValue: 1,    isActive: true, sortOrder: 0 },
+      { name: "İlk Dərs",        description: "İlk dərsinizi tamamladınız",                 emoji: "📖", color: "#6366f1", xpReward: 25,  triggerType: "lesson_count", triggerValue: 1,    isActive: true, sortOrder: 1 },
+      { name: "İlk Məqalə",      description: "İlk məqalənizi oxudunuz",                   emoji: "📰", color: "#8b5cf6", xpReward: 10,  triggerType: "article_count", triggerValue: 1,   isActive: true, sortOrder: 2 },
+      { name: "İlk Hekayə",      description: "İlk həyat hekayəsini oxudunuz",             emoji: "📚", color: "#f59e0b", xpReward: 10,  triggerType: "story_count",  triggerValue: 1,    isActive: true, sortOrder: 3 },
+      { name: "İlk Sertifikat",  description: "İlk sertifikatınızı aldınız",               emoji: "🏆", color: "#ef4444", xpReward: 50,  triggerType: "cert_count",   triggerValue: 1,    isActive: true, sortOrder: 4 },
+      { name: "7 Gün Aktiv",     description: "7 gün fasiləsiz aktiv oldunuz",             emoji: "🔥", color: "#f97316", xpReward: 50,  triggerType: "streak_days",  triggerValue: 7,    isActive: true, sortOrder: 5 },
+      { name: "30 Gün Aktiv",    description: "30 gün fasiləsiz aktiv oldunuz",            emoji: "💎", color: "#06b6d4", xpReward: 200, triggerType: "streak_days",  triggerValue: 30,   isActive: true, sortOrder: 6 },
+      { name: "1000 XP",         description: "1000 XP topladınız",                        emoji: "⚡", color: "#84cc16", xpReward: 100, triggerType: "xp_milestone", triggerValue: 1000, isActive: true, sortOrder: 7 },
+      { name: "İlk Proqram",     description: "İlk proqramı tamamladınız",                emoji: "🎓", color: "#ec4899", xpReward: 100, triggerType: "program_count", triggerValue: 1,   isActive: true, sortOrder: 8 },
+      { name: "10 Dərs",         description: "10 dərs tamamladınız",                      emoji: "📝", color: "#6366f1", xpReward: 50,  triggerType: "lesson_count", triggerValue: 10,   isActive: true, sortOrder: 9 },
+    ]).onConflictDoNothing();
+    logger.info("Achievement definitions seeded");
+  } catch (err) { logger.error({ err }, "Failed to seed achievements"); }
 }

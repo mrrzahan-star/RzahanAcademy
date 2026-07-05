@@ -19,6 +19,9 @@ export const profilesTable = pgTable("profiles", {
   currentPackageSlug: text("current_package_slug").notNull().default("baslanqic"),
   membershipExpiresAt: timestamp("membership_expires_at", { withTimezone: true }),
   currentMembershipId: integer("current_membership_id"),
+  totalXp: integer("total_xp").notNull().default(0),
+  devScore: integer("dev_score").notNull().default(0),
+  currentLevelName: text("current_level_name").notNull().default("Başlanğıc"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });

@@ -3,6 +3,7 @@ import { requireAuth } from "../middlewares/auth";
 import { db, profilesTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { UpsertProfileBody } from "@workspace/api-zod";
+import { maybeTriggerDailyLogin } from "../lib/xp";
 
 const router = Router();
 
@@ -16,6 +17,8 @@ router.get("/me", requireAuth, async (req, res) => {
     res.status(404).json({ error: "Profile not found" });
     return;
   }
+  // Fire-and-forget: daily login XP + streak update
+  maybeTriggerDailyLogin(userId).catch(() => {});
   res.json({
     id: profile.id,
     userId: profile.userId,
@@ -26,6 +29,12 @@ router.get("/me", requireAuth, async (req, res) => {
     consciousnessLevel: profile.consciousnessLevel,
     consciousnessStage: profile.consciousnessStage,
     bio: profile.bio,
+    streak: profile.streak,
+    totalXp: profile.totalXp,
+    devScore: profile.devScore,
+    currentLevelName: profile.currentLevelName,
+    currentPackageSlug: profile.currentPackageSlug,
+    membershipExpiresAt: profile.membershipExpiresAt?.toISOString() ?? null,
     createdAt: profile.createdAt.toISOString(),
   });
 });

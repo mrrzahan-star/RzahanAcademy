@@ -16,6 +16,9 @@ import articlesRouter from "./articles";
 import storiesRouter from "./stories";
 import landingRouter from "./landing";
 import { publicMembershipRouter, adminMembershipRouter } from "./memberships";
+import xpRouter from "./xp";
+import notificationsRouter from "./notifications";
+import devSystemRouter from "./dev-system";
 
 const router: IRouter = Router();
 
@@ -37,5 +40,8 @@ router.use("/tasks", tasksRouter);
 router.use("/landing", landingRouter);
 router.use("/memberships", publicMembershipRouter);
 router.use("/admin/memberships", adminMembershipRouter);
+router.use("/xp", xpRouter);
+router.use("/notifications", notificationsRouter);
+router.use("/admin/dev-system", devSystemRouter);
 
 export default router;
