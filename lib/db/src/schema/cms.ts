@@ -289,6 +289,35 @@ export const cmsSlidersTable = pgTable("cms_sliders", {
 
 export type CmsSlider = typeof cmsSlidersTable.$inferSelect;
 
+// ── TESTIMONIALS ──────────────────────────────────────────────────────────────
+
+export const cmsTestimonialsTable = pgTable("cms_testimonials", {
+  id: serial("id").primaryKey(),
+  authorName: text("author_name").notNull(),
+  authorTitle: text("author_title"),
+  avatarUrl: text("avatar_url"),
+  content: text("content").notNull(),
+  rating: integer("rating").notNull().default(5),
+  stageName: text("stage_name"),
+  isActive: boolean("is_active").notNull().default(true),
+  isFeatured: boolean("is_featured").notNull().default(false),
+  sortOrder: integer("sort_order").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type CmsTestimonial = typeof cmsTestimonialsTable.$inferSelect;
+
+// ── LANDING CONFIG ─────────────────────────────────────────────────────────────
+
+export const cmsLandingConfigTable = pgTable("cms_landing_config", {
+  id: serial("id").primaryKey(),
+  configJson: text("config_json").notNull().default("{}"),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
+});
+
+export type CmsLandingConfig = typeof cmsLandingConfigTable.$inferSelect;
+
 // ── MEDIA ─────────────────────────────────────────────────────────────────────
 
 export const cmsMediaTable = pgTable("cms_media", {

@@ -8,6 +8,7 @@ import {
   Quote, CheckSquare, HelpCircle, Megaphone, Image,
   Home, FolderOpen, GraduationCap
 } from "lucide-react";
+import LandingConfigTab from "./LandingConfigTab";
 
 interface Counts {
   packages: number; programs: number; modules: number; lessons: number;
@@ -78,6 +79,7 @@ export function CmsTab() {
               { value: "announcements", label: "📢 Elanlar" },
               { value: "sliders", label: "🖼 Slider" },
               { value: "media", label: "📁 Media" },
+              { value: "landing-page", label: "🏠 Landing Page" },
             ].map(t => (
               <TabsTrigger key={t.value} value={t.value}
                 className="rounded-lg text-xs font-semibold whitespace-nowrap px-3 py-1.5 shrink-0">
@@ -431,6 +433,11 @@ export function CmsTab() {
             ]}
             defaultValues={{ fileType: "image" }}
           />
+        </TabsContent>
+
+        {/* LANDING PAGE */}
+        <TabsContent value="landing-page">
+          <LandingConfigTab />
         </TabsContent>
       </Tabs>
     </div>

@@ -14,6 +14,7 @@ import cmsRouter from "./cms";
 import programsRouter from "./programs";
 import articlesRouter from "./articles";
 import storiesRouter from "./stories";
+import landingRouter from "./landing";
 
 const router: IRouter = Router();
 
@@ -32,5 +33,6 @@ router.use("/programs", programsRouter);
 router.use("/articles", articlesRouter);
 router.use("/stories", storiesRouter);
 router.use("/tasks", tasksRouter);
+router.use("/landing", landingRouter);
 
 export default router;

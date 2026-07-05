@@ -1,0 +1,407 @@
+IMPORTANT
+
+Read this prompt ONLY ONCE.
+
+DO NOT analyze the entire project again.
+
+Continue from the existing architecture.
+
+Reuse existing components.
+
+Reuse existing APIs.
+
+Reuse existing database tables whenever possible.
+
+Create new tables ONLY if absolutely necessary.
+
+DO NOT refactor working code.
+
+DO NOT redesign the visual identity.
+
+DO NOT modify authentication.
+
+DO NOT modify routing.
+
+DO NOT modify any working functionality.
+
+Everything currently working must continue working exactly as before.
+
+=========================================================
+PHASE 5
+LANDING PAGE EXPERIENCE
+=========================================================
+
+MISSION
+
+The Landing Page must become the public face of Rzahan Academy.
+
+Visitors must understand the platform within the first 15 seconds.
+
+The Landing Page must be fully managed from the Admin Panel.
+
+No source code edits should ever be required to update Landing Page content.
+
+=========================================================
+LANDING PAGE CMS
+=========================================================
+
+Create a Landing Page management section inside:
+
+İdarəetmə Mərkəzi
+
+↓
+
+LMS / CMS
+
+↓
+
+Landing Page
+
+Everything shown on the Landing Page must be editable from this CMS.
+
+=========================================================
+ADMIN CAN MANAGE
+=========================================================
+
+Hero Section
+
+Headline
+
+Subtitle
+
+Background Image
+
+Buttons
+
+Section Visibility
+
+Section Order
+
+Everything without code.
+
+=========================================================
+HOME PAGE STRUCTURE
+=========================================================
+
+Prepare these sections.
+
+Administrator must be able to:
+
+Show
+
+Hide
+
+Reorder
+
+Edit
+
+Preview
+
+Publish
+
+=========================================================
+
+1.
+
+Hero
+
+=========================================================
+
+2.
+
+About Rzahan Academy
+
+Mission
+
+Vision
+
+Values
+
+=========================================================
+
+3.
+
+Featured Programs
+
+Automatically display:
+
+Published
+
+Featured
+
+Programs
+
+Administrator chooses quantity.
+
+Maximum 6.
+
+=========================================================
+
+4.
+
+Latest Articles
+
+Automatically display newest published articles.
+
+Administrator chooses quantity.
+
+=========================================================
+
+5.
+
+Latest Life Stories
+
+Automatically display newest published stories.
+
+Administrator chooses quantity.
+
+=========================================================
+
+6.
+
+Today's Thought
+
+Automatically display today's published content.
+
+=========================================================
+
+7.
+
+Community Statistics
+
+Display real database statistics.
+
+Examples:
+
+Registered Members
+
+Programs
+
+Articles
+
+Stories
+
+Certificates
+
+=========================================================
+
+8.
+
+Testimonials
+
+Administrator can:
+
+Create
+
+Edit
+
+Delete
+
+Feature
+
+Order
+
+Publish
+
+=========================================================
+
+9.
+
+Membership Packages
+
+Display packages only.
+
+NO PAYMENT.
+
+NO SUBSCRIPTION.
+
+Packages:
+
+🌱 Başlanğıc
+
+🚀 İnkişaf
+
+👑 Ustad
+
+Administrator can edit:
+
+Package Name
+
+Description
+
+Features
+
+Recommended Badge
+
+Display Order
+
+Visibility
+
+Button Text
+
+Button URL
+
+Future Price Placeholder
+
+=========================================================
+
+10.
+
+Frequently Asked Questions
+
+Dynamic.
+
+Managed completely from Admin Panel.
+
+=========================================================
+
+11.
+
+Announcements
+
+Automatically display active announcements.
+
+=========================================================
+
+12.
+
+Footer
+
+Editable from Admin Panel.
+
+=========================================================
+LANDING PREVIEW
+=========================================================
+
+Administrator must be able to:
+
+Preview Landing Page changes
+
+before publishing them.
+
+Publishing must require explicit confirmation.
+
+=========================================================
+SEO
+=========================================================
+
+Landing Page supports:
+
+SEO Title
+
+SEO Description
+
+OpenGraph Image
+
+Canonical URL
+
+Keywords
+
+Editable from Admin Panel.
+
+=========================================================
+SECTION BUILDER
+=========================================================
+
+Administrator can:
+
+Enable/Disable sections
+
+Change display order
+
+Choose how many items appear
+
+Without code changes.
+
+=========================================================
+PACKAGE PRESENTATION
+=========================================================
+
+Packages are presentation only.
+
+No payment logic.
+
+No checkout.
+
+No subscription activation.
+
+Future-ready architecture only.
+
+=========================================================
+PERFORMANCE
+=========================================================
+
+Reuse existing APIs.
+
+Reuse existing CMS components.
+
+Avoid duplicate code.
+
+Avoid unnecessary database tables.
+
+=========================================================
+IMPORTANT
+=========================================================
+
+Do NOT create demo content.
+
+Do NOT create placeholder articles.
+
+Do NOT create fake testimonials.
+
+Build only production-ready infrastructure.
+
+=========================================================
+QA
+=========================================================
+
+Verify:
+
+Landing Page
+
+Registration
+
+Login
+
+Dashboard
+
+Programs
+
+Modules
+
+Lessons
+
+Articles
+
+Stories
+
+Tests
+
+Certificates
+
+Leaderboard
+
+Journal
+
+Daily Tasks
+
+Admin
+
+Everything must continue working exactly as before.
+
+=========================================================
+RETURN ONLY
+
+1. Database changes
+
+2. Admin CMS modules created
+
+3. Landing Page sections created
+
+4. APIs added
+
+5. Files modified
+
+6. QA results
+
+7. Confirmation that the Landing Page is now fully CMS-driven and production-ready.

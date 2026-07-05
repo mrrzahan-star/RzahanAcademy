@@ -17,6 +17,8 @@ import {
   cmsAnnouncementsTable,
   cmsSlidersTable,
   cmsMediaTable,
+  cmsTestimonialsTable,
+  cmsLandingConfigTable,
   auditLogsTable,
 } from "@workspace/db";
 import { eq, desc, asc, count } from "drizzle-orm";
@@ -229,9 +231,36 @@ router.get("/counts", requireAuth, async (req, res) => {
     db.select({ c: count() }).from(cmsAnnouncementsTable),
     db.select({ c: count() }).from(cmsMediaTable),
     db.select({ c: count() }).from(cmsTaskDefinitionsTable),
+    db.select({ c: count() }).from(cmsTestimonialsTable),
   ]);
-  const [pkgs, prgs, mods, lsns, arts, strs, qts, faqs, anns, mdia, tdef] = results.map(r => Number(r[0].c));
-  res.json({ packages: pkgs, programs: prgs, modules: mods, lessons: lsns, articles: arts, lifeStories: strs, quotes: qts, faqs, announcements: anns, media: mdia, taskDefinitions: tdef });
+  const [pkgs, prgs, mods, lsns, arts, strs, qts, faqs, anns, mdia, tdef, tests] = results.map(r => Number(r[0].c));
+  res.json({ packages: pkgs, programs: prgs, modules: mods, lessons: lsns, articles: arts, lifeStories: strs, quotes: qts, faqs, announcements: anns, media: mdia, taskDefinitions: tdef, testimonials: tests });
+});
+
+// ── TESTIMONIALS ──────────────────────────────────────────────────────────────
+
+crudRoutes("/testimonials", cmsTestimonialsTable, "Rəylər");
+
+// ── LANDING CONFIG ────────────────────────────────────────────────────────────
+
+router.get("/landing-config", requireAuth, async (req: any, res) => {
+  const admin = await requireAdmin(req, res); if (!admin) return;
+  const [row] = await db.select().from(cmsLandingConfigTable).limit(1);
+  if (!row) { res.json({}); return; }
+  try { res.json(JSON.parse(row.configJson || "{}")); } catch { res.json({}); }
+});
+
+router.put("/landing-config", requireAuth, async (req: any, res) => {
+  const admin = await requireAdmin(req, res); if (!admin) return;
+  const configJson = JSON.stringify(req.body);
+  const [existing] = await db.select().from(cmsLandingConfigTable).limit(1);
+  if (existing) {
+    await db.update(cmsLandingConfigTable).set({ configJson }).where(eq(cmsLandingConfigTable.id, existing.id));
+  } else {
+    await db.insert(cmsLandingConfigTable).values({ configJson });
+  }
+  await logAction(admin, "landing-config:update");
+  res.json({ ok: true });
 });
 
 export default router;
