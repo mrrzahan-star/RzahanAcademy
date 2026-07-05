@@ -60,30 +60,32 @@ export function CmsTab() {
 
       {/* Sub-tabs */}
       <Tabs defaultValue="packages">
-        <TabsList className="mb-5 bg-indigo-50/50 border border-indigo-100 rounded-xl p-1 flex flex-nowrap gap-0.5 h-auto overflow-x-auto scrollbar-none">
-          {[
-            { value: "packages", label: "📦 Paketlər" },
-            { value: "programs", label: "🎓 Proqramlar" },
-            { value: "prog-cats", label: "🗂 Proq. Kat." },
-            { value: "modules", label: "🧩 Modullar" },
-            { value: "lessons", label: "📖 Dərslər" },
-            { value: "articles", label: "📰 Məqalələr" },
-            { value: "art-cats", label: "🗂 Məq. Kat." },
-            { value: "stories", label: "💌 Hekayələr" },
-            { value: "story-cats", label: "🗂 Hek. Kat." },
-            { value: "quotes", label: "💭 Günün Fikri" },
-            { value: "task-defs", label: "✅ Tapşırıqlar" },
-            { value: "faqs", label: "❓ FAQ" },
-            { value: "announcements", label: "📢 Elanlar" },
-            { value: "sliders", label: "🖼 Slider" },
-            { value: "media", label: "📁 Media" },
-          ].map(t => (
-            <TabsTrigger key={t.value} value={t.value}
-              className="rounded-lg text-xs font-semibold whitespace-nowrap px-3 py-1.5">
-              {t.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <div className="mb-5 bg-indigo-50/50 border border-indigo-100 rounded-xl p-1.5 overflow-x-auto">
+          <TabsList className="flex flex-wrap gap-0.5 h-auto bg-transparent w-full min-w-max">
+            {[
+              { value: "packages", label: "📦 Paketlər" },
+              { value: "programs", label: "🎓 Proqramlar" },
+              { value: "prog-cats", label: "🗂 Proq. Kat." },
+              { value: "modules", label: "🧩 Modullar" },
+              { value: "lessons", label: "📖 Dərslər" },
+              { value: "articles", label: "📰 Məqalələr" },
+              { value: "art-cats", label: "🗂 Məq. Kat." },
+              { value: "stories", label: "💌 Hekayələr" },
+              { value: "story-cats", label: "🗂 Hek. Kat." },
+              { value: "quotes", label: "💭 Günün Fikri" },
+              { value: "task-defs", label: "✅ Tapşırıqlar" },
+              { value: "faqs", label: "❓ FAQ" },
+              { value: "announcements", label: "📢 Elanlar" },
+              { value: "sliders", label: "🖼 Slider" },
+              { value: "media", label: "📁 Media" },
+            ].map(t => (
+              <TabsTrigger key={t.value} value={t.value}
+                className="rounded-lg text-xs font-semibold whitespace-nowrap px-3 py-1.5 shrink-0">
+                {t.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </div>
 
         {/* PACKAGES */}
         <TabsContent value="packages">

@@ -1,1 +1,2 @@
 - [Custom Auth Migration](auth-migration.md) — Supabase Auth replaced with custom JWT (bcryptjs + jsonwebtoken, SESSION_SECRET). Admin seeded on startup.
+- [Rzahan Academy stack](rzahan-academy.md) — Netlify CDN + Netlify Functions + Supabase PostgreSQL; pnpm monorepo; GitHub PAT in scratchpad.

@@ -1,0 +1,208 @@
+IMPORTANT
+
+Read this prompt once before making changes.
+
+Do NOT analyze the entire project again.
+
+Continue from the existing architecture.
+
+Reuse existing components, APIs and database tables wherever possible.
+
+Do NOT refactor working code.
+
+Do NOT redesign the UI.
+
+Do NOT change authentication.
+
+Do NOT change existing database logic.
+
+Do NOT change routing.
+
+Do NOT change any working functionality.
+
+Only implement the tasks below.
+
+=========================================================
+PHASE 3
+RZAHAN ACADEMY OS
+=========================================================
+
+The platform is NOT only an LMS.
+
+It is becoming a Personal Development Operating System.
+
+The LMS is only one part of the platform.
+
+The core philosophy must always remain:
+
+Personal Development
+Psychology
+Philosophy
+Life
+Consciousness
+
+"İnsan Bilinç Mexanizmi" remains the first flagship program.
+
+=========================================================
+TASK 1
+USER DASHBOARD
+=========================================================
+
+Create a modern personal dashboard that becomes the user's home after login.
+
+It should include:
+
+• Continue Learning
+(last opened lesson)
+
+• Today's Task
+
+• Today's Thought
+
+• Current Program
+
+• Overall Progress %
+
+• Recent Certificates
+
+• Recommended Articles
+
+• Recommended Life Stories
+
+• Recently Added Programs
+
+No dummy data.
+
+Everything must come from the existing database.
+
+=========================================================
+TASK 2
+ADMIN PANEL UX
+=========================================================
+
+The LMS/CMS section currently does not fit on the screen.
+
+Improve ONLY usability.
+
+Requirements:
+
+• Responsive layout
+
+• Proper scrolling
+
+• Better spacing
+
+• Tabs must always remain accessible
+
+• No content should overflow
+
+• Long forms should be grouped into logical sections
+
+• Use collapsible cards where appropriate
+
+• Improve navigation inside LMS/CMS
+
+Do NOT redesign the admin panel.
+
+Only improve usability.
+
+=========================================================
+TASK 3
+LMS USABILITY
+=========================================================
+
+Administrator must be able to manage everything comfortably.
+
+Programs
+
+Modules
+
+Lessons
+
+Articles
+
+Life Stories
+
+Packages
+
+must all be easy to navigate.
+
+Avoid long endless forms.
+
+Use step-by-step sections or grouped panels.
+
+=========================================================
+TASK 4
+STUDENT EXPERIENCE
+=========================================================
+
+Student should immediately understand:
+
+Where am I?
+
+What should I do next?
+
+Continue Learning button should always be visible.
+
+Progress should always be visible.
+
+=========================================================
+IMPORTANT
+=========================================================
+
+Do NOT add:
+
+Payments
+
+AI
+
+Gamification
+
+Forum
+
+Notifications
+
+Mobile features
+
+These will be implemented later.
+
+=========================================================
+BEFORE FINISHING
+=========================================================
+
+Verify:
+
+Registration
+
+Login
+
+Tests
+
+Certificates
+
+Programs
+
+Modules
+
+Lessons
+
+Leaderboard
+
+Journal
+
+Daily Tasks
+
+Admin
+
+Everything must still work.
+
+=========================================================
+RETURN ONLY
+
+• Files modified
+
+• UI improvements made
+
+• Confirmation that no existing functionality changed
+
+• Confirmation that Phase 3 is complete.
