@@ -478,6 +478,81 @@ export default function LandingPage() {
         </section>
       )}
 
+      {/* ── NİYƏ RZAHAN ACADEMY? ─────────────────────────────────────────────── */}
+      <section className="py-24 bg-gradient-to-b from-indigo-50/60 to-white relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div className="text-center max-w-2xl mx-auto mb-16" {...fadeUp(0)}>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-100 text-primary font-medium text-sm mb-5 border border-indigo-200">
+              <Zap className="h-4 w-4" /> Bizim Üstünlüklər
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-indigo-950 mb-5 leading-tight">Niyə Rzahan Academy?</h2>
+            <p className="text-xl text-indigo-900/70">Klassik kurslara bənzəmir — bu, şüurun sistemli transformasiya metodologiyasıdır.</p>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {[
+              { emoji: "🧠", title: "Elmi Yanaşma", desc: "İnsan bilinc mexanizminə dair elmi araşdırmalara əsaslanan 7 mərhələli şüur modeli." },
+              { emoji: "⚡", title: "XP & Səviyyə Sistemi", desc: "Hər dərs, test, tapşırıq XP qazandırır. İnkişafını real vaxtda izləyirsən." },
+              { emoji: "🏆", title: "Nailiyyət Sistemi", desc: "Fəaliyyətlərinə görə nailiyyətlər açılır, inkişaf balın böyüyür." },
+              { emoji: "📊", title: "Şüur Qrafiki", desc: "Hər testdən sonra şüur səviyyən ölçülür, inkişaf qrafikində görürsən." },
+              { emoji: "🎓", title: "Rəsmi Sertifikat", desc: "Mərhələni tamamla, rəqəmsal sertifikatı al və inkişafını sənədləşdir." },
+              { emoji: "🤝", title: "Azərbaycan Dilinde", desc: "Tam Azərbaycan dilinde hazırlanmış, yerli kontekstə uyğunlaşdırılmış məzmun." },
+            ].map((item, i) => (
+              <motion.div key={i} {...fadeUp(i * 0.07)}
+                className="glass-card p-7 rounded-[2rem] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-3xl mb-5">
+                  {item.emoji}
+                </div>
+                <h3 className="text-xl font-bold text-indigo-950 mb-3">{item.title}</h3>
+                <p className="text-indigo-900/70 leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SƏNİN İNKİŞAF YOLUN ─────────────────────────────────────────────── */}
+      <section className="py-28 bg-white relative overflow-hidden">
+        <div className="absolute left-0 top-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="container mx-auto px-4">
+          <motion.div className="text-center max-w-2xl mx-auto mb-20" {...fadeUp(0)}>
+            <h2 className="text-4xl md:text-5xl font-bold text-indigo-950 mb-5 leading-tight">Sənin İnkişaf Yolun</h2>
+            <p className="text-xl text-indigo-900/70">Başlanğıcdan davamlı inkişafa doğru aydın yol xəritəsi.</p>
+          </motion.div>
+          <div className="relative max-w-4xl mx-auto">
+            {/* Connecting line */}
+            <div className="absolute top-8 left-[calc(8.33%+1rem)] right-[calc(8.33%+1rem)] h-0.5 bg-gradient-to-r from-indigo-200 via-primary to-indigo-200 hidden md:block" />
+            <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+              {[
+                { emoji: "🌱", step: "1", name: "Başlanğıc",       desc: "Testlə şüur səviyyəni müəyyən et" },
+                { emoji: "📚", step: "2", name: "Öyrənmə",          desc: "Dərslər, məqalələr oxu, XP qazaN" },
+                { emoji: "✅", step: "3", name: "Tətbiq",           desc: "Günlük tapşırıqları icra et" },
+                { emoji: "📈", step: "4", name: "İnkişaf",          desc: "Səviyyən yüksəlir, bal artır" },
+                { emoji: "🎓", step: "5", name: "Sertifikat",       desc: "Mərhələni bitir, sertifikat al" },
+                { emoji: "🔄", step: "6", name: "Davamlı İnkişaf",  desc: "Yeni proqramlarla irəlilə" },
+              ].map((s, i) => (
+                <motion.div key={i} {...fadeUp(i * 0.1)} className="flex flex-col items-center text-center gap-3">
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-indigo-100 border-2 border-primary/20 flex items-center justify-center text-3xl relative z-10 shadow-sm hover:shadow-md hover:scale-105 transition-all duration-200">
+                    {s.emoji}
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-primary/60 uppercase tracking-wider mb-1">Addım {s.step}</div>
+                    <div className="font-bold text-indigo-950 mb-1">{s.name}</div>
+                    <p className="text-xs text-indigo-900/60 leading-relaxed">{s.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+          <motion.div className="text-center mt-16" {...fadeUp(0.6)}>
+            <Link href="/test">
+              <Button size="lg" className="h-14 px-10 rounded-2xl text-base font-bold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/30 hover:-translate-y-0.5 transition-all">
+                İndi Başla <ChevronRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── PACKAGES ─────────────────────────────────────────────────────────── */}
       {isVisible(sec(cfg, "packages")) && packages.length > 0 && (
         <section className="py-24 bg-white relative overflow-hidden">

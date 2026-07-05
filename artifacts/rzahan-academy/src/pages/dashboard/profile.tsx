@@ -3,14 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
-import { Save, TrendingUp, Award, BookOpen } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Save, TrendingUp, Award, BookOpen, Zap, BarChart2, Star } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { STAGES } from "@/lib/constants";
 import { Link } from "wouter";
@@ -18,6 +17,24 @@ import { Progress } from "@/components/ui/progress";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid
 } from "recharts";
+
+interface XpSummary {
+  totalXp: number;
+  currentLevel: { name: string; emoji: string | null; color: string | null; requiredXp: number } | null;
+  nextLevel: { name: string; requiredXp: number; xpNeeded: number } | null;
+  devScore: number;
+  streak: number;
+  recentEvents: { id: number; actionType: string; xpAmount: number; note: string | null; createdAt: string }[];
+  achievements: { id: number; name: string; description: string | null; emoji: string | null; color: string | null; unlockedAt: string }[];
+}
+
+const JOURNEY_STEPS = [
+  { emoji: "🌱", name: "Başlanğıc",    xp: 0    },
+  { emoji: "🔍", name: "Araşdıran",    xp: 100  },
+  { emoji: "📈", name: "İnkişaf Edən", xp: 500  },
+  { emoji: "💡", name: "Şüurlu",       xp: 1500 },
+  { emoji: "⭐", name: "Yaradıcı",     xp: 5000 },
+];
 
 const profileSchema = z.object({
   firstName: z.string().min(2, "Ad ən azı 2 simvol olmalıdır"),
@@ -30,6 +47,7 @@ type ProfileFormValues = z.infer<typeof profileSchema>;
 export default function ProfilePage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [xp, setXp] = useState<XpSummary | null>(null);
 
   const { data: profile, isLoading } = useGetMyProfile({
     query: { queryKey: getGetMyProfileQueryKey() }
@@ -40,6 +58,13 @@ export default function ProfilePage() {
   });
 
   const upsertProfile = useUpsertProfile();
+
+  useEffect(() => {
+    fetch("/api/xp/summary")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => setXp(d))
+      .catch(() => {});
+  }, []);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -107,6 +132,148 @@ export default function ProfilePage() {
                 Yenilə
               </Button>
             </Link>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* XP + Level + Dev Score */}
+      {xp && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* XP & Level card */}
+          <div className="md:col-span-2 rounded-2xl bg-gradient-to-br from-indigo-950 to-indigo-800 text-white p-6 relative overflow-hidden">
+            <div className="absolute right-0 top-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-4">
+                <Zap className="h-4 w-4 text-amber-400" />
+                <span className="text-xs font-bold text-indigo-300 uppercase tracking-wide">Xal & Səviyyə</span>
+                <span className="ml-auto text-sm font-bold text-amber-300">{xp.totalXp.toLocaleString()} XP</span>
+              </div>
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center text-3xl border border-white/20">
+                  {xp.currentLevel?.emoji ?? "🌱"}
+                </div>
+                <div>
+                  <div className="text-2xl font-black text-white">{xp.currentLevel?.name ?? "Başlanğıc"}</div>
+                  {xp.nextLevel
+                    ? <div className="text-xs text-indigo-300 mt-0.5">{xp.nextLevel.name} səviyyəsinə {xp.nextLevel.xpNeeded} XP qalır</div>
+                    : <div className="text-xs text-amber-300 mt-0.5">Maksimum səviyyəyə çatdınız! 🎉</div>
+                  }
+                </div>
+              </div>
+              {xp.nextLevel && (
+                <div>
+                  <Progress
+                    value={Math.max(0, Math.min(100, Math.round(
+                      ((xp.totalXp - (xp.currentLevel?.requiredXp ?? 0)) /
+                        (xp.nextLevel.requiredXp - (xp.currentLevel?.requiredXp ?? 0))) * 100
+                    )))}
+                    className="h-2 bg-white/20 [&>div]:bg-amber-400 rounded-full"
+                  />
+                </div>
+              )}
+              {/* Journey steps */}
+              <div className="flex items-center gap-1 mt-4 overflow-x-auto pb-1">
+                {JOURNEY_STEPS.map((step, i) => {
+                  const reached = xp.totalXp >= step.xp;
+                  const isLast = i === JOURNEY_STEPS.length - 1;
+                  return (
+                    <div key={step.xp} className="flex items-center gap-1 shrink-0">
+                      <div className={`flex flex-col items-center gap-1`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm border-2 transition-all
+                          ${reached ? "border-amber-400 bg-amber-400/20" : "border-white/20 bg-white/5"}`}>
+                          {step.emoji}
+                        </div>
+                        <span className={`text-[9px] font-bold whitespace-nowrap ${reached ? "text-amber-300" : "text-indigo-400"}`}>
+                          {step.name}
+                        </span>
+                      </div>
+                      {!isLast && <div className={`w-6 h-0.5 mb-4 rounded-full ${reached ? "bg-amber-400/50" : "bg-white/10"}`} />}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Dev Score */}
+          <div className="rounded-2xl border border-indigo-100 bg-white p-6 flex flex-col items-center justify-center gap-3">
+            <div className="flex items-center gap-2 self-start">
+              <BarChart2 className="h-4 w-4 text-indigo-400" />
+              <span className="text-xs font-bold text-indigo-400 uppercase tracking-wide">İnkişaf Balı</span>
+            </div>
+            <div className="relative w-28 h-28 my-2">
+              <svg viewBox="0 0 100 100" className="w-28 h-28 -rotate-90">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#e0e7ff" strokeWidth="10" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#6366f1" strokeWidth="10"
+                  strokeDasharray={`${(xp.devScore / 100) * 251.2} 251.2`}
+                  strokeLinecap="round" />
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-3xl font-black text-indigo-950">{xp.devScore}</span>
+                <span className="text-xs text-indigo-400">/ 100</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <p className="text-xs text-indigo-600 font-medium">
+                {xp.devScore >= 80 ? "Əla nəticə! 🏆" :
+                 xp.devScore >= 50 ? "Yaxşı gedir 💪" :
+                 xp.devScore >= 20 ? "Davam et! 📈" : "Başlanğıc 🌱"}
+              </p>
+              <p className="text-xs text-indigo-400 mt-0.5">Fəaliyyətə görə hesablanır</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Achievements */}
+      {xp && xp.achievements.length > 0 && (
+        <Card className="rounded-2xl border-none shadow-sm bg-white">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg text-indigo-950 flex items-center gap-2">
+              <Star className="h-5 w-5 text-amber-500" /> Nailiyyətlər
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              {xp.achievements.map(a => (
+                <div key={a.id} className="rounded-xl border border-indigo-100 p-3 flex flex-col items-center gap-2 text-center hover:border-indigo-300 transition-colors">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                    style={{ backgroundColor: (a.color ?? "#f59e0b") + "20" }}>
+                    {a.emoji ?? "🏆"}
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-indigo-900 leading-snug">{a.name}</p>
+                    {a.description && <p className="text-[10px] text-indigo-400 mt-0.5 leading-snug">{a.description}</p>}
+                    <p className="text-[10px] text-indigo-300 mt-1">{new Date(a.unlockedAt).toLocaleDateString("az-AZ")}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Recent XP events */}
+      {xp && xp.recentEvents.length > 0 && (
+        <Card className="rounded-2xl border-none shadow-sm bg-white">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg text-indigo-950 flex items-center gap-2">
+              <Zap className="h-5 w-5 text-amber-500" /> Son XP Hadisələri
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            {xp.recentEvents.slice(0, 6).map(ev => (
+              <div key={ev.id} className="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-indigo-50/60">
+                <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center shrink-0">
+                  <Zap className="h-4 w-4 text-amber-500" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-indigo-900 truncate">{ev.note ?? ev.actionType}</p>
+                  <p className="text-xs text-indigo-400">{new Date(ev.createdAt).toLocaleDateString("az-AZ")}</p>
+                </div>
+                <span className="text-sm font-black text-amber-600 shrink-0">+{ev.xpAmount}</span>
+              </div>
+            ))}
           </CardContent>
         </Card>
       )}

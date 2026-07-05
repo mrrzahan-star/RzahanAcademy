@@ -8,8 +8,17 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   Target, Activity, Award, Calendar, ChevronRight,
   PlayCircle, Lightbulb, CheckCircle2, GraduationCap,
-  BookOpen, Heart, ArrowRight
+  BookOpen, Heart, ArrowRight, Zap, BarChart2, Star
 } from "lucide-react";
+
+interface XpSummary {
+  totalXp: number;
+  currentLevel: { name: string; emoji: string | null; color: string | null; requiredXp: number } | null;
+  nextLevel: { name: string; requiredXp: number; xpNeeded: number } | null;
+  devScore: number;
+  streak: number;
+  achievements: { id: number; name: string; emoji: string | null; unlockedAt: string }[];
+}
 
 interface Widgets {
   continueLearning: {
@@ -51,6 +60,15 @@ export default function DashboardPage() {
       .finally(() => setWidgetsLoading(false));
   }, []);
 
+  const [xp, setXp] = useState<XpSummary | null>(null);
+
+  useEffect(() => {
+    fetch("/api/xp/summary")
+      .then(r => r.ok ? r.json() : null)
+      .then(d => setXp(d))
+      .catch(() => {});
+  }, []);
+
   const displayName = user?.fullName?.split(" ")[0] || user?.username || "İstifadəçi";
 
   return (
@@ -77,6 +95,79 @@ export default function DashboardPage() {
         <StatCard icon={Award} label="Sertifikat" value={stats?.hasCertificate ? "Var ✓" : "Yoxdur"} sub="rəsmi sənəd" color="bg-violet-50 text-violet-600" loading={statsLoading} />
         <StatCard icon={Calendar} label="Ardıcıllıq" value={`${stats?.streakDays ?? 0} gün`} sub="fasiləsiz aktivlik" color="bg-amber-50 text-amber-600" loading={statsLoading} />
       </div>
+
+      {/* XP + Level + Dev Score banner */}
+      {xp && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* XP & Level */}
+          <div className="md:col-span-2 rounded-2xl bg-gradient-to-br from-indigo-950 to-indigo-800 text-white p-5 relative overflow-hidden">
+            <div className="absolute right-0 top-0 w-40 h-40 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-amber-400" />
+                  <span className="text-xs font-bold text-indigo-300 uppercase tracking-wide">Səviyyə & XP</span>
+                </div>
+                <div className="text-xs font-bold text-indigo-300">{xp.totalXp.toLocaleString()} XP</div>
+              </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="text-3xl">{xp.currentLevel?.emoji ?? "🌱"}</div>
+                <div>
+                  <div className="text-xl font-black text-white">{xp.currentLevel?.name ?? "Başlanğıc"}</div>
+                  {xp.nextLevel && (
+                    <div className="text-xs text-indigo-300">{xp.nextLevel.name}-ə {xp.nextLevel.xpNeeded} XP qalır</div>
+                  )}
+                </div>
+              </div>
+              {xp.nextLevel && (
+                <div>
+                  <Progress
+                    value={Math.round(((xp.nextLevel.requiredXp - xp.nextLevel.xpNeeded - (xp.currentLevel?.requiredXp ?? 0)) / (xp.nextLevel.requiredXp - (xp.currentLevel?.requiredXp ?? 0))) * 100)}
+                    className="h-1.5 bg-white/20 [&>div]:bg-amber-400"
+                  />
+                </div>
+              )}
+              {xp.achievements.length > 0 && (
+                <div className="flex gap-1.5 mt-3 flex-wrap">
+                  {xp.achievements.slice(0, 5).map(a => (
+                    <span key={a.id} className="text-lg" title={a.name}>{a.emoji ?? "🏆"}</span>
+                  ))}
+                  {xp.achievements.length > 5 && (
+                    <span className="text-xs text-indigo-300 self-center">+{xp.achievements.length - 5}</span>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Dev Score */}
+          <div className="rounded-2xl border border-indigo-100 bg-white p-5 flex flex-col justify-between">
+            <div className="flex items-center gap-2 mb-3">
+              <BarChart2 className="h-4 w-4 text-indigo-400" />
+              <span className="text-xs font-bold text-indigo-400 uppercase tracking-wide">İnkişaf Balı</span>
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="relative w-24 h-24">
+                <svg viewBox="0 0 100 100" className="w-24 h-24 -rotate-90">
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#e0e7ff" strokeWidth="10" />
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="#6366f1" strokeWidth="10"
+                    strokeDasharray={`${(xp.devScore / 100) * 251.2} 251.2`}
+                    strokeLinecap="round" />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-2xl font-black text-indigo-950">{xp.devScore}</span>
+                  <span className="text-xs text-indigo-400 -mt-0.5">/ 100</span>
+                </div>
+              </div>
+            </div>
+            <div className="text-center mt-2">
+              <Link href="/profile">
+                <span className="text-xs text-primary hover:underline">Profilə bax →</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Continue Learning + Today's Thought */}
       {!widgetsLoading && (widgets?.continueLearning || widgets?.todaysThought) && (
