@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
-import { db, usersTable, profilesTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { db, usersTable, profilesTable, cmsArticleCategoriesTable, cmsStoryCategoriesTable } from "@workspace/db";
+import { eq, count } from "drizzle-orm";
 import { logger } from "./logger";
 
 const ADMIN_ID = "00000000-0000-0000-0000-000000000001";
@@ -42,5 +42,45 @@ export async function seedAdmin(): Promise<void> {
     logger.info("Admin user seeded successfully");
   } catch (err) {
     logger.error({ err }, "Failed to seed admin user");
+  }
+}
+
+const DEFAULT_ARTICLE_CATEGORIES = [
+  "Psixologiya", "Şəxsi İnkişaf", "Fəlsəfə", "Həyat", "Şüur",
+  "Münasibətlər", "Valideynlik", "Liderlik", "Ünsiyyət", "Motivasiya",
+];
+
+const DEFAULT_STORY_CATEGORIES = [
+  "Qərarlar", "Ailə", "İş Həyatı", "Dostluq", "Asılılıq",
+  "Valideynlik", "Şəxsi İnkişaf", "Psixologiya", "Həyat Dərsləri",
+];
+
+function toSlug(s: string) {
+  return s.toLowerCase()
+    .replace(/ş/g, "sh").replace(/ç/g, "ch").replace(/ğ/g, "gh")
+    .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ü/g, "u")
+    .replace(/ə/g, "e").replace(/İ/g, "i")
+    .replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+}
+
+export async function seedCategories(): Promise<void> {
+  try {
+    const [{ c: artCount }] = await db.select({ c: count() }).from(cmsArticleCategoriesTable);
+    if (Number(artCount) === 0) {
+      await db.insert(cmsArticleCategoriesTable).values(
+        DEFAULT_ARTICLE_CATEGORIES.map((name, i) => ({ name, slug: toSlug(name), sortOrder: i, isActive: true }))
+      ).onConflictDoNothing();
+      logger.info("Default article categories seeded");
+    }
+
+    const [{ c: storyCount }] = await db.select({ c: count() }).from(cmsStoryCategoriesTable);
+    if (Number(storyCount) === 0) {
+      await db.insert(cmsStoryCategoriesTable).values(
+        DEFAULT_STORY_CATEGORIES.map((name, i) => ({ name, slug: toSlug(name), sortOrder: i, isActive: true }))
+      ).onConflictDoNothing();
+      logger.info("Default story categories seeded");
+    }
+  } catch (err) {
+    logger.error({ err }, "Failed to seed categories");
   }
 }

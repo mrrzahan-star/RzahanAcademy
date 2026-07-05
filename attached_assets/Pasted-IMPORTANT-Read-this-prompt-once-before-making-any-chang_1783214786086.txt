@@ -1,0 +1,457 @@
+IMPORTANT
+
+Read this prompt once before making any changes.
+
+DO NOT re-analyze the whole project.
+
+Continue from the existing LMS/CMS architecture.
+
+Reuse existing database tables, APIs and UI components wherever possible.
+
+Do NOT redesign the website.
+
+Do NOT redesign the Admin Panel.
+
+Do NOT change authentication.
+
+Do NOT change routing.
+
+Do NOT modify any existing working functionality.
+
+Do NOT refactor working code unless absolutely required.
+
+The project is stable.
+
+Extend it only.
+
+=========================================================
+PHASE 4
+CONTENT ECOSYSTEM
+=========================================================
+
+Rzahan Academy is becoming a complete knowledge platform.
+
+The Content Ecosystem must become one unified content management system.
+
+Everything must be managed ONLY from the Admin Panel.
+
+Never require source code edits to publish or edit content.
+
+=========================================================
+GENERAL CONTENT RULE
+=========================================================
+
+Every content type must support:
+
+Draft
+
+Published
+
+Archived
+
+Scheduled Publish
+
+Featured
+
+Pinned
+
+Package Assignment
+
+SEO
+
+Media
+
+Author
+
+Created Date
+
+Updated Date
+
+View Counter
+
+Everything should follow one common architecture.
+
+=========================================================
+CREATE CONTENT MODULES
+=========================================================
+
+Create CMS management for:
+
+• Məqalələr
+
+• Həyat Hekayələri
+
+• Günün Fikri
+
+• Günün Tapşırığı
+
+• Sitatlar
+
+• FAQ
+
+• Elanlar
+
+All modules must work independently.
+
+=========================================================
+ARTICLES
+=========================================================
+
+Administrator can:
+
+Create
+
+Edit
+
+Delete
+
+Duplicate
+
+Publish
+
+Unpublish
+
+Archive
+
+Schedule
+
+Feature
+
+Pin
+
+Each article supports:
+
+Title
+
+Subtitle
+
+Summary
+
+Rich Text Content
+
+Cover Image
+
+Gallery Images
+
+Category
+
+Tags
+
+Author
+
+Reading Time
+
+SEO Title
+
+SEO Description
+
+Slug
+
+Package
+
+Status
+
+=========================================================
+DEFAULT ARTICLE CATEGORIES
+=========================================================
+
+Psixologiya
+
+Şəxsi İnkişaf
+
+Fəlsəfə
+
+Həyat
+
+Şüur
+
+Münasibətlər
+
+Valideynlik
+
+Liderlik
+
+Ünsiyyət
+
+Motivasiya
+
+Administrator can create unlimited categories.
+
+=========================================================
+LIFE STORIES
+=========================================================
+
+Independent CMS.
+
+Not Articles.
+
+Each story supports:
+
+Title
+
+Summary
+
+Story
+
+Cover Image
+
+Category
+
+Tags
+
+Author
+
+Reading Time
+
+Package
+
+Status
+
+Featured
+
+Pinned
+
+Related Stories
+
+=========================================================
+DEFAULT STORY CATEGORIES
+=========================================================
+
+Qərarlar
+
+Ailə
+
+İş Həyatı
+
+Dostluq
+
+Asılılıq
+
+Valideynlik
+
+Şəxsi İnkişaf
+
+Psixologiya
+
+Həyat Dərsləri
+
+Administrator can create unlimited categories.
+
+=========================================================
+DAILY CONTENT
+=========================================================
+
+Separate CMS for:
+
+Today's Thought
+
+Today's Task
+
+Quotes
+
+Administrator must be able to:
+
+Create
+
+Edit
+
+Delete
+
+Schedule
+
+Publish
+
+Archive
+
+Rotate automatically by date.
+
+=========================================================
+FAQ
+=========================================================
+
+Administrator can manage:
+
+Question
+
+Answer
+
+Category
+
+Order
+
+Status
+
+=========================================================
+ANNOUNCEMENTS
+=========================================================
+
+Administrator can manage:
+
+Title
+
+Message
+
+Banner
+
+Start Date
+
+End Date
+
+Priority
+
+Package
+
+Status
+
+=========================================================
+FRONTEND
+=========================================================
+
+Create public pages for:
+
+Articles
+
+Life Stories
+
+Features:
+
+Search
+
+Category Filter
+
+Tag Filter
+
+Newest
+
+Featured
+
+Pinned
+
+Most Viewed
+
+Related Content
+
+Reading Time
+
+Author
+
+Package Indicator
+
+=========================================================
+PACKAGE ACCESS
+=========================================================
+
+Every content item supports:
+
+🌱 Başlanğıc
+
+🚀 İnkişaf
+
+👑 Ustad
+
+Frontend automatically controls visibility.
+
+No hardcoded permissions.
+
+=========================================================
+MEDIA
+=========================================================
+
+Images upload normally.
+
+Videos are NEVER uploaded.
+
+Store only:
+
+YouTube URL
+
+External Audio URL
+
+External Resource URL
+
+=========================================================
+ADMIN PANEL UX
+=========================================================
+
+Inside LMS/CMS:
+
+Group content into logical sections.
+
+Avoid long forms.
+
+Use collapsible panels.
+
+Improve navigation.
+
+Everything must remain responsive.
+
+No horizontal overflow.
+
+=========================================================
+DATABASE
+=========================================================
+
+Reuse existing CMS tables whenever possible.
+
+Create new tables only if absolutely necessary.
+
+Never duplicate existing logic.
+
+=========================================================
+PERFORMANCE
+=========================================================
+
+Reuse existing APIs.
+
+Avoid duplicate endpoints.
+
+Optimize queries.
+
+Lazy load lists where appropriate.
+
+=========================================================
+QA
+=========================================================
+
+Verify:
+
+Registration
+
+Login
+
+Dashboard
+
+Programs
+
+Modules
+
+Lessons
+
+Tests
+
+Certificates
+
+Journal
+
+Leaderboard
+
+Admin
+
+Everything must still work exactly as before.
+
+=========================================================
+RETURN ONLY
+
+1. Database changes
+
+2. New Admin CMS modules
+
+3. APIs added
+
+4. Frontend pages added
+
+5. Files modified
+
+6. QA results
+
+7. Confirmation that the Content Ecosystem is complete and fully integrated with the LMS.

@@ -24,6 +24,10 @@ const LessonPage = lazy(() => import("@/pages/programs/lesson"));
 const JournalPage = lazy(() => import("@/pages/dashboard/journal/index"));
 const TasksPage = lazy(() => import("@/pages/dashboard/tasks/index"));
 const LeaderboardPage = lazy(() => import("@/pages/leaderboard/index"));
+const ArticlesPage = lazy(() => import("@/pages/articles/index"));
+const ArticleDetailPage = lazy(() => import("@/pages/articles/detail"));
+const StoriesPage = lazy(() => import("@/pages/stories/index"));
+const StoryDetailPage = lazy(() => import("@/pages/stories/detail"));
 const VerifyPage = lazy(() => import("@/pages/verify"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
@@ -145,6 +149,10 @@ function AppRoutes() {
         <Route path="/programs"><ProtectedRoute component={ProgramsPage} /></Route>
         <Route path="/programs/:slug/lessons/:lessonId"><ProtectedRoute component={LessonPage} /></Route>
         <Route path="/programs/:slug"><ProtectedRoute component={ProgramDetailPage} /></Route>
+        <Route path="/articles"><ProtectedRoute component={ArticlesPage} /></Route>
+        <Route path="/articles/:slug"><ProtectedRoute component={ArticleDetailPage} /></Route>
+        <Route path="/stories"><ProtectedRoute component={StoriesPage} /></Route>
+        <Route path="/stories/:id"><ProtectedRoute component={StoryDetailPage} /></Route>
 
         <Route>
           <Suspense fallback={<PageSpinner />}><NotFound /></Suspense>

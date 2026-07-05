@@ -12,6 +12,8 @@ import tasksRouter from "./tasks";
 import authRouter from "./auth";
 import cmsRouter from "./cms";
 import programsRouter from "./programs";
+import articlesRouter from "./articles";
+import storiesRouter from "./stories";
 
 const router: IRouter = Router();
 
@@ -27,6 +29,8 @@ router.use("/leaderboard", leaderboardRouter);
 router.use("/admin", adminRouter);
 router.use("/admin/cms", cmsRouter);
 router.use("/programs", programsRouter);
+router.use("/articles", articlesRouter);
+router.use("/stories", storiesRouter);
 router.use("/tasks", tasksRouter);
 
 export default router;

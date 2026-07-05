@@ -196,23 +196,32 @@ export function CmsTab() {
             endpoint="/articles"
             columns={[
               { key: "title", label: "Başlıq" },
+              { key: "author", label: "Müəllif" },
               { key: "status", label: "Status" },
               { key: "isFeatured", label: "Seçilmiş" },
-              { key: "tags", label: "Etikettlər" },
+              { key: "isPinned", label: "Sabitlənmiş" },
+              { key: "viewCount", label: "Baxış" },
             ]}
             fields={[
               { key: "title", label: "Başlıq", required: true },
+              { key: "subtitle", label: "Alt Başlıq" },
               { key: "slug", label: "Slug (boş = avtomatik)" },
+              { key: "author", label: "Müəllif", placeholder: "Rzahan" },
+              { key: "readingTimeMinutes", label: "Oxuma Müddəti (dəq)", type: "number" },
+              { key: "categoryId", label: "Kateqoriya ID", type: "number" },
               { key: "excerpt", label: "Xülasə", type: "textarea" },
-              { key: "contentHtml", label: "Məzmun", type: "textarea" },
+              { key: "contentHtml", label: "Məzmun (HTML)", type: "textarea" },
               { key: "coverImageUrl", label: "Kapak Şəkil URL", type: "url" },
               { key: "tags", label: "Etikettlər (vergüllə)", placeholder: "psixologiya, inkişaf" },
+              { key: "packageId", label: "Paket ID", type: "number" },
+              { key: "status", label: "Status", type: "status", options: ["draft", "published", "archived"] },
+              { key: "isFeatured", label: "Seçilmiş (Featured)?", type: "boolean" },
+              { key: "isPinned", label: "Sabitlənmiş (Pinned)?", type: "boolean" },
+              { key: "scheduledAt", label: "Planlaşdırılmış Yayım (ISO tarix)", placeholder: "2025-01-15T10:00:00Z" },
               { key: "seoTitle", label: "SEO Başlıq" },
               { key: "seoDescription", label: "SEO Açıqlama", type: "textarea" },
-              { key: "status", label: "Status", type: "status", options: ["draft", "published"] },
-              { key: "isFeatured", label: "Seçilmiş (Featured)?", type: "boolean" },
             ]}
-            defaultValues={{ status: "draft", isFeatured: false }}
+            defaultValues={{ status: "draft", isFeatured: false, isPinned: false, author: "Rzahan" }}
           />
         </TabsContent>
 
@@ -243,18 +252,30 @@ export function CmsTab() {
             endpoint="/life-stories"
             columns={[
               { key: "title", label: "Başlıq" },
+              { key: "author", label: "Müəllif" },
               { key: "status", label: "Status" },
-              { key: "categoryId", label: "Kateq. ID" },
+              { key: "isFeatured", label: "Seçilmiş" },
+              { key: "isPinned", label: "Sabitlənmiş" },
+              { key: "viewCount", label: "Baxış" },
             ]}
             fields={[
               { key: "title", label: "Başlıq", required: true },
-              { key: "contentHtml", label: "Məzmun", type: "textarea" },
-              { key: "imageUrl", label: "Şəkil URL", type: "url" },
+              { key: "slug", label: "Slug (boş = avtomatik)" },
+              { key: "author", label: "Müəllif", placeholder: "Rzahan" },
+              { key: "readingTimeMinutes", label: "Oxuma Müddəti (dəq)", type: "number" },
               { key: "categoryId", label: "Kateqoriya ID", type: "number" },
-              { key: "status", label: "Status", type: "status", options: ["draft", "published"] },
+              { key: "excerpt", label: "Xülasə", type: "textarea" },
+              { key: "contentHtml", label: "Məzmun (HTML)", type: "textarea" },
+              { key: "imageUrl", label: "Şəkil URL", type: "url" },
+              { key: "tags", label: "Etikettlər (vergüllə)", placeholder: "ailə, qərar" },
+              { key: "packageId", label: "Paket ID", type: "number" },
+              { key: "status", label: "Status", type: "status", options: ["draft", "published", "archived"] },
+              { key: "isFeatured", label: "Seçilmiş (Featured)?", type: "boolean" },
+              { key: "isPinned", label: "Sabitlənmiş (Pinned)?", type: "boolean" },
+              { key: "scheduledAt", label: "Planlaşdırılmış Yayım (ISO tarix)", placeholder: "2025-01-15T10:00:00Z" },
               { key: "sortOrder", label: "Sıra", type: "number" },
             ]}
-            defaultValues={{ status: "draft", sortOrder: 0 }}
+            defaultValues={{ status: "draft", sortOrder: 0, isFeatured: false, isPinned: false, author: "Rzahan" }}
           />
         </TabsContent>
 
@@ -349,15 +370,23 @@ export function CmsTab() {
             endpoint="/announcements"
             columns={[
               { key: "title", label: "Başlıq" },
-              { key: "isActive", label: "Aktiv" },
-              { key: "expiresAt", label: "Bitmə tarixi" },
+              { key: "status", label: "Status" },
+              { key: "priority", label: "Prioritet" },
+              { key: "startDate", label: "Başlanğıc" },
+              { key: "endDate", label: "Bitmə" },
             ]}
             fields={[
               { key: "title", label: "Başlıq", required: true },
               { key: "content", label: "Məzmun", type: "textarea" },
+              { key: "bannerImageUrl", label: "Banner Şəkil URL", type: "url" },
+              { key: "priority", label: "Prioritet (0=normal, 10=yüksək)", type: "number" },
+              { key: "packageId", label: "Paket ID (boş = hamı)", type: "number" },
+              { key: "startDate", label: "Başlanğıc tarixi (ISO)", placeholder: "2025-01-01T00:00:00Z" },
+              { key: "endDate", label: "Bitmə tarixi (ISO)", placeholder: "2025-12-31T23:59:00Z" },
+              { key: "status", label: "Status", type: "status", options: ["draft", "published", "archived"] },
               { key: "isActive", label: "Aktiv?", type: "boolean" },
             ]}
-            defaultValues={{ isActive: true }}
+            defaultValues={{ isActive: true, priority: 0, status: "draft" }}
           />
         </TabsContent>
 
