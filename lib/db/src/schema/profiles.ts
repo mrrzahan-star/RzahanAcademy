@@ -16,6 +16,9 @@ export const profilesTable = pgTable("profiles", {
   lastActiveAt: timestamp("last_active_at", { withTimezone: true }),
   isBlocked: boolean("is_blocked").notNull().default(false),
   tasksCompleted: integer("tasks_completed").notNull().default(0),
+  currentPackageSlug: text("current_package_slug").notNull().default("baslanqic"),
+  membershipExpiresAt: timestamp("membership_expires_at", { withTimezone: true }),
+  currentMembershipId: integer("current_membership_id"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow().$onUpdate(() => new Date()),
 });

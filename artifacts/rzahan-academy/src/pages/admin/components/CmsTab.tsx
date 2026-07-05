@@ -98,7 +98,9 @@ export function CmsTab() {
               { key: "emoji", label: "Emoji" },
               { key: "name", label: "Ad" },
               { key: "slug", label: "Slug" },
-              { key: "description", label: "Açıqlama" },
+              { key: "monthlyPrice", label: "Aylıq" },
+              { key: "yearlyPrice", label: "İllik" },
+              { key: "isRecommended", label: "Tövsiyə" },
               { key: "isActive", label: "Aktiv" },
               { key: "sortOrder", label: "Sıra" },
             ]}
@@ -106,11 +108,20 @@ export function CmsTab() {
               { key: "emoji", label: "Emoji", placeholder: "🌱" },
               { key: "name", label: "Ad", required: true, placeholder: "Başlanğıc" },
               { key: "slug", label: "Slug", placeholder: "baslanqic (boş buraxsanız avtomatik)" },
-              { key: "description", label: "Açıqlama", type: "textarea" },
+              { key: "color", label: "Rəng (hex)", placeholder: "#6366f1" },
+              { key: "description", label: "Qısa Açıqlama", type: "textarea" },
+              { key: "longDescription", label: "Uzun Açıqlama", type: "textarea" },
+              { key: "monthlyPrice", label: "Aylıq Qiymət", placeholder: "29₼" },
+              { key: "yearlyPrice", label: "İllik Qiymət", placeholder: "290₼" },
+              { key: "features", label: "Xüsusiyyətlər (JSON siyahı)", type: "textarea", placeholder: '["Test", "Sertifikat", "Proqramlar"]' },
+              { key: "isRecommended", label: "Tövsiyə edilən?", type: "boolean" },
+              { key: "requiredLevel", label: "Tələb olunan səviyyə (0/1/2)", type: "number" },
+              { key: "btnText", label: "Düymə Mətni", placeholder: "Qoşul" },
+              { key: "btnUrl", label: "Düymə URL (boş = modal)", placeholder: "/sign-up" },
               { key: "isActive", label: "Aktiv?", type: "boolean" },
               { key: "sortOrder", label: "Sıra nömrəsi", type: "number" },
             ]}
-            defaultValues={{ isActive: true, sortOrder: 0, emoji: "📦" }}
+            defaultValues={{ isActive: true, sortOrder: 0, emoji: "📦", requiredLevel: 0, isRecommended: false, color: "#6366f1" }}
           />
         </TabsContent>
 

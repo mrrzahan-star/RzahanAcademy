@@ -9,3 +9,4 @@ export * from "./site_settings";
 export * from "./users";
 export * from "./password_reset_tokens";
 export * from "./cms";
+export * from "./memberships";

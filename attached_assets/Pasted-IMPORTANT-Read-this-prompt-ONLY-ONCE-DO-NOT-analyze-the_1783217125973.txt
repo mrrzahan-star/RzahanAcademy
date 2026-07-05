@@ -1,0 +1,568 @@
+IMPORTANT
+
+Read this prompt ONLY ONCE.
+
+DO NOT analyze the whole project again.
+
+Continue from the existing architecture.
+
+Reuse existing components.
+
+Reuse existing APIs.
+
+Reuse existing database tables wherever possible.
+
+Create new tables ONLY if absolutely necessary.
+
+DO NOT redesign the website.
+
+DO NOT redesign the Admin Panel.
+
+DO NOT modify authentication.
+
+DO NOT modify existing routing.
+
+DO NOT modify existing working functionality.
+
+Everything currently working must continue working exactly as before.
+
+=========================================================
+PHASE 6
+MEMBERSHIP & ACCESS MANAGEMENT
+=========================================================
+
+MISSION
+
+Rzahan Academy now becomes a membership platform.
+
+Memberships are managed manually by the administrator.
+
+NO ONLINE PAYMENT.
+
+NO STRIPE.
+
+NO PAYPAL.
+
+NO BANK API.
+
+Only prepare a production-ready membership management system.
+
+=========================================================
+PACKAGES
+=========================================================
+
+Create three editable membership packages.
+
+🌱 Başlanğıc
+
+Price:
+Free
+
+Default package for every new user.
+
+---------------------------------------------------------
+
+🚀 İnkişaf
+
+Monthly Price
+
+Yearly Price
+
+---------------------------------------------------------
+
+👑 Ustad
+
+Monthly Price
+
+Yearly Price
+
+All prices must be editable from the Admin Panel.
+
+=========================================================
+PACKAGE FEATURES
+=========================================================
+
+Administrator can edit:
+
+Package Name
+
+Short Description
+
+Long Description
+
+Icon
+
+Color
+
+Feature List
+
+Recommended Badge
+
+Display Order
+
+Visibility
+
+Status
+
+Monthly Price
+
+Yearly Price
+
+Everything editable.
+
+=========================================================
+PACKAGE COMPARISON
+=========================================================
+
+Landing Page automatically displays:
+
+Package Comparison Table
+
+Features
+
+Benefits
+
+Recommended Package
+
+Prices
+
+Buttons
+
+Everything comes from CMS.
+
+=========================================================
+PACKAGE REQUEST
+=========================================================
+
+When user clicks
+
+"Qoşul"
+
+Open a modal.
+
+Collect:
+
+Ad Soyad
+
+Telefon (required)
+
+Email
+
+(auto-fill if logged in)
+
+Optional Note
+
+Selected Package
+
+Save request automatically.
+
+=========================================================
+ADMIN PANEL
+=========================================================
+
+Create new section:
+
+Paket Müraciətləri
+
+Administrator sees:
+
+Applicant
+
+Phone
+
+Email
+
+Selected Package
+
+Created Date
+
+Notes
+
+Current Status
+
+=========================================================
+REQUEST STATUS
+=========================================================
+
+Yeni
+
+Əlaqə Saxlanıldı
+
+Ödəniş Gözlənilir
+
+Aktiv Edildi
+
+Ləğv Edildi
+
+=========================================================
+PACKAGE ACTIVATION
+=========================================================
+
+Administrator activates membership manually.
+
+Choose:
+
+Başlanğıc
+
+İnkişaf
+
+Ustad
+
+Choose duration:
+
+30 Days
+
+90 Days
+
+180 Days
+
+365 Days
+
+Custom Duration
+
+System automatically calculates:
+
+Activation Date
+
+Expiration Date
+
+Remaining Days
+
+=========================================================
+PACKAGE STATUS
+=========================================================
+
+Each user has:
+
+Current Package
+
+Activation Date
+
+Expiration Date
+
+Remaining Days
+
+Package Status
+
+Active
+
+Expired
+
+Cancelled
+
+Paused
+
+=========================================================
+AUTOMATIC EXPIRATION
+=========================================================
+
+When package expires:
+
+Access immediately returns to
+
+🌱 Başlanğıc
+
+WITHOUT deleting:
+
+Progress
+
+Programs
+
+Completed Lessons
+
+Certificates
+
+Journal
+
+Test Results
+
+Achievements
+
+History
+
+Only premium access is removed.
+
+=========================================================
+PACKAGE HISTORY
+=========================================================
+
+Keep complete history.
+
+Never delete records.
+
+Example:
+
+Başlanğıc
+
+↓
+
+İnkişaf
+
+30 Days
+
+↓
+
+Expired
+
+↓
+
+Başlanğıc
+
+↓
+
+Ustad
+
+365 Days
+
+=========================================================
+ADMIN ACTIONS
+=========================================================
+
+Administrator can:
+
+Activate
+
+Renew
+
+Extend
+
+Pause
+
+Resume
+
+Cancel
+
+Change Package
+
+Change Expiration Date
+
+View Package History
+
+Everything from Admin Panel.
+
+=========================================================
+EXPIRATION WARNINGS
+=========================================================
+
+Automatically notify user inside platform:
+
+7 Days Remaining
+
+3 Days Remaining
+
+1 Day Remaining
+
+Expired
+
+No email integration yet.
+
+Only platform notifications.
+
+=========================================================
+ADMIN DASHBOARD
+=========================================================
+
+Create widgets:
+
+New Package Requests
+
+Packages Expiring Today
+
+Packages Expiring in 7 Days
+
+Expired Packages
+
+Recently Activated Packages
+
+=========================================================
+ACCESS CONTROL
+=========================================================
+
+Every protected content automatically checks:
+
+User Package
+
+vs
+
+Required Package
+
+Applies to:
+
+Programs
+
+Modules
+
+Lessons
+
+Articles
+
+Stories
+
+Downloads
+
+Future Content
+
+Never duplicate permission logic.
+
+=========================================================
+LOCKED CONTENT
+=========================================================
+
+If content is locked:
+
+Display professional premium card.
+
+Explain:
+
+Which package is required.
+
+Benefits of upgrading.
+
+Show
+
+"Paketə Qoşul"
+
+button.
+
+=========================================================
+LANDING PAGE
+=========================================================
+
+Packages section becomes fully active.
+
+Display:
+
+Package
+
+Description
+
+Features
+
+Monthly Price
+
+Yearly Price
+
+Comparison
+
+Join Button
+
+Everything managed from CMS.
+
+=========================================================
+DEMO CONTENT
+=========================================================
+
+Prepare production-quality starter content.
+
+NOT lorem ipsum.
+
+NOT fake placeholders.
+
+Create:
+
+2 Demo Programs
+
+6 Demo Articles
+
+6 Demo Life Stories
+
+12 FAQ
+
+6 Testimonials
+
+Everything editable or removable from Admin Panel.
+
+As real content is published,
+
+demo content can be removed safely.
+
+=========================================================
+IMPORTANT
+=========================================================
+
+Do NOT create demo users.
+
+Do NOT create fake statistics.
+
+Use only meaningful starter content.
+
+=========================================================
+PERFORMANCE
+=========================================================
+
+Reuse existing components.
+
+Reuse APIs.
+
+Reuse CMS.
+
+Avoid duplicate database tables.
+
+Avoid unnecessary queries.
+
+=========================================================
+QA
+=========================================================
+
+Verify:
+
+Landing Page
+
+Packages
+
+Package Requests
+
+Membership Activation
+
+Automatic Expiration
+
+Programs
+
+Modules
+
+Lessons
+
+Articles
+
+Stories
+
+Dashboard
+
+Admin
+
+Registration
+
+Login
+
+Certificates
+
+Leaderboard
+
+Journal
+
+Daily Tasks
+
+Everything must continue working exactly as before.
+
+=========================================================
+RETURN ONLY
+
+1. Database changes
+
+2. Admin modules created
+
+3. APIs created
+
+4. Landing updates
+
+5. Demo content created
+
+6. Files modified
+
+7. QA results
+
+8. Confirmation that Membership & Access System is production-ready.
+
+DO NOT spend time analyzing the project again.
+
+Implement only the requested functionality.

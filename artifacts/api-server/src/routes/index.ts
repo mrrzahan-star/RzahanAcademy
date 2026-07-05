@@ -15,6 +15,7 @@ import programsRouter from "./programs";
 import articlesRouter from "./articles";
 import storiesRouter from "./stories";
 import landingRouter from "./landing";
+import { publicMembershipRouter, adminMembershipRouter } from "./memberships";
 
 const router: IRouter = Router();
 
@@ -34,5 +35,7 @@ router.use("/articles", articlesRouter);
 router.use("/stories", storiesRouter);
 router.use("/tasks", tasksRouter);
 router.use("/landing", landingRouter);
+router.use("/memberships", publicMembershipRouter);
+router.use("/admin/memberships", adminMembershipRouter);
 
 export default router;

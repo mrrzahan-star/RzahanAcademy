@@ -10,6 +10,15 @@ export const cmsPackagesTable = pgTable("cms_packages", {
   slug: text("slug").notNull().unique(),
   emoji: text("emoji").default("📦"),
   description: text("description"),
+  longDescription: text("long_description"),
+  color: text("color").default("#5b5fef"),
+  features: text("features"),           // JSON array of feature strings
+  monthlyPrice: text("monthly_price"),  // display string e.g. "29₼"
+  yearlyPrice: text("yearly_price"),    // display string e.g. "290₼"
+  isRecommended: boolean("is_recommended").notNull().default(false),
+  requiredLevel: integer("required_level").notNull().default(0), // 0=free 1=inkisaf 2=ustad
+  btnText: text("btn_text"),
+  btnUrl: text("btn_url"),
   isActive: boolean("is_active").notNull().default(true),
   sortOrder: integer("sort_order").notNull().default(0),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
